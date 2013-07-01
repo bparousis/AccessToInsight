@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>What is Buddhism?</string>
+		<key>note</key>
+		<string>Basic overview of Theravada Buddhism</string>
+		<key>location</key>
+		<string>lib/authors/bullitt/theravada.html</string>
+		<key>scrollX</key>
+		<integer>0</integer>
+		<key>scrollY</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Getting Started</string>
+		<key>note</key>
+		<string>Suggested starting points</string>
+		<key>location</key>
+		<string>begin.html</string>
+		<key>scrollX</key>
+		<integer>0</integer>
+		<key>scrollY</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Content Help and FAQ</string>
+		<key>note</key>
+		<string>Frequently Asked Questions</string>
+		<key>location</key>
+		<string>faq.html</string>
+		<key>scrollX</key>
+		<integer>0</integer>
+		<key>scrollY</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Tipitaka (Pali Canon)</string>
+		<key>note</key>
+		<string>The canonical scripture of Buddhism</string>
+		<key>location</key>
+		<string>tipitaka/index.html</string>
+		<key>scrollX</key>
+		<integer>0</integer>
+		<key>scrollY</key>
+		<integer>0</integer>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>Dhammapada</string>
+		<key>note</key>
+		<string>Popular and short collection of verses</string>
+		<key>location</key>
+		<string>tipitaka/kn/dhp/index.html</string>
+		<key>scrollX</key>
+		<integer>0</integer>
+		<key>scrollY</key>
+		<integer>0</integer>
+	</dict>
+</array>
+</plist>
