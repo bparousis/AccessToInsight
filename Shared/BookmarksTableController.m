@@ -117,13 +117,15 @@
     [super viewDidLoad];
 	self.title = @"Bookmarks";
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	UIBarButtonItem *cancelButtonItem =
-	[[UIBarButtonItem alloc] initWithTitle:@"Close"
-									 style:UIBarButtonItemStyleDone
-									target:self
-									action:@selector(cancel)];
-	self.navigationItem.leftBarButtonItem = cancelButtonItem;
-	[cancelButtonItem release];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        UIBarButtonItem *cancelButtonItem =
+        [[UIBarButtonItem alloc] initWithTitle:@"Close"
+                                         style:UIBarButtonItemStyleDone
+                                        target:self
+                                        action:@selector(cancel)];
+        self.navigationItem.leftBarButtonItem = cancelButtonItem;
+        [cancelButtonItem release];
+    }
 }
 
 

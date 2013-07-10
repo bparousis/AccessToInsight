@@ -22,9 +22,7 @@
     
     // Override point for customization after application launch.
 	application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
-    [window addSubview:viewController.view];
-    [window makeKeyAndVisible];
-	
+    window.rootViewController = viewController;	
     [window makeKeyAndVisible];
     
     return YES;

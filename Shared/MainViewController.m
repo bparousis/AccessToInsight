@@ -10,6 +10,12 @@
 #import "InfoViewController.h"
 #import "BookmarksManager.h"
 
+@interface MainViewController()
+
+@property(nonatomic, retain) UIActionSheet *actionSheet;
+
+@end
+
 @implementation MainViewController
 
 
@@ -18,7 +24,7 @@
 @synthesize bmPopover;
 @synthesize bmBarButtonItem;
 @synthesize externalURL;
-
+@synthesize actionBarButtonItem;
 
 #pragma mark -
 #pragma mark Event Intercept Window delegate stuff
@@ -70,8 +76,8 @@
 
 
 - (NSString *)URLStringToLocalContentPath:(NSString *)urlString {
-	NSArray *a = [urlString componentsSeparatedByString:LOCAL_WEB_DATA_DIR];
-	return [a objectAtIndex:1];
+	NSArray *urlArray = [urlString componentsSeparatedByString:LOCAL_WEB_DATA_DIR];
+    return ([urlArray count] >= 2) ? [urlArray objectAtIndex:1] : nil;
 }
 
 
@@ -230,19 +236,29 @@
 }
 
 
-- (IBAction)addButton {
-	UIActionSheet *addSheet = [[UIActionSheet alloc]
-							  initWithTitle:@"Select action for this page:"
-								   delegate:self
-						  cancelButtonTitle:@"Cancel"
-					 destructiveButtonTitle:nil
-						  otherButtonTitles:@"Add Bookmark", 
-											@"Open on Live Site", nil];
-	//addSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-	[addSheet showFromToolbar:self.toolbar];
-	[addSheet release];
-
-
+- (IBAction)actionButton {
+    if (!self.actionSheet) {
+        if (self.bmPopover) {
+            [self.bmPopover dismissPopoverAnimated:YES];
+            self.bmPopover = nil;
+        }
+        
+        self.actionSheet = [[[UIActionSheet alloc]
+                            initWithTitle:@"Select action for this page:"
+                            delegate:self
+                            cancelButtonTitle:@"Cancel"
+                            destructiveButtonTitle:nil
+                            otherButtonTitles:@"Add Bookmark",
+                            @"Open on Live Site", nil] autorelease];
+        //addSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+            [self.actionSheet showFromBarButtonItem:self.actionBarButtonItem animated:YES];
+        }
+        else {
+            [self.actionSheet showFromToolbar:self.toolbar];
+        }
+    
+    }
 }
 
 
@@ -262,18 +278,18 @@
 								bookmark.location]];
 		[[UIApplication sharedApplication] openURL:liveURL];
 	}
+    self.actionSheet = nil;
 	/* Future features: email link, email text, email clipboard/selection */
 }
 
 
 - (IBAction)showBookmarks {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-		if (self.bmPopover) {
-			[self.bmPopover dismissPopoverAnimated:YES];
-			self.bmPopover = nil;
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+		if ([self.bmPopover isPopoverVisible]) {
 			return;
 		}
-	BookmarksTableController *btc = [[BookmarksTableController alloc] 
+    }
+	BookmarksTableController *btc = [[BookmarksTableController alloc]
 									 initWithStyle:UITableViewStylePlain];
 	btc.delegate = self;
 	
@@ -284,8 +300,12 @@
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		Class UIPopoverControllerClass = NSClassFromString(@"UIPopoverController");
 		if (UIPopoverControllerClass != nil) {
-			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:btc];
-			CGSize popoverSize = { 300.0, 500.0 };
+            if (self.actionSheet) {
+                [self.actionSheet dismissWithClickedButtonIndex:2 animated:YES];
+            }
+            
+			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:nav];
+			CGSize popoverSize = {300.0, 500.0};
 			popover.delegate = self;
 			popover.popoverContentSize = popoverSize;
 			self.bmPopover = popover;
@@ -306,18 +326,20 @@
 - (IBAction)showInfo {
 	InfoViewController *controller;
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		controller = [[InfoViewController alloc]
 										initWithNibName:@"InfoViewController_iPad"
 											bundle:nil];
-	else
+    }
+	else {
 		controller = [[InfoViewController alloc]
 					  initWithNibName:@"InfoViewController_iPhone"
 					  bundle:nil];
+    }
 		
 	controller.delegate = self;
 	
-	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 	[self presentModalViewController:controller animated:YES];
 	
 	[controller release];
@@ -355,12 +377,11 @@
 #pragma mark -
 #pragma mark Standard methods
 
-
 - (void)viewDidLoad {
-	
+    [super viewDidLoad];
+    
 	// Load the last page the user was viewing.
 	// Unfortunately I don't know of a way to save and load the history.
-
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSData *data = [defaults objectForKey:@"lastLocationBookmark"];
 
@@ -392,7 +413,7 @@
 		[self home];
 	}	
 	
-	[super viewDidLoad];
+	
 }
 
 
@@ -407,6 +428,11 @@
 		return (interfaceOrientation == UIInterfaceOrientationPortrait
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeLeft
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeRight);
+}
+
+#pragma mark -  UI Popover Delegate
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    self.bmPopover = nil;
 }
 
 
@@ -446,13 +472,18 @@
 	self.toolbar = nil;
 	self.externalURL = nil;
 	self.bmBarButtonItem = nil;
+    self.actionBarButtonItem = nil;
 	self.bmPopover = nil;
 	[super viewDidUnload];
 }
 
 
 - (void)dealloc {
+    [_actionSheet release];
+    [bmBarButtonItem release];
+    [actionBarButtonItem release];
 	[webView release];
+    [toolbar release];
 	[externalURL release];
     [super dealloc];
 }

@@ -22,10 +22,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
-	application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
-    [window addSubview:viewController.view];
-    [window makeKeyAndVisible];
-	
+    self.window.rootViewController = viewController;
     [window makeKeyAndVisible];
     
     return YES;

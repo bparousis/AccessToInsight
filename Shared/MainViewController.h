@@ -21,10 +21,12 @@
 
 @interface MainViewController : UIViewController <EventInterceptWindowDelegate,
 		UIWebViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate,
-		InfoViewControllerDelegate, BookmarksControllerDelegate, UIPopoverControllerDelegate> {
+		InfoViewControllerDelegate, BookmarksControllerDelegate, UIPopoverControllerDelegate>
+{
 	IBOutlet UIWebView *webView;
 	IBOutlet UIToolbar *toolbar;
 	IBOutlet UIBarButtonItem *bmBarButtonItem;
+    IBOutlet UIBarButtonItem *actionBarButtonItem;
 			
 	UIPopoverController *bmPopover;
 
@@ -37,13 +39,14 @@
 @property(nonatomic, retain) IBOutlet UIWebView *webView;
 @property(nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property(nonatomic, retain) IBOutlet UIBarButtonItem *bmBarButtonItem;
+@property(nonatomic, retain) IBOutlet UIBarButtonItem *actionBarButtonItem;
 
 @property(nonatomic, retain) UIPopoverController *bmPopover;
 
 @property(nonatomic, retain) NSURL *externalURL;
 
 - (IBAction)home;
-- (IBAction)addButton;
+- (IBAction)actionButton;
 - (IBAction)showBookmarks;
 - (IBAction)pageDown;
 - (IBAction)pageUp;
