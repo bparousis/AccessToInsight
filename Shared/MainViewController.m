@@ -82,11 +82,22 @@
 
 
 - (void)loadLocalWebContent:(NSString *)path {
+    NSString *hash = nil;
+    NSRange hashRange = [path rangeOfString:@"#" options:NSBackwardsSearch];
+    if (hashRange.location != NSNotFound) {
+        hash = [path substringFromIndex:hashRange.location];
+        path = [path substringToIndex:hashRange.location];
+    }
+    
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
 	NSString *fullPath = [NSString pathWithComponents:
 						  [NSArray arrayWithObjects:resourcePath,
 						   LOCAL_WEB_DATA_DIR, path, nil]];
-	NSURL *url = [NSURL fileURLWithPath:fullPath];
+    NSURL *url = [NSURL fileURLWithPath:fullPath];
+    if (hash) {
+        url = [NSURL URLWithString:hash relativeToURL:url];
+    }
+    
 	NSURLRequest *req = [NSURLRequest requestWithURL:url];
 	[self.webView loadRequest:req];	
 }
@@ -138,7 +149,6 @@
 	return NO;
 }
 
-
 - (void)scrollToX:(NSInteger)scrollX Y:(NSInteger)scrollY {
 	[self.webView stringByEvaluatingJavaScriptFromString:
 		[NSString stringWithFormat: @"window.scrollTo(%d, %d);",
@@ -156,7 +166,7 @@
 
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-	if (needRescroll) {
+    if (needRescroll) {
 		if (rescrollY || rescrollX)
 			[self scrollToX:rescrollX Y:rescrollY];
 		needRescroll = NO;
@@ -177,13 +187,13 @@
 - (LocalBookmark *)getBookmark {
 	
 	// Define html stripping function for current page.
-	[self.webView stringByEvaluatingJavaScriptFromString:
-		@"String.prototype.stripHTML = function() {	"
-		@"	var matchTag = /<(?:.|\\s)*?>/g;			"
-		@"	var s = this.replace(matchTag, '');		"
-		@"	var spaceRegexp = /\\s+/g;				"
-		@"	return s.replace(spaceRegexp, ' ')		"
-		@"};"];
+    [self.webView stringByEvaluatingJavaScriptFromString:
+     @"String.prototype.stripHTML = function() {	"
+     @"	var matchTag = /<(?:.|\\s)*?>/g;			"
+     @"	var s = this.replace(matchTag, '');		"
+     @"	var spaceRegexp = /\\s+/g;				"
+     @"	return s.replace(spaceRegexp, ' ')		"
+     @"};"];
 	
 	NSString *title = [self.webView
 					   stringByEvaluatingJavaScriptFromString:@"document.title"];
@@ -191,7 +201,7 @@
 						   stringByEvaluatingJavaScriptFromString:@"location.href"];	
 	NSString *location = [self URLStringToLocalContentPath:urlString];
 	NSString *tipitakaID = [self.webView stringByEvaluatingJavaScriptFromString:
-			@"document.getElementById('H_tipitakaID').innerHTML.stripHTML()"];
+                                   @"document.getElementById('H_tipitakaID').innerHTML.stripHTML()"];
 	NSInteger scrollX = [[self.webView
 						  stringByEvaluatingJavaScriptFromString: @"scrollX"]
 						 integerValue];
@@ -235,7 +245,6 @@
 	[self loadLocalWebContent:@"index.html"];
 }
 
-
 - (IBAction)actionButton {
     if (!self.actionSheet) {
         if (self.bmPopover) {
@@ -257,7 +266,6 @@
         else {
             [self.actionSheet showFromToolbar:self.toolbar];
         }
-    
     }
 }
 
@@ -270,7 +278,7 @@
 	if ([buttonTitle isEqual:@"Add Bookmark"]) {
 		LocalBookmark *bookmark = [self getBookmark];
 		BookmarksManager *bm = [BookmarksManager sharedInstance];
-		[bm addBookmark:bookmark];		
+		[bm addBookmark:bookmark];
 	} else if ([buttonTitle isEqual:@"Open on Live Site"]) {
 		LocalBookmark *bookmark = [self getBookmark];
 		NSURL *liveURL = [NSURL URLWithString:[NSString
@@ -400,9 +408,7 @@
 	if (data) {
 		NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]
 										 initForReadingWithData:data];
-		
-		lastLocationBookmark = [unarchiver
-										  decodeObjectForKey:@"bookmark"];
+		lastLocationBookmark = [unarchiver decodeObjectForKey:@"bookmark"];
 		[unarchiver finishDecoding];
 		[unarchiver release];
 	}
@@ -411,9 +417,7 @@
 		[self loadLocalBookmark:lastLocationBookmark];
 	} else {
 		[self home];
-	}	
-	
-	
+	}
 }
 
 
@@ -451,19 +455,22 @@
 
 
 - (void)viewWillDisappear:(BOOL)animated {
-	LocalBookmark *lastLocationBookmark = [self getBookmark];
+    [super viewWillDisappear:animated];
+    [self saveLastLocation];
+}
+
+- (void)saveLastLocation {
+    LocalBookmark *lastLocationBookmark = [self getBookmark];
 	NSMutableData *data = [[NSMutableData alloc] init];
 	NSKeyedArchiver *archiver = [[[NSKeyedArchiver alloc]
-								 initForWritingWithMutableData:data] autorelease];
+                                  initForWritingWithMutableData:data] autorelease];
 	[archiver encodeObject:lastLocationBookmark forKey:@"bookmark"];
 	[archiver finishEncoding];
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults setObject:data forKey:@"lastLocationBookmark"];
 	[data release];
-
-	[super viewWillDisappear:animated];
+    [defaults synchronize];
 }
-
 
 - (void)viewDidUnload {
 	// Release any retained subviews of the main view.

@@ -11,8 +11,33 @@
 
 @implementation BookmarksManager
 
-
 @synthesize bookmarks;
+
+#pragma mark -
+#pragma mark Standard Methods
+
+
+- (id)init {
+    if (self = [super init]) {
+		[self load];
+    }
+    return self;
+}
+
+- (void)dealloc {
+	[bookmarks release];
+	[super dealloc];
+}
+
++ (BookmarksManager *)sharedInstance {
+	static BookmarksManager *singleInstance = nil;
+	
+	if (!singleInstance) {
+		singleInstance = [[BookmarksManager alloc] init];
+	}
+	
+	return singleInstance;
+}
 
 
 #pragma mark -
@@ -90,11 +115,9 @@
 #pragma mark -
 #pragma mark Data access methods
 
-
 - (NSUInteger)getCount {
 	return [bookmarks count];
 }
-
 
 - (LocalBookmark *)bookmarkAtIndex:(NSUInteger)index {
 	return (LocalBookmark *)[bookmarks objectAtIndex:index];
@@ -103,22 +126,8 @@
 
 - (void)addBookmark:(LocalBookmark *)bookmark {
 	[bookmarks addObject:bookmark];
+    [self save];
 }
-
-
-- (void)addBookmarkWithTitle:(NSString *)title
-					location:(NSString *)location
-					 scrollX:(NSInteger) scrollX
-					 scrollY:(NSInteger) scrollY {
-	LocalBookmark *bookmark = [[LocalBookmark alloc] init];
-	bookmark.title = title;
-	bookmark.location = location;
-	bookmark.scrollX = scrollX;
-	bookmark.scrollY = scrollY;
-	[self addBookmark:bookmark];
-	[bookmark release];
-}
-
 
 - (void)deleteBookmarkAtIndex:(NSUInteger)index {
 	[bookmarks removeObjectAtIndex:index];	
@@ -132,67 +141,5 @@
 	[bookmarks insertObject:bookmarkToMove atIndex:toIndex];
 	[bookmarkToMove release];
 }
-
-
-#pragma mark -
-#pragma mark Standard Methods
-
-
-- (id)init {
-    if (self = [super init]) {
-		// Get ourselves the app termination notification
-		NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-		[nc	addObserver:self
-			   selector:@selector(applicationWillTerminate:)
-				   name:UIApplicationWillTerminateNotification
-				 object:[UIApplication sharedApplication]];
-		
-		[self load];
-    }
-    return self;	
-}
-
-
-- (void)applicationWillTerminate:(NSNotification *)notification {
-	[self save];
-}
-
-
-- (void)dealloc {
-	[bookmarks release];
-	[super dealloc];
-}
-
-
-#pragma mark Singleton Methods
-
-/*
- * This isn't working. need to figure out why.
- *
-+ (id)privateAlloc { return [super alloc]; }
-+ (id)alloc {
-	NSLog(@"%@: This is a singleton! Use +sharedInstance, not +alloc",
-		  NSStringFromClass([self class]));
-	return nil;
-}	
-+ (id)new { return [self alloc]; }
-+ (id)allocWithZone:(NSZone *)zone { return [self alloc]; }
-- (id)copyWithZone:(NSZone *)zone {
-	[self retain];
-	return self;
-}
-- (id)mutableCopyWithZone:(NSZone *)zone { return [self copyWithZone:zone]; }
-*/
-
-+ (BookmarksManager *)sharedInstance {
-	static BookmarksManager *singleInstance = nil;
-	
-	if (!singleInstance) {
-		singleInstance = [[[self class] alloc] init];
-	}
-	
-	return singleInstance;
-}
-
 
 @end

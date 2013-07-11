@@ -51,5 +51,6 @@
 - (IBAction)pageDown;
 - (IBAction)pageUp;
 - (IBAction)showInfo;
+- (void)saveLastLocation;
 
 @end

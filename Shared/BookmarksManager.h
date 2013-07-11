@@ -29,10 +29,6 @@
 - (NSUInteger)getCount;
 - (LocalBookmark *)bookmarkAtIndex:(NSUInteger)index;
 - (void)addBookmark:(LocalBookmark *)bookmark;
-- (void)addBookmarkWithTitle:(NSString *)title
-				location:(NSString *)location
-				 scrollX:(NSInteger) scrollX
-				 scrollY:(NSInteger) scrollY;
 - (void)deleteBookmarkAtIndex:(NSUInteger)index;
 - (void)moveBookmarkAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex;
 
