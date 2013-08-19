@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 #import "InfoViewController.h"
+#import "SettingsViewController.h"
 #import "BookmarksManager.h"
 
 @interface MainViewController()
@@ -227,13 +228,13 @@
 		[self.bmPopover dismissPopoverAnimated:YES];
 		self.bmPopover = nil;
 	} else
-		[self dismissModalViewControllerAnimated:YES];
+		[self dismissViewControllerAnimated:YES completion:nil];
 	[self loadLocalBookmark:bookmark];
 }
 
 
 - (void)bookmarksControllerCancel:(BookmarksTableController *)controller {
-	[self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -324,7 +325,8 @@
 												   animated:YES];
 		}
 	} else {
-		[self presentModalViewController:nav animated:YES];
+		[self presentViewController:nav animated:YES completion:nil];
+        [self.navigationController setNavigationBarHidden:YES animated:NO];
 	}
 	[btc release];
 	[nav release];
@@ -332,31 +334,19 @@
 
 
 - (IBAction)showInfo {
-	InfoViewController *controller;
-	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		controller = [[InfoViewController alloc]
-										initWithNibName:@"InfoViewController_iPad"
-											bundle:nil];
-    }
-	else {
-		controller = [[InfoViewController alloc]
-					  initWithNibName:@"InfoViewController_iPhone"
-					  bundle:nil];
-    }
-		
-	controller.delegate = self;
-	
-	controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-	[self presentModalViewController:controller animated:YES];
-	
+    SettingsViewController *controller = [[SettingsViewController alloc] init];
+    controller.title = @"About";
+//    controller.navigationItem.rightBarButtonItem =  [[[UIBarButtonItem alloc] initWithTitle:@"Done"
+//                                                                                     style:UIBarButtonItemStyleDone target:self
+//                                                                                    action:@selector(settingsControllerDidFinish)] autorelease];
+    [self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
 
 
 // Need to get rid of this. Too generic.
-- (void)infoViewControllerDidFinish {
-	[self dismissModalViewControllerAnimated:YES];
+- (void)settingsControllerDidFinish {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
@@ -453,8 +443,15 @@
 	// Release any cached data, images, etc that aren't in use.
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
     [self saveLastLocation];
 }
@@ -492,6 +489,7 @@
 	[webView release];
     [toolbar release];
 	[externalURL release];
+    [bmPopover release];
     [super dealloc];
 }
 

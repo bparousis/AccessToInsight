@@ -21,8 +21,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
+    
+    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
+    navController.navigationBar.barStyle = UIBarStyleBlack;
 	application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
-    window.rootViewController = viewController;	
+    window.rootViewController = navController;
     [window makeKeyAndVisible];
     
     return YES;

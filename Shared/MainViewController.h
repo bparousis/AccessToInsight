@@ -20,8 +20,8 @@
 
 
 @interface MainViewController : UIViewController <EventInterceptWindowDelegate,
-		UIWebViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate,
-		InfoViewControllerDelegate, BookmarksControllerDelegate, UIPopoverControllerDelegate>
+		UIWebViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, BookmarksControllerDelegate,
+        UIPopoverControllerDelegate>
 {
 	IBOutlet UIWebView *webView;
 	IBOutlet UIToolbar *toolbar;

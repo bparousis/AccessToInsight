@@ -56,6 +56,8 @@
 		2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 2860E32C111B888700E27156 /* AppDelegate_iPad.m */; };
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7407B151790F5D800204EEF /* MessageUI.framework */; };
+		D7511FC6178F9F7D00BC85CF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7511FC5178F9F7D00BC85CF /* SettingsViewController.m */; };
 		D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D77E8D51177D4436006C8C0D /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -118,6 +120,9 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessToInsight_Universal_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		D7407B151790F5D800204EEF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		D7511FC4178F9F7D00BC85CF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		D7511FC5178F9F7D00BC85CF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		D77E8D51177D4436006C8C0D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,6 +131,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -198,6 +204,8 @@
 				0AE3F9411257CD66000C2097 /* EventInterceptWindow.m */,
 				0AE3F9BA1257D225000C2097 /* InfoViewController.h */,
 				0AE3F9421257CD66000C2097 /* InfoViewController.m */,
+				D7511FC4178F9F7D00BC85CF /* SettingsViewController.h */,
+				D7511FC5178F9F7D00BC85CF /* SettingsViewController.m */,
 				0AE3F9BB1257D225000C2097 /* LocalBookmark.h */,
 				0AE3F9431257CD66000C2097 /* LocalBookmark.m */,
 				0AE3F9BC1257D225000C2097 /* MainViewController.h */,
@@ -212,6 +220,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				D7407B151790F5D800204EEF /* MessageUI.framework */,
 				D77E8D51177D4436006C8C0D /* Default-568h@2x.png */,
 				2860E32A111B888700E27156 /* iPad */,
 				2860E324111B887F00E27156 /* iPhone */,
@@ -359,6 +368,7 @@
 				0AE3F94F1257CD66000C2097 /* MainViewController.m in Sources */,
 				0AE3F9501257CD66000C2097 /* TouchInterceptView.m in Sources */,
 				0AE3F9561257CDCD000C2097 /* main.m in Sources */,
+				D7511FC6178F9F7D00BC85CF /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +391,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C0AA888A-5CEC-4AAC-940C-E1F833278B10";
 				SDKROOT = iphoneos;
@@ -398,6 +408,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = AccessToInsight;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -443,6 +454,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = AccessToInsight;
 			};
 			name = Debug;
@@ -455,6 +467,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = AccessToInsight;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -468,7 +481,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -482,7 +495,7 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
