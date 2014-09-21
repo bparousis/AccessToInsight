@@ -11,14 +11,16 @@
 #import "SettingsViewController.h"
 #import "BookmarksManager.h"
 
+#define TEXT_FONT_SIZE_KEY @"fontSize"
+
 @interface MainViewController()
 
 @property(nonatomic, retain) UIActionSheet *actionSheet;
+@property(nonatomic, assign) BOOL toolbarHidden;
 
 @end
 
 @implementation MainViewController
-
 
 @synthesize webView;
 @synthesize toolbar;
@@ -30,20 +32,17 @@
 #pragma mark -
 #pragma mark Event Intercept Window delegate stuff
 
-
 - (void)toggleScreenDecorations {
-	static BOOL toolbarHidden = NO;
-	
 	// toolbar
 	[UIView beginAnimations:@"toolbar" context:nil];
-	if (toolbarHidden) {
+	if (self.toolbarHidden) {
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, -toolbar.frame.size.height);
 		toolbar.alpha = 1;
-		toolbarHidden = NO;
+		self.toolbarHidden = NO;
 	} else {
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, +toolbar.frame.size.height);
 		toolbar.alpha = 0;
-		toolbarHidden = YES;
+		self.toolbarHidden = YES;
 	}
 	[UIView commitAnimations];
 	
@@ -100,7 +99,7 @@
     }
     
 	NSURLRequest *req = [NSURLRequest requestWithURL:url];
-	[self.webView loadRequest:req];	
+	[self.webView loadRequest:req];
 }
 
 
@@ -110,7 +109,6 @@
 	needRescroll = YES;
 	[self loadLocalWebContent:bookmark.location];
 }
-
 
 /*
  * Open external links in Safari.
@@ -165,13 +163,32 @@
 	[self scrollToX:0 Y:(scrollY + (height * pages))];
 }
 
+- (NSInteger)textFontSize {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSNumber *textFontSizeNum = [userDefaults objectForKey:TEXT_FONT_SIZE_KEY];
+    NSUInteger textFontSize = 100;
+    if (textFontSizeNum) {
+        textFontSize = [textFontSizeNum integerValue];
+    }
+    return textFontSize;
+}
+
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+    [self adjustFontForWebView];
+    
     if (needRescroll) {
 		if (rescrollY || rescrollX)
 			[self scrollToX:rescrollX Y:rescrollY];
 		needRescroll = NO;
 	}
+}
+
+- (void)adjustFontForWebView {
+    NSUInteger textFontSize = [self textFontSize];
+    NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%d%%'",
+                          textFontSize];
+    [self.webView stringByEvaluatingJavaScriptFromString:jsString];
 }
 
 
@@ -349,16 +366,31 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-- (IBAction)pageDown {
-	[self scrollNumPages:1];
+- (void)increaseTextFontSize:(BOOL)increase
+{
+    NSUInteger textFontSize = [self textFontSize];
+    
+    if (increase) {
+        textFontSize = (textFontSize < 160) ? textFontSize +5 : textFontSize;
+    }
+    else {
+        textFontSize = (textFontSize > 50) ? textFontSize -5 : textFontSize;
+    }
+ 
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:[NSNumber numberWithInteger:textFontSize] forKey:TEXT_FONT_SIZE_KEY];
+    [userDefaults synchronize];
+    
+    [self adjustFontForWebView];
 }
 
-
-- (IBAction)pageUp {
-	[self scrollNumPages:-1];
+- (IBAction)decreaseFont {
+    [self increaseTextFontSize:NO];
 }
 
+- (IBAction)increaseFont {
+    [self increaseTextFontSize:YES];
+}
 
 - (void)writeScreenCSS: (NSString *)cssText {
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
@@ -429,12 +461,9 @@
     self.bmPopover = nil;
 }
 
-
 - (void)didRotateFromInterfaceOrientation:
 (UIInterfaceOrientation)toInterfaceOrientation {
-	[self.webView reload];
 }
-
 
 - (void)didReceiveMemoryWarning {
 	// Releases the view if it doesn't have a superview.
@@ -454,6 +483,10 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
     [self saveLastLocation];
+}
+
+- (BOOL)prefersStatusBarHidden {
+    return self.toolbarHidden;
 }
 
 - (void)saveLastLocation {

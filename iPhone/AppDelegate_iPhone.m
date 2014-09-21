@@ -24,7 +24,7 @@
     
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
     navController.navigationBar.barStyle = UIBarStyleBlack;
-	application.statusBarStyle = UIStatusBarStyleBlackTranslucent;
+	application.statusBarStyle = UIStatusBarStyleDefault;
     window.frame = [[UIScreen mainScreen] bounds];
     window.rootViewController = navController;
     [window makeKeyAndVisible];

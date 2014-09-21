@@ -48,8 +48,8 @@
 - (IBAction)home;
 - (IBAction)actionButton;
 - (IBAction)showBookmarks;
-- (IBAction)pageDown;
-- (IBAction)pageUp;
+- (IBAction)increaseFont;
+- (IBAction)decreaseFont;
 - (IBAction)showInfo;
 - (void)saveLastLocation;
 
