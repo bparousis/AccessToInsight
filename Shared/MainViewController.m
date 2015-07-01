@@ -150,8 +150,8 @@
 
 - (void)scrollToX:(NSInteger)scrollX Y:(NSInteger)scrollY {
 	[self.webView stringByEvaluatingJavaScriptFromString:
-		[NSString stringWithFormat: @"window.scrollTo(%d, %d);",
-			scrollX, scrollY]];
+		[NSString stringWithFormat: @"window.scrollTo(%ld, %ld);",
+			(long)scrollX, (long)scrollY]];
 }
 
 
@@ -186,8 +186,8 @@
 
 - (void)adjustFontForWebView {
     NSUInteger textFontSize = [self textFontSize];
-    NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%d%%'",
-                          textFontSize];
+    NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%lu%%'",
+                          (unsigned long)textFontSize];
     [self.webView stringByEvaluatingJavaScriptFromString:jsString];
 }
 

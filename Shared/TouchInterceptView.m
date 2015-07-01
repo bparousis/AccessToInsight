@@ -16,7 +16,7 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	NSInteger tapCount = [[touches anyObject] tapCount];
-	NSLog(@"tap count = %d", tapCount);
+	NSLog(@"tap count = %ld", (long)tapCount);
 	if ([[touches anyObject] tapCount] >= 2)
 		[self.delegate doubleTap];
 	[super touchesBegan:touches withEvent:event];
