@@ -9,6 +9,12 @@
 #import "BookmarksTableController.h"
 #import "BookmarksManager.h"
 
+@interface BookmarksTableController()
+
+@property(nonatomic, assign) NSUInteger editBookmarkIndex;
+
+@end
+
 @implementation BookmarksTableController
 
 @synthesize delegate;
@@ -54,9 +60,24 @@
 
 - (void)tableView:(UITableView *)tableView
 		didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	BookmarksManager *bm = [BookmarksManager sharedInstance];
-	[self.delegate bookmarksController:self
-					  selectedBookmark:[bm bookmarkAtIndex:[indexPath row]]];
+    BookmarksManager *bm = [BookmarksManager sharedInstance];
+    LocalBookmark *bookmark = [bm bookmarkAtIndex:[indexPath row]];
+    if (tableView.isEditing) {
+        self.editBookmarkIndex = [indexPath row];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Bookmark"
+                                                        message:@"Enter a title for the bookmark"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Done", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField *inputField = [alert textFieldAtIndex:0];
+        inputField.text = bookmark.title;
+        [alert show];
+    }
+    else {
+        [self.delegate bookmarksController:self
+                          selectedBookmark:bookmark];
+    }
 }
 
 
@@ -89,6 +110,20 @@
 					toIndex:[toIndexPath row]];
 }
 
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ([alertView.title isEqualToString:@"Edit Bookmark"]) {
+        if (buttonIndex == 1) {
+            BookmarksManager *bm = [BookmarksManager sharedInstance];
+            LocalBookmark *bookmark = [bm bookmarkAtIndex:self.editBookmarkIndex];
+            bookmark.title = [alertView textFieldAtIndex:0].text;
+            [bm save];
+            [self.tableView reloadData];
+        }
+    }
+}
+
 
 #pragma mark -
 #pragma mark Nav bar actions
@@ -116,6 +151,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"Bookmarks";
+    self.tableView.allowsSelectionDuringEditing = YES;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
         UIBarButtonItem *cancelButtonItem =

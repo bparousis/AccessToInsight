@@ -1,4 +1,4 @@
-// This static file was generated from digital_pali_reader_suttas.php on 2013.03.12.10.31.03 by dpr_update.tcsh
+// This static file was generated from digital_pali_reader_suttas.php on 2013.12.02.17.36.08 by dpr_update.tcsh
 var atiD = [], atiM = [], atiS = [], atiA = [], atiK = [], atiV = [];
 atiA.push('an/an01/an01.021-040.than.html');
 atiA.push('an/an01/an01.031-040x.wood.html');
@@ -400,6 +400,7 @@ atiK.push('kn/dhp/dhp.26.budd.html');
 atiK.push('kn/dhp/dhp.26.than.html');
 atiK.push('kn/dhp/dhp.intro.budd.html');
 atiK.push('kn/dhp/dhp.intro.than.html');
+atiK.push('kn/iti/iti-than.html');
 atiK.push('kn/iti/iti.1.001-027.than.html');
 atiK.push('kn/iti/iti.1.024-027.irel.html');
 atiK.push('kn/iti/iti.2.028-049.than.html');
@@ -706,7 +707,6 @@ atiK.push('kn/ud/ud.8.10.than.html');
 atiK.push('kn/vv/vv.1.16.irel.html');
 atiK.push('kn/vv/vv.3.07.irel.html');
 atiM.push('mn/Majjhima_Index.html');
-atiM.push('mn/generic-sutta.html');
 atiM.push('mn/mn.001.than.html');
 atiM.push('mn/mn.002.bpit.html');
 atiM.push('mn/mn.002.than.html');

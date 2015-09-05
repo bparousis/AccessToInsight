@@ -17,6 +17,7 @@
 
 @property(nonatomic, retain) UIActionSheet *actionSheet;
 @property(nonatomic, assign) BOOL toolbarHidden;
+@property(nonatomic, retain) LocalBookmark *bookmark;
 
 @end
 
@@ -195,12 +196,25 @@
 // Open the external URL if anything but the cancel button is pressed.
 - (void)alertView:(UIAlertView *)alertView
 							didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	if ([alertView.title isEqual:@"External Link"]) {
-		if (buttonIndex > 0)
-			[[UIApplication sharedApplication] openURL:self.externalURL];
-	}
+    if ([alertView.title isEqualToString:@"Add Bookmark"]) {
+        if (buttonIndex == 1) {
+            BookmarksManager *bm = [BookmarksManager sharedInstance];
+            self.bookmark.title = [alertView textFieldAtIndex:0].text;
+            [bm addBookmark:self.bookmark];
+        }
+    }
+    else if ([alertView.title isEqualToString:@"External Link"]) {
+        if (buttonIndex > 0) {
+                [[UIApplication sharedApplication] openURL:self.externalURL];
+        }
+    }
 }
 
+- (void)didPresentAlertView:(UIAlertView *)alertView {
+    if ([alertView.title isEqualToString:@"Add Bookmark"]) {
+        [[alertView textFieldAtIndex:0] selectAll:nil];
+    }
+}
 
 - (LocalBookmark *)getBookmark {
 	
@@ -276,7 +290,7 @@
                             cancelButtonTitle:@"Cancel"
                             destructiveButtonTitle:nil
                             otherButtonTitles:@"Add Bookmark",
-                            @"Open on Live Site", nil] autorelease];
+                            @"Open on Live Site", @"Random Sutta", @"Random Article", nil] autorelease];
         //addSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             [self.actionSheet showFromBarButtonItem:self.actionBarButtonItem animated:YES];
@@ -294,16 +308,31 @@
 	NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
 	if ([buttonTitle isEqual:@"Add Bookmark"]) {
-		LocalBookmark *bookmark = [self getBookmark];
-		BookmarksManager *bm = [BookmarksManager sharedInstance];
-		[bm addBookmark:bookmark];
-	} else if ([buttonTitle isEqual:@"Open on Live Site"]) {
+		self.bookmark = [self getBookmark];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Bookmark"
+                                                        message:@"Enter a title for the bookmark"
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Add", nil];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        UITextField *inputField = [alert textFieldAtIndex:0];
+        inputField.text = self.bookmark.title;
+        [alert show];
+	}
+    else if ([buttonTitle isEqual:@"Open on Live Site"]) {
 		LocalBookmark *bookmark = [self getBookmark];
 		NSURL *liveURL = [NSURL URLWithString:[NSString
 						stringWithFormat:@"http://www.accesstoinsight.org%@",
 								bookmark.location]];
 		[[UIApplication sharedApplication] openURL:liveURL];
 	}
+    else if ([buttonTitle isEqual:@"Random Sutta"]) {
+        [self loadLocalWebContent:@"random-sutta.html"];
+    }
+    else if ([buttonTitle isEqual:@"Random Article"]) {
+        [self loadLocalWebContent:@"random-article.html"];
+    }
+    
     self.actionSheet = nil;
 	/* Future features: email link, email text, email clipboard/selection */
 }
@@ -523,6 +552,7 @@
     [toolbar release];
 	[externalURL release];
     [bmPopover release];
+    [_bookmark release];
     [super dealloc];
 }
 
