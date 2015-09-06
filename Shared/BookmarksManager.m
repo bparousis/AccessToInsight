@@ -130,7 +130,8 @@
 }
 
 - (void)deleteBookmarkAtIndex:(NSUInteger)index {
-	[bookmarks removeObjectAtIndex:index];	
+    [bookmarks removeObjectAtIndex:index];
+    [self save];
 }
 
 
@@ -140,6 +141,7 @@
 	[bookmarks removeObjectAtIndex:fromIndex];
 	[bookmarks insertObject:bookmarkToMove atIndex:toIndex];
 	[bookmarkToMove release];
+    [self save];
 }
 
 @end

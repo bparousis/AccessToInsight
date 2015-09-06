@@ -80,7 +80,7 @@
     }
     
     if ([indexPath section] == 0) {
-        NSString *version = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
+        NSString * version = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
         cell.textLabel.text = [NSString stringWithFormat:@"Version %@", version];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
