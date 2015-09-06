@@ -124,6 +124,13 @@
     }
 }
 
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
+    BOOL shouldEnable = YES;
+    if ([alertView.title isEqualToString:@"Edit Bookmark"]) {
+        shouldEnable = [[alertView textFieldAtIndex:0].text length] > 0;
+    }
+    return shouldEnable;
+}
 
 #pragma mark -
 #pragma mark Nav bar actions

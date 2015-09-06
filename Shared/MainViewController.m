@@ -192,6 +192,13 @@
     [self.webView stringByEvaluatingJavaScriptFromString:jsString];
 }
 
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
+    BOOL shouldEnable = YES;
+    if ([alertView.title isEqualToString:@"Add Bookmark"]) {
+        shouldEnable = [[alertView textFieldAtIndex:0].text length] > 0;
+    }
+    return shouldEnable;
+}
 
 // Open the external URL if anything but the cancel button is pressed.
 - (void)alertView:(UIAlertView *)alertView
