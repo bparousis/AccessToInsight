@@ -9,14 +9,10 @@
 #import <UIKit/UIKit.h>
 
 #import "EventInterceptWindow.h"
-#import "InfoViewController.h"
 #import "BookmarksTableController.h"
+#import "CSSManager.h"
 
-
-#define LOCAL_WEB_DATA_DIR	@"web_content"
-#define SCREEN_CSS_PATH		@"css/screen.css"
-#define IPHONE_CSS			@"iphone.css"
-#define IPAD_CSS			@"ipad.css"
+#define TEXT_FONT_SIZE_KEY @"fontSize"
 
 
 @interface MainViewController : UIViewController <EventInterceptWindowDelegate,
@@ -46,11 +42,14 @@
 @property(nonatomic, retain) NSURL *externalURL;
 
 - (IBAction)home;
+- (IBAction)goBack;
+- (IBAction)goForward;
 - (IBAction)actionButton;
 - (IBAction)showBookmarks;
-- (IBAction)increaseFont;
-- (IBAction)decreaseFont;
-- (IBAction)showInfo;
+- (IBAction)showSettings;
 - (void)saveLastLocation;
+
++ (NSInteger)textFontSize;
+
 
 @end

@@ -1,21 +1,20 @@
 //
-//  SettingsViewController.m
+//  AboutViewController.m
 //  AccessToInsight
 //
-//  Created by Dev on 2017-05-17.
+//  Created by Dev on 2013-07-11.
 //
-#import "SettingsViewController.h"
-#import "AboutViewController.h"
-#import "TextSizeViewController.h"
-#import "CSSManager.h"
+//
 
-@interface SettingsViewController ()
+#import "AboutViewController.h"
+
+@interface AboutViewController ()
 
 @property(nonatomic, retain) UITableView *tableView;
 
 @end
 
-@implementation SettingsViewController
+@implementation AboutViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+	// Do any additional setup after loading the view.
     
     self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
     self.tableView.delegate = self;
@@ -59,7 +58,7 @@
         return 1;
     }
     else if (section == 1) {
-        return 2;
+        return 3;
     }
     return 0;
 }
@@ -72,62 +71,68 @@
     static NSString *CellIdentifier = @"SettingsTableCellId";
     
     UITableViewCell *cell = [tableView
-                             dequeueReusableCellWithIdentifier:CellIdentifier];
+							 dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc]
-                 initWithStyle:UITableViewCellStyleDefault
-                 reuseIdentifier:CellIdentifier] autorelease];
+				 initWithStyle:UITableViewCellStyleDefault
+				 reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     if ([indexPath section] == 0) {
-        cell.textLabel.text = @"About";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        NSString * version = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
+        cell.textLabel.text = [NSString stringWithFormat:@"Version %@", version];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     else if ([indexPath section] == 1) {
         if ([indexPath row] == 0) {
-            cell.textLabel.text = @"Text Size";
+            cell.textLabel.text = @"Access to Insight Website";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         else if ([indexPath row] == 1) {
-            cell.textLabel.text = @"Night Mode";
-            NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-            BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
-            UISwitch *nightModeSwitch = [[[UISwitch alloc] init] autorelease];
-            nightModeSwitch.on = nightMode;
-            [nightModeSwitch addTarget:self action:@selector(nightModeToggled:) forControlEvents:UIControlEventValueChanged];
-            cell.accessoryView = nightModeSwitch;
+            cell.textLabel.text = @"Questions & Feedback";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        else if ([indexPath row] == 2) {
+            cell.textLabel.text = @"Info";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
-    
+	
     return cell;
 }
 
-- (void)nightModeToggled:(id)sender {
-    BOOL nightMode = [sender isOn];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setBool:nightMode forKey:@"nightMode"];
-    [userDefaults synchronize];
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"NightMode"
-     object:self];
-}
-
 - (void)openURL:(NSString *)urlString {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([indexPath section] == 0) {
-        if ([indexPath row] == 0) {
-            AboutViewController *aboutVC = [[[AboutViewController alloc] init] autorelease];
-            [self.navigationController pushViewController:aboutVC animated:YES];
-        }
-    }
     if ([indexPath section] == 1) {
         if ([indexPath row] == 0) {
-            TextSizeViewController *textSizeVC = [[[TextSizeViewController alloc] init] autorelease];
-            [self.navigationController pushViewController:textSizeVC animated:YES];
+            [self openURL:@"http://www.accesstoinsight.org/"];
+        }
+        else if ([indexPath row] == 1) {
+            MFMailComposeViewController *mailComposer = [[[MFMailComposeViewController alloc] init] autorelease];
+            mailComposer.mailComposeDelegate = self;
+            [mailComposer setToRecipients:@[@"accesstoinsightapp@gmail.com"]];
+            [mailComposer setSubject:[NSString stringWithFormat:@"Question about ATI %@ App", [[UIDevice currentDevice] model]]];
+            [self presentViewController:mailComposer animated:YES completion:nil];
+        }
+        else if ([indexPath row] == 2) {
+            UIWebView *infoWebView = [[[UIWebView alloc] initWithFrame:self.view.frame] autorelease];
+            NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+            NSString *fullPath = [NSString pathWithComponents:
+                                  [NSArray arrayWithObjects:resourcePath,
+                                   @"web_content", @"about.html", nil]];
+            NSURL *url = [NSURL fileURLWithPath:fullPath];
+            
+            NSURLRequest *req = [NSURLRequest requestWithURL:url];
+
+            [infoWebView loadRequest:req];
+            UIViewController *webVC = [[[UIViewController alloc] init] autorelease];
+            webVC.title = @"Info";
+            webVC.view = infoWebView;
+            [self.navigationController pushViewController:webVC animated:YES];
         }
     }
 }
@@ -145,4 +150,3 @@
 }
 
 @end
-

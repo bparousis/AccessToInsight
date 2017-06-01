@@ -7,17 +7,16 @@
 //
 
 #import "MainViewController.h"
-#import "InfoViewController.h"
 #import "SettingsViewController.h"
+#import "AboutViewController.h"
 #import "BookmarksManager.h"
-
-#define TEXT_FONT_SIZE_KEY @"fontSize"
 
 @interface MainViewController()
 
 @property(nonatomic, retain) UIActionSheet *actionSheet;
 @property(nonatomic, assign) BOOL toolbarHidden;
 @property(nonatomic, retain) LocalBookmark *bookmark;
+@property(nonatomic, assign) CGFloat startAlpha;
 
 @end
 
@@ -30,6 +29,46 @@
 @synthesize externalURL;
 @synthesize actionBarButtonItem;
 
+-(id)init {
+    self = [super init];
+    if (self) {
+        [self addNightModeNotification];
+    }
+    return self;
+}
+
+-(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        [self addNightModeNotification];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self addNightModeNotification];
+    }
+    return self;
+}
+
+- (void)addNightModeNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(nightModeNotification:)
+                                                 name:@"NightMode"
+                                               object:nil];
+}
+
+- (void)nightModeNotification:(NSNotification *) notification
+{
+    if ([[notification name] isEqualToString:@"NightMode"]) {
+        [self determineStartAlpha];
+        [self updateBackgroundColor];
+        [self.webView reload];
+    }
+}
+
 #pragma mark -
 #pragma mark Event Intercept Window delegate stuff
 
@@ -37,10 +76,12 @@
 	// toolbar
 	[UIView beginAnimations:@"toolbar" context:nil];
 	if (self.toolbarHidden) {
+        self.webView.frame = CGRectMake(0, 20.0f, self.view.frame.size.width, self.view.frame.size.height - 20.0f);
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, -toolbar.frame.size.height);
 		toolbar.alpha = 1;
 		self.toolbarHidden = NO;
 	} else {
+        self.webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, +toolbar.frame.size.height);
 		toolbar.alpha = 0;
 		self.toolbarHidden = YES;
@@ -50,7 +91,6 @@
 	// status bar
 	UIApplication *application = [UIApplication sharedApplication];
 	[application  setStatusBarHidden:(application.statusBarHidden ? NO : YES)];
-	
 }
 
 
@@ -117,6 +157,11 @@
 - (BOOL)webView:(UIWebView *)webView
     shouldStartLoadWithRequest:(NSURLRequest *)request
     navigationType:(UIWebViewNavigationType)navigationType {
+    [self.webView setAlpha:self.startAlpha];
+    [UIView animateWithDuration:1.0f animations:^{
+        [self.webView setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+    }];
 
 	if (navigationType == UIWebViewNavigationTypeOther)
 		return YES;
@@ -164,7 +209,7 @@
 	[self scrollToX:0 Y:(scrollY + (height * pages))];
 }
 
-- (NSInteger)textFontSize {
++ (NSInteger)textFontSize {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSNumber *textFontSizeNum = [userDefaults objectForKey:TEXT_FONT_SIZE_KEY];
     NSUInteger textFontSize = 100;
@@ -174,10 +219,30 @@
     return textFontSize;
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    [self.webView setAlpha:self.startAlpha];
+}
+
+- (void)updateBackgroundColor {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
+    if (nightMode) {
+        self.view.backgroundColor = [UIColor colorWithRed:68.0/255.0f green:68.0/255.0f blue:68.0/255.0f alpha:1.0f];
+    }
+    else {
+        self.view.backgroundColor = [UIColor whiteColor];
+    }
+}
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [self adjustFontForWebView];
     
+    [self.webView stringByEvaluatingJavaScriptFromString:[CSSManager getCSSJavascript]];
+    [UIView animateWithDuration:1.0f animations:^{
+        [self.webView setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+    }];
+    
+    [self adjustFontForWebView];
     if (needRescroll) {
 		if (rescrollY || rescrollX)
 			[self scrollToX:rescrollX Y:rescrollY];
@@ -186,7 +251,7 @@
 }
 
 - (void)adjustFontForWebView {
-    NSUInteger textFontSize = [self textFontSize];
+    NSUInteger textFontSize = [MainViewController textFontSize];
     NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%lu%%'",
                           (unsigned long)textFontSize];
     [self.webView stringByEvaluatingJavaScriptFromString:jsString];
@@ -284,6 +349,25 @@
 	[self loadLocalWebContent:@"index.html"];
 }
 
+- (IBAction)goBack {
+    [self.webView setAlpha:self.startAlpha];
+    [self.webView goBack];
+    [UIView animateWithDuration:1.0f animations:^{
+        [self.webView setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+    }];
+    
+}
+
+- (IBAction)goForward {
+    [self.webView setAlpha:self.startAlpha];
+    [self.webView goForward];
+    [UIView animateWithDuration:1.0f animations:^{
+        [self.webView setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+    }];
+}
+
 - (IBAction)actionButton {
     if (!self.actionSheet) {
         if (self.bmPopover) {
@@ -344,7 +428,6 @@
 	/* Future features: email link, email text, email clipboard/selection */
 }
 
-
 - (IBAction)showBookmarks {
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
 		if ([self.bmPopover isPopoverVisible]) {
@@ -385,58 +468,16 @@
 	[nav release];
 }
 
-
-- (IBAction)showInfo {
+- (IBAction)showSettings {
     SettingsViewController *controller = [[SettingsViewController alloc] init];
-    controller.title = @"About";
-//    controller.navigationItem.rightBarButtonItem =  [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-//                                                                                     style:UIBarButtonItemStyleDone target:self
-//                                                                                    action:@selector(settingsControllerDidFinish)] autorelease];
+    controller.title = @"Settings";
     [self.navigationController pushViewController:controller animated:YES];
 	[controller release];
 }
 
-
 // Need to get rid of this. Too generic.
 - (void)settingsControllerDidFinish {
 	[self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)increaseTextFontSize:(BOOL)increase
-{
-    NSUInteger textFontSize = [self textFontSize];
-    
-    if (increase) {
-        textFontSize = (textFontSize < 160) ? textFontSize +5 : textFontSize;
-    }
-    else {
-        textFontSize = (textFontSize > 50) ? textFontSize -5 : textFontSize;
-    }
- 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:[NSNumber numberWithInteger:textFontSize] forKey:TEXT_FONT_SIZE_KEY];
-    [userDefaults synchronize];
-    
-    [self adjustFontForWebView];
-}
-
-- (IBAction)decreaseFont {
-    [self increaseTextFontSize:NO];
-}
-
-- (IBAction)increaseFont {
-    [self increaseTextFontSize:YES];
-}
-
-- (void)writeScreenCSS: (NSString *)cssText {
-	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-	NSString *fullPath = [NSString pathWithComponents:
-						  [NSArray arrayWithObjects:resourcePath,
-						   LOCAL_WEB_DATA_DIR, SCREEN_CSS_PATH, nil]];
-	
-	NSError *err;
-	
-	[cssText writeToFile:fullPath atomically:YES encoding:NSUTF8StringEncoding error:&err];
 }
 
 
@@ -445,6 +486,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self determineStartAlpha];
+    self.webView.opaque = NO;
+    [self updateBackgroundColor];
     
 	// Load the last page the user was viewing.
 	// Unfortunately I don't know of a way to save and load the history.
@@ -452,16 +496,6 @@
 	NSData *data = [defaults objectForKey:@"lastLocationBookmark"];
 
 	LocalBookmark *lastLocationBookmark = nil;
-	
-	switch (UI_USER_INTERFACE_IDIOM()) {
-		case UIUserInterfaceIdiomPad:
-			[self writeScreenCSS:@"@import url('" IPAD_CSS @"');\n"];
-			break;
-		case UIUserInterfaceIdiomPhone:
-		default:
-			[self writeScreenCSS:@"@import url('" IPHONE_CSS @"');\n"];
-			break;
-	} 
 	
 	if (data) {
 		NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]
@@ -478,6 +512,11 @@
 	}
 }
 
+- (void)determineStartAlpha {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
+    self.startAlpha = nightMode ? 0.0f : 1.0f;
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     // Return YES for supported orientations
@@ -512,6 +551,7 @@
 {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    [self adjustFontForWebView];
 }
 
 
@@ -552,6 +592,8 @@
 
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     [_actionSheet release];
     [bmBarButtonItem release];
     [actionBarButtonItem release];

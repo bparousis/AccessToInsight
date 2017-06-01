@@ -8,7 +8,7 @@
 		<key>note</key>
 		<string>Basic overview of Theravada Buddhism</string>
 		<key>location</key>
-		<string>lib/authors/bullitt/theravada.html</string>
+		<string>theravada.html</string>
 		<key>scrollX</key>
 		<integer>0</integer>
 		<key>scrollY</key>

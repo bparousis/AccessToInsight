@@ -30,9 +30,7 @@
 		0AE3F8EB1257C8A9000C2097 /* MainViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0AE3F8E91257C8A9000C2097 /* MainViewController_iPad.xib */; };
 		0AE3F9481257CD66000C2097 /* BookmarksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F93E1257CD66000C2097 /* BookmarksManager.m */; };
 		0AE3F9491257CD66000C2097 /* BookmarksTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F93F1257CD66000C2097 /* BookmarksTableController.m */; };
-		0AE3F94A1257CD66000C2097 /* CSSHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9401257CD66000C2097 /* CSSHandler.m */; };
 		0AE3F94B1257CD66000C2097 /* EventInterceptWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9411257CD66000C2097 /* EventInterceptWindow.m */; };
-		0AE3F94C1257CD66000C2097 /* InfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9421257CD66000C2097 /* InfoViewController.m */; };
 		0AE3F94D1257CD66000C2097 /* LocalBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9431257CD66000C2097 /* LocalBookmark.m */; };
 		0AE3F94F1257CD66000C2097 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9451257CD66000C2097 /* MainViewController.m */; };
 		0AE3F9501257CD66000C2097 /* TouchInterceptView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9461257CD66000C2097 /* TouchInterceptView.m */; };
@@ -55,8 +53,12 @@
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7407B151790F5D800204EEF /* MessageUI.framework */; };
-		D7511FC6178F9F7D00BC85CF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7511FC5178F9F7D00BC85CF /* SettingsViewController.m */; };
+		D74BA3801ECBFE5800CAAB3D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D74BA37F1ECBFE5800CAAB3D /* settings@2x.png */; };
+		D74BA3821ECBFE6100CAAB3D /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = D74BA3811ECBFE6100CAAB3D /* settings.png */; };
+		D7511FC6178F9F7D00BC85CF /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7511FC5178F9F7D00BC85CF /* AboutViewController.m */; };
+		D75677A11ECD441A007444EF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D75677A01ECD441A007444EF /* SettingsViewController.m */; };
 		D757EC1C180CD5560057E45A /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = D757EC1B180CD5560057E45A /* back.png */; };
+		D76CC83A1ECFEB8600E2C025 /* TextSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */; };
 		D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D77E8D51177D4436006C8C0D /* Default-568h@2x.png */; };
 		D7A1E24E197F342F00E54CE0 /* decrease_font.png in Resources */ = {isa = PBXBuildFile; fileRef = D7A1E24A197F342F00E54CE0 /* decrease_font.png */; };
 		D7A1E24F197F342F00E54CE0 /* decrease_font@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7A1E24B197F342F00E54CE0 /* decrease_font@2x.png */; };
@@ -72,6 +74,7 @@
 		D7DD89A91B49CBEF00DF13C4 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A41B49CBEF00DF13C4 /* Icon-76.png */; };
 		D7DD89AA1B49CBEF00DF13C4 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A51B49CBEF00DF13C4 /* Icon-76@2x.png */; };
 		D7DD89AC1B49CC0800DF13C4 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */; };
+		D7E5E3EB1ED1E9870090C6AB /* CSSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E5E3EA1ED1E9870090C6AB /* CSSManager.m */; };
 		D7FB27CF180CD6F40089ED7B /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FB27CD180CD6F40089ED7B /* forward.png */; };
 		D7FB27D0180CD6F40089ED7B /* forward@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FB27CE180CD6F40089ED7B /* forward@2x.png */; };
 		D7FB27D2180CD7E80089ED7B /* back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FB27D1180CD7E80089ED7B /* back@2x.png */; };
@@ -100,9 +103,7 @@
 		0AE3F8E91257C8A9000C2097 /* MainViewController_iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController_iPad.xib; sourceTree = "<group>"; };
 		0AE3F93E1257CD66000C2097 /* BookmarksManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BookmarksManager.m; path = Shared/BookmarksManager.m; sourceTree = "<group>"; };
 		0AE3F93F1257CD66000C2097 /* BookmarksTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BookmarksTableController.m; path = Shared/BookmarksTableController.m; sourceTree = "<group>"; };
-		0AE3F9401257CD66000C2097 /* CSSHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSSHandler.m; path = Shared/CSSHandler.m; sourceTree = "<group>"; };
 		0AE3F9411257CD66000C2097 /* EventInterceptWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventInterceptWindow.m; path = Shared/EventInterceptWindow.m; sourceTree = "<group>"; };
-		0AE3F9421257CD66000C2097 /* InfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InfoViewController.m; path = Shared/InfoViewController.m; sourceTree = "<group>"; };
 		0AE3F9431257CD66000C2097 /* LocalBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocalBookmark.m; path = Shared/LocalBookmark.m; sourceTree = "<group>"; };
 		0AE3F9451257CD66000C2097 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Shared/MainViewController.m; sourceTree = "<group>"; };
 		0AE3F9461257CD66000C2097 /* TouchInterceptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TouchInterceptView.m; path = Shared/TouchInterceptView.m; sourceTree = "<group>"; };
@@ -120,9 +121,7 @@
 		0AE3F9B21257D1AE000C2097 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		0AE3F9B61257D225000C2097 /* BookmarksManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BookmarksManager.h; path = Shared/BookmarksManager.h; sourceTree = "<group>"; };
 		0AE3F9B71257D225000C2097 /* BookmarksTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BookmarksTableController.h; path = Shared/BookmarksTableController.h; sourceTree = "<group>"; };
-		0AE3F9B81257D225000C2097 /* CSSHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSSHandler.h; path = Shared/CSSHandler.h; sourceTree = "<group>"; };
 		0AE3F9B91257D225000C2097 /* EventInterceptWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventInterceptWindow.h; path = Shared/EventInterceptWindow.h; sourceTree = "<group>"; };
-		0AE3F9BA1257D225000C2097 /* InfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InfoViewController.h; path = Shared/InfoViewController.h; sourceTree = "<group>"; };
 		0AE3F9BB1257D225000C2097 /* LocalBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocalBookmark.h; path = Shared/LocalBookmark.h; sourceTree = "<group>"; };
 		0AE3F9BC1257D225000C2097 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Shared/MainViewController.h; sourceTree = "<group>"; };
 		0AE3F9BD1257D225000C2097 /* TouchInterceptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchInterceptView.h; path = Shared/TouchInterceptView.h; sourceTree = "<group>"; };
@@ -139,9 +138,15 @@
 		32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessToInsight_Universal_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D7407B151790F5D800204EEF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		D7511FC4178F9F7D00BC85CF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		D7511FC5178F9F7D00BC85CF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		D74BA37F1ECBFE5800CAAB3D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
+		D74BA3811ECBFE6100CAAB3D /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		D7511FC4178F9F7D00BC85CF /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		D7511FC5178F9F7D00BC85CF /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		D756779F1ECD441A007444EF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		D75677A01ECD441A007444EF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		D757EC1B180CD5560057E45A /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		D76CC8381ECFEB8600E2C025 /* TextSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextSizeViewController.h; sourceTree = "<group>"; };
+		D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextSizeViewController.m; sourceTree = "<group>"; };
 		D77E8D51177D4436006C8C0D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D7A1E24A197F342F00E54CE0 /* decrease_font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = decrease_font.png; sourceTree = "<group>"; };
 		D7A1E24B197F342F00E54CE0 /* decrease_font@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "decrease_font@2x.png"; sourceTree = "<group>"; };
@@ -157,6 +162,8 @@
 		D7DD89A41B49CBEF00DF13C4 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
 		D7DD89A51B49CBEF00DF13C4 /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
 		D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
+		D7E5E3E91ED1E9870090C6AB /* CSSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSSManager.h; sourceTree = "<group>"; };
+		D7E5E3EA1ED1E9870090C6AB /* CSSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSSManager.m; sourceTree = "<group>"; };
 		D7FB27CD180CD6F40089ED7B /* forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward.png; sourceTree = "<group>"; };
 		D7FB27CE180CD6F40089ED7B /* forward@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward@2x.png"; sourceTree = "<group>"; };
 		D7FB27D1180CD7E80089ED7B /* back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back@2x.png"; sourceTree = "<group>"; };
@@ -199,6 +206,8 @@
 				D7FB27D1180CD7E80089ED7B /* back@2x.png */,
 				D7FB27CD180CD6F40089ED7B /* forward.png */,
 				D7FB27CE180CD6F40089ED7B /* forward@2x.png */,
+				D74BA3811ECBFE6100CAAB3D /* settings.png */,
+				D74BA37F1ECBFE5800CAAB3D /* settings@2x.png */,
 				D757EC1B180CD5560057E45A /* back.png */,
 				0AE3F9601257CEC7000C2097 /* 1leftarrow-20.png */,
 				0AE3F9611257CEC7000C2097 /* 1rightarrow-20.png */,
@@ -248,18 +257,15 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D74BA3831ECC057100CAAB3D /* Settings */,
 				0AE3F9B61257D225000C2097 /* BookmarksManager.h */,
 				0AE3F93E1257CD66000C2097 /* BookmarksManager.m */,
+				D7E5E3E91ED1E9870090C6AB /* CSSManager.h */,
+				D7E5E3EA1ED1E9870090C6AB /* CSSManager.m */,
 				0AE3F9B71257D225000C2097 /* BookmarksTableController.h */,
 				0AE3F93F1257CD66000C2097 /* BookmarksTableController.m */,
-				0AE3F9B81257D225000C2097 /* CSSHandler.h */,
-				0AE3F9401257CD66000C2097 /* CSSHandler.m */,
 				0AE3F9B91257D225000C2097 /* EventInterceptWindow.h */,
 				0AE3F9411257CD66000C2097 /* EventInterceptWindow.m */,
-				0AE3F9BA1257D225000C2097 /* InfoViewController.h */,
-				0AE3F9421257CD66000C2097 /* InfoViewController.m */,
-				D7511FC4178F9F7D00BC85CF /* SettingsViewController.h */,
-				D7511FC5178F9F7D00BC85CF /* SettingsViewController.m */,
 				0AE3F9BB1257D225000C2097 /* LocalBookmark.h */,
 				0AE3F9431257CD66000C2097 /* LocalBookmark.m */,
 				0AE3F9BC1257D225000C2097 /* MainViewController.h */,
@@ -317,6 +323,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D74BA3831ECC057100CAAB3D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				D7511FC4178F9F7D00BC85CF /* AboutViewController.h */,
+				D7511FC5178F9F7D00BC85CF /* AboutViewController.m */,
+				D756779F1ECD441A007444EF /* SettingsViewController.h */,
+				D75677A01ECD441A007444EF /* SettingsViewController.m */,
+				D76CC8381ECFEB8600E2C025 /* TextSizeViewController.h */,
+				D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -343,7 +362,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0830;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = QF6M4CC7RV;
@@ -385,6 +404,7 @@
 				D7D63298180CDA0F00B752A5 /* home@2x.png in Resources */,
 				D7A1E251197F342F00E54CE0 /* increase_font@2x.png in Resources */,
 				0AE3F8EB1257C8A9000C2097 /* MainViewController_iPad.xib in Resources */,
+				D74BA3821ECBFE6100CAAB3D /* settings.png in Resources */,
 				0AE3F96B1257CEC7000C2097 /* 1leftarrow-20.png in Resources */,
 				D7A1E24F197F342F00E54CE0 /* decrease_font@2x.png in Resources */,
 				D7FB27D8180CD8BC0089ED7B /* down@2x.png in Resources */,
@@ -404,6 +424,7 @@
 				D7DD89A61B49CBEF00DF13C4 /* Icon-60@2x.png in Resources */,
 				0AE3F9741257CEC7000C2097 /* Left-arrow-32.png in Resources */,
 				0AE3F9751257CEC7000C2097 /* Right-arrow-32.png in Resources */,
+				D74BA3801ECBFE5800CAAB3D /* settings@2x.png in Resources */,
 				D7A1E24E197F342F00E54CE0 /* decrease_font.png in Resources */,
 				0AE303B81258F385000C2097 /* Icon-72.png in Resources */,
 				D7FB27D0180CD6F40089ED7B /* forward@2x.png in Resources */,
@@ -444,16 +465,17 @@
 			files = (
 				2860E328111B887F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */,
+				D7E5E3EB1ED1E9870090C6AB /* CSSManager.m in Sources */,
+				D76CC83A1ECFEB8600E2C025 /* TextSizeViewController.m in Sources */,
 				0AE3F9481257CD66000C2097 /* BookmarksManager.m in Sources */,
 				0AE3F9491257CD66000C2097 /* BookmarksTableController.m in Sources */,
-				0AE3F94A1257CD66000C2097 /* CSSHandler.m in Sources */,
 				0AE3F94B1257CD66000C2097 /* EventInterceptWindow.m in Sources */,
-				0AE3F94C1257CD66000C2097 /* InfoViewController.m in Sources */,
 				0AE3F94D1257CD66000C2097 /* LocalBookmark.m in Sources */,
 				0AE3F94F1257CD66000C2097 /* MainViewController.m in Sources */,
 				0AE3F9501257CD66000C2097 /* TouchInterceptView.m in Sources */,
+				D75677A11ECD441A007444EF /* SettingsViewController.m in Sources */,
 				0AE3F9561257CDCD000C2097 /* main.m in Sources */,
-				D7511FC6178F9F7D00BC85CF /* SettingsViewController.m in Sources */,
+				D7511FC6178F9F7D00BC85CF /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,11 +493,27 @@
 		0AE3038F1257D619000C2097 /* App Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Robert Stone";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C0AA888A-5CEC-4AAC-940C-E1F833278B10";
 				SDKROOT = iphoneos;
@@ -494,7 +532,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
@@ -543,7 +582,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
 			};
@@ -559,7 +599,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
 				VALIDATE_PRODUCT = YES;
@@ -569,11 +610,28 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -583,11 +641,27 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
