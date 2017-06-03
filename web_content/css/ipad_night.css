@@ -359,10 +359,15 @@ body {
 	height:50px;
 	width:50px;
 	background:url('img/copyright.gif') 0 0 no-repeat;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+    
 }
 #F_newCopyrightSymbol a:hover {
 	background:url('img/copyright-hover.gif') 0 0 no-repeat;
 	border:none;
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
 }
 
 #F_copyrightSymbol {
@@ -681,12 +686,12 @@ a:link,
 a:active,
 a:visited {
 	text-decoration:none;
-	color: #00bbff /*#00435F*/;
+    color: #87CEFA;  /*#00435F*/ /*#00bbff*/
 }
 a:link:hover,
 a:visited:hover {
 	border-bottom:1px dotted #aaa;
-	color:#1E3478; 
+	color: #00bbff; 
 }
 a.offsite {
 	background:url("img/offsite.gif") top right no-repeat ;
@@ -865,8 +870,8 @@ div.anecdote {
 }
 img {
 	border:none;
-    -webkit-filter: invert(1);
-    filter: invert(1);
+    -webkit-filter: invert(80%);
+    filter: invert(80%);
 }
 
 img.suttaReadings {

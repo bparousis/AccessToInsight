@@ -25,14 +25,23 @@
     self.textSizeWebView.translatesAutoresizingMaskIntoConstraints = NO;
     self.textSizeWebView.delegate = self;
     
+    LocalBookmark *lastLocationBookmark = nil;
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *data = [defaults objectForKey:@"lastLocationBookmark"];
+    if (data) {
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]
+                                         initForReadingWithData:data];
+        lastLocationBookmark = [unarchiver decodeObjectForKey:@"bookmark"];
+        [unarchiver finishDecoding];
+        [unarchiver release];
+    }
     
-    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
-    NSString *fullPath = [NSString pathWithComponents:
-                          [NSArray arrayWithObjects:resourcePath,
-                           @"web_content", @"textSize.html", nil]];
-    NSURL *url = [NSURL fileURLWithPath:fullPath];
-    NSURLRequest *req = [NSURLRequest requestWithURL:url];
+    if (lastLocationBookmark != nil) {
+        [self loadLocalWebContent:lastLocationBookmark.location];
+    } else {
+        [self loadLocalWebContent:@"index.html"];
+    }
     
     self.toolbar = [[[UIToolbar alloc] init] autorelease];
     self.toolbar.translatesAutoresizingMaskIntoConstraints = NO;
@@ -47,9 +56,10 @@
     UIImage *decreaseImage = [UIImage imageNamed:@"decrease_font"];
     UIBarButtonItem *decreaseButton = [[[UIBarButtonItem alloc] initWithImage:decreaseImage style:UIBarButtonItemStylePlain
                                                                        target:self action:@selector(decreaseFontSize:)] autorelease];
+    UIBarButtonItem *resetButton = [[[UIBarButtonItem alloc] initWithTitle:@"Reset" style:UIBarButtonItemStylePlain target:self action:@selector(resetTextFontSize:)] autorelease];
     
     
-    [self.toolbar setItems:@[leftFlex, decreaseButton, middleFixed, increaseButton, rightFlex]];
+    [self.toolbar setItems:@[leftFlex, decreaseButton, middleFixed, increaseButton, rightFlex, resetButton]];
     
     [self.view addSubview:self.textSizeWebView];
     [self.view addSubview:self.toolbar];
@@ -117,9 +127,26 @@
                                                           attribute:NSLayoutAttributeTop
                                                          multiplier:1.0
                                                            constant:0.0]];
+}
+
+- (void)loadLocalWebContent:(NSString *)path {
+    NSString *hash = nil;
+    NSRange hashRange = [path rangeOfString:@"#" options:NSBackwardsSearch];
+    if (hashRange.location != NSNotFound) {
+        hash = [path substringFromIndex:hashRange.location];
+        path = [path substringToIndex:hashRange.location];
+    }
     
+    NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *fullPath = [NSString pathWithComponents:
+                          [NSArray arrayWithObjects:resourcePath,
+                           LOCAL_WEB_DATA_DIR, path, nil]];
+    NSURL *url = [NSURL fileURLWithPath:fullPath];
+    if (hash) {
+        url = [NSURL URLWithString:hash relativeToURL:url];
+    }
     
-    
+    NSURLRequest *req = [NSURLRequest requestWithURL:url];
     [self.textSizeWebView loadRequest:req];
 }
 
@@ -134,6 +161,16 @@
         textFontSize = (textFontSize > 50) ? textFontSize -5 : textFontSize;
     }
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:[NSNumber numberWithInteger:textFontSize] forKey:TEXT_FONT_SIZE_KEY];
+    [userDefaults synchronize];
+    
+    [self adjustFontForWebView];
+}
+
+- (void)resetTextFontSize:(id)sender
+{
+    NSUInteger textFontSize = 100;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[NSNumber numberWithInteger:textFontSize] forKey:TEXT_FONT_SIZE_KEY];
     [userDefaults synchronize];
@@ -156,7 +193,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-//    self.toolbar.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44);
 }
 
 - (void)dealloc {
