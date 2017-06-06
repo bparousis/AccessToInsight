@@ -686,7 +686,7 @@ a:link,
 a:active,
 a:visited {
 	text-decoration:none;
-    color: #87CEFA;  /*#00435F*/ /*#00bbff*/
+    color: #00bbff;  /*#00435F*/ /*#00bbff*/
 }
 a:link:hover,
 a:visited:hover {

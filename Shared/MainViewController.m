@@ -228,9 +228,11 @@
     BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
     if (nightMode) {
         self.view.backgroundColor = [UIColor colorWithRed:68.0/255.0f green:68.0/255.0f blue:68.0/255.0f alpha:1.0f];
+        self.webView.backgroundColor = [UIColor colorWithRed:68.0/255.0f green:68.0/255.0f blue:68.0/255.0f alpha:1.0f];
     }
     else {
         self.view.backgroundColor = [UIColor whiteColor];
+        self.webView.backgroundColor = [UIColor whiteColor];
     }
 }
 
