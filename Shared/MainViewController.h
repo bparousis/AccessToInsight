@@ -7,19 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/Webkit.h>
 
 #import "EventInterceptWindow.h"
 #import "BookmarksTableController.h"
-#import "CSSManager.h"
 
 #define TEXT_FONT_SIZE_KEY @"fontSize"
 
 
 @interface MainViewController : UIViewController <EventInterceptWindowDelegate,
-		UIWebViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, BookmarksControllerDelegate,
+		WKNavigationDelegate, UIAlertViewDelegate, UIActionSheetDelegate, BookmarksControllerDelegate,
         UIPopoverControllerDelegate>
 {
-	IBOutlet UIWebView *webView;
+	WKWebView *webView;
 	IBOutlet UIToolbar *toolbar;
 	IBOutlet UIBarButtonItem *bmBarButtonItem;
     IBOutlet UIBarButtonItem *actionBarButtonItem;
@@ -32,7 +32,7 @@
 	BOOL needRescroll;				// if this is YES
 }
 
-@property(nonatomic, retain) IBOutlet UIWebView *webView;
+@property(nonatomic, retain) WKWebView *webView;
 @property(nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property(nonatomic, retain) IBOutlet UIBarButtonItem *bmBarButtonItem;
 @property(nonatomic, retain) IBOutlet UIBarButtonItem *actionBarButtonItem;

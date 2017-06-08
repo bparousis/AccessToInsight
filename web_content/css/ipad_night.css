@@ -26,7 +26,7 @@ ol.nonSemantic-listI {list-style-type:upper-roman;}
 ol.nonSemantic-list1 {list-style-type:decimal;}
 
 body {
-	background-color: #444444;
+	background-color: #272822;
 	text-align:center;
 	color: white;
 }
@@ -327,7 +327,7 @@ body {
 	border:1px solid #ddd;
 	margin:20px;
 	padding:10px;
-	background-color:#444444;
+	background-color:#272822;
 }
 
 #F_publisherColophon {
@@ -627,7 +627,7 @@ ul.crumblist  li.first:before {
 	padding:1em 0 1em 0;
 	text-align:center;
 	border:1px solid #ccc;
-	background:#444444;
+	background:#272822;
 }
 
 
@@ -942,7 +942,7 @@ table.oddeven tr.odd td {
 }
 table.oddeven tr.even th,
 table.oddeven tr.even td {
-	background-color: #444444;
+	background-color: #272822;
 	text-align:center;
 }
 table.oddeven tr th.col1,

@@ -7,7 +7,6 @@
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
 #import "TextSizeViewController.h"
-#import "CSSManager.h"
 
 @interface SettingsViewController ()
 
@@ -36,7 +35,7 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.title = @"Settings";
     self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

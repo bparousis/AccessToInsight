@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <WebKit/Webkit.h>
 
-@interface TextSizeViewController : UIViewController<UIWebViewDelegate>
+@interface TextSizeViewController : UIViewController<WKNavigationDelegate>
 
 @end

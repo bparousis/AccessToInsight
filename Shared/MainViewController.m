@@ -10,6 +10,7 @@
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
 #import "BookmarksManager.h"
+#import "ThemeManager.h"
 
 @interface MainViewController()
 
@@ -17,6 +18,9 @@
 @property(nonatomic, assign) BOOL toolbarHidden;
 @property(nonatomic, retain) LocalBookmark *bookmark;
 @property(nonatomic, assign) CGFloat startAlpha;
+
+@property(nonatomic, retain) NSLayoutConstraint *topConstraint;
+@property(nonatomic, retain) NSLayoutConstraint *bottomConstraint;
 
 @end
 
@@ -64,8 +68,80 @@
 {
     if ([[notification name] isEqualToString:@"NightMode"]) {
         [self determineStartAlpha];
-        [self updateBackgroundColor];
+        [self updateColorScheme];
         [self.webView reload];
+    }
+}
+
+#pragma mark -
+#pragma mark Standard methods
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.toolbarHidden = NO;
+    self.webView = [[[WKWebView alloc] init] autorelease];
+    self.webView.navigationDelegate = self;
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    [self determineStartAlpha];
+    self.webView.opaque = NO;
+    [self updateColorScheme];
+    [self.view addSubview:self.webView];
+    
+    self.topConstraint = [NSLayoutConstraint constraintWithItem:self.webView
+                                                      attribute:NSLayoutAttributeTop
+                                                      relatedBy:NSLayoutRelationEqual
+                                                         toItem:self.view
+                                                      attribute:NSLayoutAttributeTop
+                                                     multiplier:1.0
+                                                       constant:20.0];
+    [self.view addConstraint:self.topConstraint];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    
+    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.webView
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.view
+                                                         attribute:NSLayoutAttributeBottom
+                                                        multiplier:1.0
+                                                          constant:-40.0];
+    [self.view addConstraint:self.bottomConstraint];
+    
+    
+    // Load the last page the user was viewing.
+    // Unfortunately I don't know of a way to save and load the history.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSData *data = [defaults objectForKey:@"lastLocationBookmark"];
+    
+    LocalBookmark *lastLocationBookmark = nil;
+    
+    if (data) {
+        NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]
+                                         initForReadingWithData:data];
+        lastLocationBookmark = [unarchiver decodeObjectForKey:@"bookmark"];
+        [unarchiver finishDecoding];
+        [unarchiver release];
+    }
+    
+    if (lastLocationBookmark != nil) {
+        [self loadLocalBookmark:lastLocationBookmark];
+    } else {
+        [self home];
     }
 }
 
@@ -76,12 +152,16 @@
 	// toolbar
 	[UIView beginAnimations:@"toolbar" context:nil];
 	if (self.toolbarHidden) {
-        self.webView.frame = CGRectMake(0, 20.0f, self.view.frame.size.width, self.view.frame.size.height - 20.0f);
+        self.topConstraint.constant = 20.0f;
+        self.bottomConstraint.constant = -40.0f;
+        [self.view layoutIfNeeded];
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, -toolbar.frame.size.height);
 		toolbar.alpha = 1;
 		self.toolbarHidden = NO;
 	} else {
-        self.webView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+        self.topConstraint.constant = 0.0f;
+        self.bottomConstraint.constant = 0.0f;
+        [self.view layoutIfNeeded];
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, +toolbar.frame.size.height);
 		toolbar.alpha = 0;
 		self.toolbarHidden = YES;
@@ -143,7 +223,6 @@
 	[self.webView loadRequest:req];
 }
 
-
 - (void)loadLocalBookmark:(LocalBookmark *)bookmark {
 	rescrollX = bookmark.scrollX;
 	rescrollY = bookmark.scrollY;
@@ -151,62 +230,90 @@
 	[self loadLocalWebContent:bookmark.location];
 }
 
-/*
- * Open external links in Safari.
- */
-- (BOOL)webView:(UIWebView *)webView
-    shouldStartLoadWithRequest:(NSURLRequest *)request
-    navigationType:(UIWebViewNavigationType)navigationType {
+#pragma mark -
+#pragma mark Web navigation delegate
+
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    NSString *javascript = @"var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
+    
+    [self.webView evaluateJavaScript:javascript completionHandler:nil];
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
+    [self.webView setAlpha:self.startAlpha];
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    
     [self.webView setAlpha:self.startAlpha];
     [UIView animateWithDuration:1.0f animations:^{
         [self.webView setAlpha:1.0f];
     } completion:^(BOOL finished) {
     }];
+    
+    if (navigationAction.navigationType == WKNavigationTypeOther) {
+        decisionHandler(WKNavigationActionPolicyAllow);
+        return;
+    }
+    
+    NSURL *url = [navigationAction.request URL];
+    
+    if ([[url scheme] isEqual:@"file"]) {
+        decisionHandler(WKNavigationActionPolicyAllow);
+        return;
+    }
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url] == NO) {
+        decisionHandler(WKNavigationActionPolicyCancel);
+        return;
+    }
+    
+    // Anything else needs to be launched externally.
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"External Link"
+                                                    message:@"This link must be launched in an external application."
+                          @" The current application will quit. Is this OK?"
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"OK", nil];
+    
+    // Save the external URL pending the result of the alert feedback.
+    self.externalURL = url;
+    
+    [alert show];
+    [alert release];
+    
+    decisionHandler(WKNavigationActionPolicyCancel);
+}
 
-	if (navigationType == UIWebViewNavigationTypeOther)
-		return YES;
-
-	NSURL *url = [request URL];
-	
-	if ([[url scheme] isEqual:@"file"]) {
-		return YES;
-	}
-	
-	if ([[UIApplication sharedApplication] canOpenURL:url] == NO) {
-		return NO;
-	}
-	
-	// Anything else needs to be launched externally.
-
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"External Link"
-				 message:@"This link must be launched in an external application."
-					     @" The current application will quit. Is this OK?"
-				delegate:self
-	   cancelButtonTitle:@"Cancel"
-	   otherButtonTitles:@"OK", nil];
-
-	// Save the external URL pending the result of the alert feedback.
-	self.externalURL = url;
-
-	[alert show];
-	[alert release];
-	
-	return NO;
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
+    [self.webView evaluateJavaScript:[ThemeManager getCSSJavascript] completionHandler:^(id result, NSError *error) {}];
+    [UIView animateWithDuration:1.0f animations:^{
+        [self.webView setAlpha:1.0f];
+    } completion:^(BOOL finished) {
+    }];
+    
+    [self adjustFontForWebView];
+    if (needRescroll) {
+        if (rescrollY || rescrollX)
+            [self scrollToX:rescrollX Y:rescrollY];
+        needRescroll = NO;
+    }
 }
 
 - (void)scrollToX:(NSInteger)scrollX Y:(NSInteger)scrollY {
-	[self.webView stringByEvaluatingJavaScriptFromString:
-		[NSString stringWithFormat: @"window.scrollTo(%ld, %ld);",
-			(long)scrollX, (long)scrollY]];
+    [self.webView evaluateJavaScript:[NSString stringWithFormat: @"window.scrollTo(%ld, %ld);",
+                                      (long)scrollX, (long)scrollY] completionHandler:^(id result, NSError *error) {
+    }];
 }
 
 
 - (void)scrollNumPages:(NSInteger)pages {
-	NSInteger scrollY = [[self.webView
-						  stringByEvaluatingJavaScriptFromString: @"scrollY"]
-						 integerValue];
-	NSInteger height = self.webView.frame.size.height;
-	[self scrollToX:0 Y:(scrollY + (height * pages))];
+	[self.webView
+      evaluateJavaScript: @"scrollY" completionHandler:^(id result, NSError *error) {
+          NSInteger scrollY = [result integerValue];
+          NSInteger height = self.webView.frame.size.height;
+          [self scrollToX:0 Y:(scrollY + (height * pages))];
+      }];
 }
 
 + (NSInteger)textFontSize {
@@ -219,44 +326,22 @@
     return textFontSize;
 }
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    [self.webView setAlpha:self.startAlpha];
-}
-
-- (void)updateBackgroundColor {
+- (void)updateColorScheme {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
-    if (nightMode) {
-        self.view.backgroundColor = [UIColor colorWithRed:68.0/255.0f green:68.0/255.0f blue:68.0/255.0f alpha:1.0f];
-        self.webView.backgroundColor = [UIColor colorWithRed:68.0/255.0f green:68.0/255.0f blue:68.0/255.0f alpha:1.0f];
-    }
-    else {
-        self.view.backgroundColor = [UIColor whiteColor];
-        self.webView.backgroundColor = [UIColor whiteColor];
-    }
-}
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
     
-    [self.webView stringByEvaluatingJavaScriptFromString:[CSSManager getCSSJavascript]];
-    [UIView animateWithDuration:1.0f animations:^{
-        [self.webView setAlpha:1.0f];
-    } completion:^(BOOL finished) {
-    }];
-    
-    [self adjustFontForWebView];
-    if (needRescroll) {
-		if (rescrollY || rescrollX)
-			[self scrollToX:rescrollX Y:rescrollY];
-		needRescroll = NO;
-	}
+    [ThemeManager decorateToolbar:self.toolbar nightMode:nightMode];
+    [ThemeManager updateStatusBarStyle:nightMode];
+    self.view.backgroundColor = [ThemeManager backgroundColor:nightMode];
+    self.webView.backgroundColor = [ThemeManager backgroundColor:nightMode];
 }
 
 - (void)adjustFontForWebView {
     NSUInteger textFontSize = [MainViewController textFontSize];
     NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%lu%%'",
                           (unsigned long)textFontSize];
-    [self.webView stringByEvaluatingJavaScriptFromString:jsString];
+    [self.webView evaluateJavaScript:jsString completionHandler:^(id result, NSError *error) {
+    }];
 }
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
@@ -290,42 +375,42 @@
     }
 }
 
-- (LocalBookmark *)getBookmark {
-	
-	// Define html stripping function for current page.
-    [self.webView stringByEvaluatingJavaScriptFromString:
-     @"String.prototype.stripHTML = function() {	"
+- (void)getBookmark:(void (^ _Nullable)(LocalBookmark * _Nullable))completionHandler {
+    
+    [self.webView evaluateJavaScript:@"String.prototype.stripHTML = function() {	"
      @"	var matchTag = /<(?:.|\\s)*?>/g;			"
      @"	var s = this.replace(matchTag, '');		"
      @"	var spaceRegexp = /\\s+/g;				"
      @"	return s.replace(spaceRegexp, ' ')		"
-     @"};"];
-	
-	NSString *title = [self.webView
-					   stringByEvaluatingJavaScriptFromString:@"document.title"];
-	NSString *urlString = [self.webView
-						   stringByEvaluatingJavaScriptFromString:@"location.href"];	
-	NSString *location = [self URLStringToLocalContentPath:urlString];
-	NSString *tipitakaID = [self.webView stringByEvaluatingJavaScriptFromString:
-                                   @"document.getElementById('H_tipitakaID').innerHTML.stripHTML()"];
-	NSInteger scrollX = [[self.webView
-						  stringByEvaluatingJavaScriptFromString: @"scrollX"]
-						 integerValue];
-	NSInteger scrollY = [[self.webView
-						  stringByEvaluatingJavaScriptFromString: @"scrollY"]
-						 integerValue];
-	LocalBookmark *bookmark = [[[LocalBookmark alloc] initWithTitle:title 
-										location:location 
-										 scrollX:scrollX 
-										 scrollY:scrollY] autorelease];
-	bookmark.note = tipitakaID;
-	return bookmark;
+     @"};" completionHandler:^(id result, NSError *error) {
+         [self.webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError *error) {
+             NSString *title = result;
+             [self.webView evaluateJavaScript:@"location.href" completionHandler:^(id result, NSError *error) {
+                 NSString *urlString = result;
+                 NSString *location = [self URLStringToLocalContentPath:urlString];
+                 [self.webView evaluateJavaScript:@"document.getElementById('H_tipitakaID').innerHTML.stripHTML()" completionHandler:^(id result, NSError *error) {
+                     NSString *tipitakaID = result;
+                     [self.webView evaluateJavaScript:@"scrollX" completionHandler:^(id result, NSError *error) {
+                         NSInteger scrollX = [result integerValue];
+                         [self.webView evaluateJavaScript:@"scrollY" completionHandler:^(id result, NSError *error) {
+                             NSInteger scrollY = [result integerValue];
+                             LocalBookmark *bookmark = [[[LocalBookmark alloc] initWithTitle:title
+                                                                                    location:location
+                                                                                     scrollX:scrollX
+                                                                                     scrollY:scrollY] autorelease];
+                             bookmark.note = tipitakaID;
+                             completionHandler(bookmark);
+                         }];
+                     }];
+                 }];
+             }];
+         }];
+     }];
 }
 
 
 #pragma mark -
 #pragma mark Bookmarks delegate methods
-
 
 - (void)bookmarksController:(BookmarksTableController *)controller
 		   selectedBookmark:(LocalBookmark *)bookmark {
@@ -337,15 +422,12 @@
 	[self loadLocalBookmark:bookmark];
 }
 
-
 - (void)bookmarksControllerCancel:(BookmarksTableController *)controller {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
 #pragma mark -
 #pragma mark Toolbar actions
-
 
 - (IBAction)home {
 	[self loadLocalWebContent:@"index.html"];
@@ -401,23 +483,27 @@
 	NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
 	if ([buttonTitle isEqual:@"Add Bookmark"]) {
-		self.bookmark = [self getBookmark];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Bookmark"
-                                                        message:@"Enter a title for the bookmark"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Add", nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField *inputField = [alert textFieldAtIndex:0];
-        inputField.text = self.bookmark.title;
-        [alert show];
+        [self getBookmark:^(LocalBookmark *bookmark) {
+            self.bookmark = bookmark;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Bookmark"
+                                                            message:@"Enter a title for the bookmark"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Add", nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            UITextField *inputField = [alert textFieldAtIndex:0];
+            inputField.text = self.bookmark.title;
+            [alert show];
+        }];
 	}
     else if ([buttonTitle isEqual:@"Open on Live Site"]) {
-		LocalBookmark *bookmark = [self getBookmark];
-		NSURL *liveURL = [NSURL URLWithString:[NSString
-						stringWithFormat:@"http://www.accesstoinsight.org%@",
-								bookmark.location]];
-		[[UIApplication sharedApplication] openURL:liveURL];
+        [self getBookmark:^(LocalBookmark *bookmark) {
+            NSURL *liveURL = [NSURL URLWithString:[NSString
+                                                   stringWithFormat:@"http://www.accesstoinsight.org%@",
+                                                   bookmark.location]];
+            [[UIApplication sharedApplication] openURL:liveURL];
+        }];
+		
 	}
     else if ([buttonTitle isEqual:@"Random Sutta"]) {
         [self loadLocalWebContent:@"random-sutta.html"];
@@ -482,37 +568,7 @@
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
 #pragma mark -
-#pragma mark Standard methods
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self determineStartAlpha];
-    self.webView.opaque = NO;
-    [self updateBackgroundColor];
-    
-	// Load the last page the user was viewing.
-	// Unfortunately I don't know of a way to save and load the history.
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	NSData *data = [defaults objectForKey:@"lastLocationBookmark"];
-
-	LocalBookmark *lastLocationBookmark = nil;
-	
-	if (data) {
-		NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]
-										 initForReadingWithData:data];
-		lastLocationBookmark = [unarchiver decodeObjectForKey:@"bookmark"];
-		[unarchiver finishDecoding];
-		[unarchiver release];
-	}
-	
-	if (lastLocationBookmark != nil) {
-		[self loadLocalBookmark:lastLocationBookmark];
-	} else {
-		[self home];
-	}
-}
 
 - (void)determineStartAlpha {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -538,8 +594,7 @@
     self.bmPopover = nil;
 }
 
-- (void)didRotateFromInterfaceOrientation:
-(UIInterfaceOrientation)toInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation {
 }
 
 - (void)didReceiveMemoryWarning {
@@ -568,16 +623,17 @@
 }
 
 - (void)saveLastLocation {
-    LocalBookmark *lastLocationBookmark = [self getBookmark];
-	NSMutableData *data = [[NSMutableData alloc] init];
-	NSKeyedArchiver *archiver = [[[NSKeyedArchiver alloc]
-                                  initForWritingWithMutableData:data] autorelease];
-	[archiver encodeObject:lastLocationBookmark forKey:@"bookmark"];
-	[archiver finishEncoding];
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setObject:data forKey:@"lastLocationBookmark"];
-	[data release];
-    [defaults synchronize];
+    [self getBookmark:^(LocalBookmark *lastLocationBookmark) {
+        NSMutableData *data = [[NSMutableData alloc] init];
+        NSKeyedArchiver *archiver = [[[NSKeyedArchiver alloc]
+                                      initForWritingWithMutableData:data] autorelease];
+        [archiver encodeObject:lastLocationBookmark forKey:@"bookmark"];
+        [archiver finishEncoding];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:data forKey:@"lastLocationBookmark"];
+        [data release];
+        [defaults synchronize];
+    }];
 }
 
 - (void)viewDidUnload {
@@ -604,6 +660,9 @@
 	[externalURL release];
     [bmPopover release];
     [_bookmark release];
+    
+    [_topConstraint release];
+    [_bottomConstraint release];
     [super dealloc];
 }
 

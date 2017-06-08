@@ -5,13 +5,15 @@
 //  Created by Dev on 2017-05-19.
 //
 //
+#import <WebKit/Webkit.h>
 
 #import "TextSizeViewController.h"
 #import "MainViewController.h"
+#import "ThemeManager.h"
 
 @interface TextSizeViewController ()
 
-@property(nonatomic, retain) UIWebView *textSizeWebView;
+@property(nonatomic, retain) WKWebView *textSizeWebView;
 @property(nonatomic, retain) UIToolbar *toolbar;
 
 @end
@@ -21,9 +23,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.textSizeWebView = [[[UIWebView alloc] init] autorelease];
+    self.title = @"Text size";
+    WKWebViewConfiguration *webConfig = [[[WKWebViewConfiguration alloc] init] autorelease];
+    self.textSizeWebView = [[[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig] autorelease];
     self.textSizeWebView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.textSizeWebView.delegate = self;
+    self.textSizeWebView.navigationDelegate = self;
     
     LocalBookmark *lastLocationBookmark = nil;
     
@@ -129,6 +133,12 @@
                                                            constant:0.0]];
 }
 
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    NSString *javascript = @"var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
+    
+    [self.textSizeWebView evaluateJavaScript:javascript completionHandler:nil];
+}
+
 - (void)loadLocalWebContent:(NSString *)path {
     NSString *hash = nil;
     NSRange hashRange = [path rangeOfString:@"#" options:NSBackwardsSearch];
@@ -205,7 +215,10 @@
     NSUInteger textFontSize = [MainViewController textFontSize];
     NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%lu%%'",
                           (unsigned long)textFontSize];
-    [self.textSizeWebView stringByEvaluatingJavaScriptFromString:jsString];
+    
+    [self.textSizeWebView evaluateJavaScript:jsString completionHandler:^(id result, NSError *error) {
+        NSLog(@"Test");
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -213,7 +226,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
     [self adjustFontForWebView];
 }
 
