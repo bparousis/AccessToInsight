@@ -14,7 +14,7 @@
 
 @interface MainViewController()
 
-@property(nonatomic, retain) UIActionSheet *actionSheet;
+@property(nonatomic, retain) UIAlertController *actionSheet;
 @property(nonatomic, assign) BOOL toolbarHidden;
 @property(nonatomic, retain) LocalBookmark *bookmark;
 @property(nonatomic, assign) CGFloat startAlpha;
@@ -327,13 +327,10 @@
 }
 
 - (void)updateColorScheme {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
-    
-    [ThemeManager decorateToolbar:self.toolbar nightMode:nightMode];
-    [ThemeManager updateStatusBarStyle:nightMode];
-    self.view.backgroundColor = [ThemeManager backgroundColor:nightMode];
-    self.webView.backgroundColor = [ThemeManager backgroundColor:nightMode];
+    [ThemeManager decorateToolbar:self.toolbar];
+    [ThemeManager updateStatusBarStyle];
+    self.view.backgroundColor = [ThemeManager backgroundColor];
+    self.webView.backgroundColor = [ThemeManager backgroundColor];
 }
 
 - (void)adjustFontForWebView {
@@ -447,42 +444,30 @@
     [self.webView setAlpha:self.startAlpha];
     [self.webView goForward];
     [UIView animateWithDuration:1.0f animations:^{
-        [self.webView setAlpha:1.0f];
+        [self.webView setAlpha:0.5f];
     } completion:^(BOOL finished) {
     }];
 }
 
 - (IBAction)actionButton {
-    if (!self.actionSheet) {
-        if (self.bmPopover) {
-            [self.bmPopover dismissPopoverAnimated:YES];
-            self.bmPopover = nil;
-        }
-        
-        self.actionSheet = [[[UIActionSheet alloc]
-                            initWithTitle:@"Select action for this page:"
-                            delegate:self
-                            cancelButtonTitle:@"Cancel"
-                            destructiveButtonTitle:nil
-                            otherButtonTitles:@"Add Bookmark",
-                            @"Open on Live Site", @"Random Sutta", @"Random Article", nil] autorelease];
-        //addSheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            [self.actionSheet showFromBarButtonItem:self.actionBarButtonItem animated:YES];
-        }
-        else {
-            [self.actionSheet showFromToolbar:self.toolbar];
-        }
+    if (self.bmPopover) {
+        [self.bmPopover dismissPopoverAnimated:YES];
+        self.bmPopover = nil;
     }
-}
-
-
-- (void)actionSheet:(UIActionSheet *)actionSheet
-		didDismissWithButtonIndex:(NSInteger)buttonIndex {
-	
-	NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-
-	if ([buttonTitle isEqual:@"Add Bookmark"]) {
+    
+    self.actionSheet = [UIAlertController alertControllerWithTitle:@"Select Action" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    if ([ThemeManager isNightMode]) {
+        self.actionSheet.view.tintColor = [ThemeManager backgroundColor];
+    }
+    self.actionSheet.popoverPresentationController.barButtonItem = self.actionBarButtonItem;
+    [self.actionSheet addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+        // Cancel button tappped.
+        [self dismissViewControllerAnimated:YES completion:^{
+        }];
+    }]];
+    
+    [self.actionSheet addAction:[UIAlertAction actionWithTitle:@"Add Bookmark" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self getBookmark:^(LocalBookmark *bookmark) {
             self.bookmark = bookmark;
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Bookmark"
@@ -495,25 +480,27 @@
             inputField.text = self.bookmark.title;
             [alert show];
         }];
-	}
-    else if ([buttonTitle isEqual:@"Open on Live Site"]) {
+    }]];
+    
+    [self.actionSheet addAction:[UIAlertAction actionWithTitle:@"Open on Live Site" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self getBookmark:^(LocalBookmark *bookmark) {
             NSURL *liveURL = [NSURL URLWithString:[NSString
                                                    stringWithFormat:@"http://www.accesstoinsight.org%@",
                                                    bookmark.location]];
             [[UIApplication sharedApplication] openURL:liveURL];
         }];
-		
-	}
-    else if ([buttonTitle isEqual:@"Random Sutta"]) {
-        [self loadLocalWebContent:@"random-sutta.html"];
-    }
-    else if ([buttonTitle isEqual:@"Random Article"]) {
-        [self loadLocalWebContent:@"random-article.html"];
-    }
+    }]];
     
-    self.actionSheet = nil;
-	/* Future features: email link, email text, email clipboard/selection */
+    [self.actionSheet addAction:[UIAlertAction actionWithTitle:@"Random Sutta" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self loadLocalWebContent:@"random-sutta.html"];
+    }]];
+    
+    [self.actionSheet addAction:[UIAlertAction actionWithTitle:@"Random Article" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self loadLocalWebContent:@"random-article.html"];
+    }]];
+    
+    // Present action sheet.
+    [self presentViewController:self.actionSheet animated:YES completion:nil];
 }
 
 - (IBAction)showBookmarks {
@@ -524,6 +511,7 @@
     }
 	BookmarksTableController *btc = [[BookmarksTableController alloc]
 									 initWithStyle:UITableViewStylePlain];
+    btc.tableView.backgroundColor = [ThemeManager backgroundColor];
 	btc.delegate = self;
 	
 	UINavigationController *nav = [[UINavigationController alloc]
@@ -534,7 +522,8 @@
 		Class UIPopoverControllerClass = NSClassFromString(@"UIPopoverController");
 		if (UIPopoverControllerClass != nil) {
             if (self.actionSheet) {
-                [self.actionSheet dismissWithClickedButtonIndex:2 animated:YES];
+                [self.actionSheet dismissViewControllerAnimated:YES completion:^{
+                }];
             }
             
 			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:nav];
@@ -571,9 +560,7 @@
 #pragma mark -
 
 - (void)determineStartAlpha {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
-    self.startAlpha = nightMode ? 0.0f : 1.0f;
+    self.startAlpha = [ThemeManager isNightMode] ? 0.0f : 1.0f;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

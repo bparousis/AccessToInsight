@@ -12,18 +12,16 @@
 
 + (NSString *)getCSSJavascript {
     NSString *cssFile = IPHONE_CSS;
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
     switch (UI_USER_INTERFACE_IDIOM()) {
         case UIUserInterfaceIdiomPad:
         {
-            cssFile = nightMode ? IPAD_NIGHT_CSS : IPAD_CSS;
+            cssFile = [ThemeManager isNightMode] ? IPAD_NIGHT_CSS : IPAD_CSS;
             break;
         }
         case UIUserInterfaceIdiomPhone:
         default:
         {
-            cssFile = nightMode ? IPHONE_NIGHT_CSS : IPHONE_CSS;
+            cssFile = [ThemeManager isNightMode] ? IPHONE_NIGHT_CSS : IPHONE_CSS;
             break;
         }
     }
@@ -39,14 +37,14 @@
     return javascript;
 }
 
-+ (UIColor *)backgroundColor:(BOOL)nightMode {
-    return nightMode ? [UIColor colorWithRed:39.0/255.0f green:40.0/255.0f blue:34.0/255.0f alpha:1.0f] : [UIColor whiteColor];
++ (UIColor *)backgroundColor {
+    return [ThemeManager isNightMode] ? [UIColor colorWithRed:39.0/255.0f green:40.0/255.0f blue:34.0/255.0f alpha:1.0f] : [UIColor whiteColor];
 }
 
-+ (void)decorateToolbar:(UIToolbar *)toolbar nightMode:(BOOL)nightMode {
++ (void)decorateToolbar:(UIToolbar *)toolbar {
     toolbar.translucent = YES;
-    if (nightMode) {
-        toolbar.barTintColor = [ThemeManager backgroundColor:nightMode];
+    if ([ThemeManager isNightMode]) {
+        toolbar.barTintColor = [ThemeManager backgroundColor];
         toolbar.tintColor = [UIColor colorWithRed:227.0/255.0f green:227.0/255.0f blue:227.0/255.0f alpha:1.0f];
     }
     else {
@@ -55,8 +53,37 @@
     }
 }
 
-+ (void)updateStatusBarStyle:(BOOL)nightMode {
-    [[UIApplication sharedApplication] setStatusBarStyle:(nightMode ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault)];
++ (void)decorateTableView:(UITableView *)tableView {
+    if ([ThemeManager isNightMode]) {
+        tableView.backgroundColor = [ThemeManager backgroundColor];
+    }
+    else {
+        UITableView *aTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+        tableView.backgroundColor = aTableView.backgroundColor;
+        [aTableView release];
+    }
+}
+
++ (void)decorateTableCell:(UITableViewCell *)cell {
+    if ([ThemeManager isNightMode]) {
+        cell.backgroundColor = [UIColor colorWithRed:68.0/255.0f green:68.0/255.0f blue:68.0/255.0f alpha:1.0f];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.textColor = [UIColor whiteColor];
+    }
+    else {
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.detailTextLabel.textColor = [UIColor blackColor];
+    }
+}
+
++ (void)updateStatusBarStyle {
+    [[UIApplication sharedApplication] setStatusBarStyle:([ThemeManager isNightMode] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault)];
+}
+
++ (BOOL)isNightMode {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:@"nightMode"];
 }
 
 @end

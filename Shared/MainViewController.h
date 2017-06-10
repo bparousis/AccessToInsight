@@ -16,7 +16,7 @@
 
 
 @interface MainViewController : UIViewController <EventInterceptWindowDelegate,
-		WKNavigationDelegate, UIAlertViewDelegate, UIActionSheetDelegate, BookmarksControllerDelegate,
+		WKNavigationDelegate, UIAlertViewDelegate, BookmarksControllerDelegate,
         UIPopoverControllerDelegate>
 {
 	WKWebView *webView;

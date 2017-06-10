@@ -7,6 +7,7 @@
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
 #import "TextSizeViewController.h"
+#import "ThemeManager.h"
 
 @interface SettingsViewController ()
 
@@ -39,6 +40,7 @@
     self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    [ThemeManager decorateTableView:self.tableView];
     self.tableView.autoresizesSubviews = YES;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin |
     UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
@@ -70,14 +72,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"SettingsTableCellId";
     
-    UITableViewCell *cell = [tableView
-                             dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc]
                  initWithStyle:UITableViewCellStyleDefault
                  reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    [ThemeManager decorateTableCell:cell];
     
     if ([indexPath section] == 0) {
         cell.textLabel.text = @"About";
@@ -93,6 +95,7 @@
             NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
             BOOL nightMode = [userDefaults boolForKey:@"nightMode"];
             UISwitch *nightModeSwitch = [[[UISwitch alloc] init] autorelease];
+            nightModeSwitch.onTintColor = [UIColor colorWithRed:62.0/255.0f green:164.0/255.0f blue:242.0/255.0f alpha:1.0f];
             nightModeSwitch.on = nightMode;
             [nightModeSwitch addTarget:self action:@selector(nightModeToggled:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = nightModeSwitch;
@@ -110,6 +113,20 @@
     [[NSNotificationCenter defaultCenter]
      postNotificationName:@"NightMode"
      object:self];
+    
+    [UIView animateWithDuration:1.0f animations:^{
+        [ThemeManager decorateTableView:self.tableView];
+    } completion:^(BOOL finished) {
+        if (finished) {
+           
+        }
+    }];
+    
+    NSArray<UITableViewCell*> *cells = self.tableView.visibleCells;
+    for (NSInteger i = 0; i < cells.count; i++) {
+        [ThemeManager decorateTableCell:cells[i]];
+    }
+    
 }
 
 - (void)openURL:(NSString *)urlString {

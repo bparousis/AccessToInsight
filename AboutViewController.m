@@ -7,6 +7,7 @@
 //
 
 #import "AboutViewController.h"
+#import "ThemeManager.h"
 
 @interface AboutViewController ()
 
@@ -38,6 +39,7 @@
     self.title = @"About";
     
     self.tableView = [[[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped] autorelease];
+    [ThemeManager decorateTableView:self.tableView];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.autoresizesSubviews = YES;
@@ -79,6 +81,7 @@
 				 reuseIdentifier:CellIdentifier] autorelease];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
+    [ThemeManager decorateTableCell:cell];
     
     if ([indexPath section] == 0) {
         NSString * version = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
@@ -120,7 +123,8 @@
             [self presentViewController:mailComposer animated:YES completion:nil];
         }
         else if ([indexPath row] == 2) {
-            UIWebView *infoWebView = [[[UIWebView alloc] initWithFrame:self.view.frame] autorelease];
+            WKWebView *infoWebView = [[[WKWebView alloc] initWithFrame:self.view.frame] autorelease];
+            infoWebView.navigationDelegate = self;
             NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
             NSString *fullPath = [NSString pathWithComponents:
                                   [NSArray arrayWithObjects:resourcePath,
@@ -136,6 +140,16 @@
             [self.navigationController pushViewController:webVC animated:YES];
         }
     }
+}
+
+- (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
+    NSString *javascript = @"var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);";
+    
+    [webView evaluateJavaScript:javascript completionHandler:nil];
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
+    [webView evaluateJavaScript:[ThemeManager getCSSJavascript] completionHandler:^(id result, NSError *error) {}];
 }
 
 - (void)didReceiveMemoryWarning

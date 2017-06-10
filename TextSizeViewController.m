@@ -15,6 +15,7 @@
 
 @property(nonatomic, retain) WKWebView *textSizeWebView;
 @property(nonatomic, retain) UIToolbar *toolbar;
+@property(nonatomic, assign) BOOL pageLoaded;
 
 @end
 
@@ -22,8 +23,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = @"Text size";
+    self.pageLoaded = false;
+    self.title = @"Text Size";
     WKWebViewConfiguration *webConfig = [[[WKWebViewConfiguration alloc] init] autorelease];
     self.textSizeWebView = [[[WKWebView alloc] initWithFrame:CGRectZero configuration:webConfig] autorelease];
     self.textSizeWebView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -49,6 +50,7 @@
     
     self.toolbar = [[[UIToolbar alloc] init] autorelease];
     self.toolbar.translatesAutoresizingMaskIntoConstraints = NO;
+    [ThemeManager decorateToolbar:self.toolbar];
     
     UIImage *increaseImage = [UIImage imageNamed:@"increase_font"];
     UIBarButtonItem *leftFlex = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil] autorelease];
@@ -163,7 +165,6 @@
 - (void)increaseTextFontSize:(BOOL)increase
 {
     NSUInteger textFontSize = [MainViewController textFontSize];
-    
     if (increase) {
         textFontSize = (textFontSize < 160) ? textFontSize +5 : textFontSize;
     }
@@ -194,7 +195,6 @@
 
 - (void)decreaseFontSize:(id)sender {
     [self increaseTextFontSize:NO];
-    [self.textSizeWebView reload];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -216,9 +216,7 @@
     NSString *jsString = [NSString stringWithFormat:@"document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '%lu%%'",
                           (unsigned long)textFontSize];
     
-    [self.textSizeWebView evaluateJavaScript:jsString completionHandler:^(id result, NSError *error) {
-        NSLog(@"Test");
-    }];
+    [self.textSizeWebView evaluateJavaScript:jsString completionHandler:^(id result, NSError *error) {}];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -227,7 +225,18 @@
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
+    [self.textSizeWebView evaluateJavaScript:[ThemeManager getCSSJavascript] completionHandler:^(id result, NSError *error) {}];
     [self adjustFontForWebView];
+    self.pageLoaded = true;
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    if (self.pageLoaded == false) {
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
+    else {
+        decisionHandler(WKNavigationActionPolicyCancel);
+    }
 }
 
 /*

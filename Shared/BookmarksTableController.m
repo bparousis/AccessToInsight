@@ -8,6 +8,7 @@
 
 #import "BookmarksTableController.h"
 #import "BookmarksManager.h"
+#import "ThemeManager.h"
 
 @interface BookmarksTableController()
 
@@ -46,6 +47,17 @@
         cell = [[[UITableViewCell alloc]
 				 initWithStyle:UITableViewCellStyleSubtitle
 				 reuseIdentifier:CellIdentifier] autorelease];
+    }
+    
+    if ([ThemeManager isNightMode]) {
+        cell.backgroundColor = [UIColor clearColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.detailTextLabel.textColor = [UIColor whiteColor];
+    }
+    else {
+        cell.backgroundColor = [UIColor whiteColor];
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.detailTextLabel.textColor = [UIColor blackColor];
     }
     
 	NSUInteger row = [indexPath row];
