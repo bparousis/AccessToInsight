@@ -53,6 +53,7 @@
 		2860E32F111B888700E27156 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2860E32D111B888700E27156 /* MainWindow_iPad.xib */; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		D722CE291EE8F7C100F7D7E8 /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D722CE281EE8F7C100F7D7E8 /* ThemeManager.m */; };
+		D736521F1F0606CB000212C7 /* pages.db in Resources */ = {isa = PBXBuildFile; fileRef = D736521E1F0606CB000212C7 /* pages.db */; };
 		D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73E9C451EE7B198008079E9 /* WebKit.framework */; };
 		D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7407B151790F5D800204EEF /* MessageUI.framework */; };
 		D74BA3801ECBFE5800CAAB3D /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D74BA37F1ECBFE5800CAAB3D /* settings@2x.png */; };
@@ -62,10 +63,15 @@
 		D757EC1C180CD5560057E45A /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = D757EC1B180CD5560057E45A /* back.png */; };
 		D76CC83A1ECFEB8600E2C025 /* TextSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */; };
 		D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D77E8D51177D4436006C8C0D /* Default-568h@2x.png */; };
+		D798A0DE1F035ACC000B371E /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = D798A0DC1F035ACC000B371E /* search.png */; };
+		D798A0DF1F035ACC000B371E /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D798A0DD1F035ACC000B371E /* search@2x.png */; };
 		D7A1E24E197F342F00E54CE0 /* decrease_font.png in Resources */ = {isa = PBXBuildFile; fileRef = D7A1E24A197F342F00E54CE0 /* decrease_font.png */; };
 		D7A1E24F197F342F00E54CE0 /* decrease_font@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7A1E24B197F342F00E54CE0 /* decrease_font@2x.png */; };
 		D7A1E250197F342F00E54CE0 /* increase_font.png in Resources */ = {isa = PBXBuildFile; fileRef = D7A1E24C197F342F00E54CE0 /* increase_font.png */; };
 		D7A1E251197F342F00E54CE0 /* increase_font@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7A1E24D197F342F00E54CE0 /* increase_font@2x.png */; };
+		D7A4C5AE1F00B35900A53C9D /* SearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A4C5AD1F00B35900A53C9D /* SearchEngine.m */; };
+		D7A4C5B11F00B5C500A53C9D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */; };
+		D7A4C5B51F00BC3500A53C9D /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A4C5B41F00BC3500A53C9D /* SearchViewController.m */; };
 		D7D63297180CDA0F00B752A5 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D63295180CDA0F00B752A5 /* home.png */; };
 		D7D63298180CDA0F00B752A5 /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D63296180CDA0F00B752A5 /* home@2x.png */; };
 		D7D6329C180CDC8B00B752A5 /* bookmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D6329A180CDC8B00B752A5 /* bookmark@2x.png */; };
@@ -141,6 +147,7 @@
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D722CE271EE8F7C100F7D7E8 /* ThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeManager.h; sourceTree = "<group>"; };
 		D722CE281EE8F7C100F7D7E8 /* ThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeManager.m; sourceTree = "<group>"; };
+		D736521E1F0606CB000212C7 /* pages.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = pages.db; sourceTree = "<group>"; };
 		D73E9C451EE7B198008079E9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D7407B151790F5D800204EEF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D74BA37F1ECBFE5800CAAB3D /* settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings@2x.png"; sourceTree = "<group>"; };
@@ -153,10 +160,17 @@
 		D76CC8381ECFEB8600E2C025 /* TextSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextSizeViewController.h; sourceTree = "<group>"; };
 		D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextSizeViewController.m; sourceTree = "<group>"; };
 		D77E8D51177D4436006C8C0D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		D798A0DC1F035ACC000B371E /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
+		D798A0DD1F035ACC000B371E /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		D7A1E24A197F342F00E54CE0 /* decrease_font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = decrease_font.png; sourceTree = "<group>"; };
 		D7A1E24B197F342F00E54CE0 /* decrease_font@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "decrease_font@2x.png"; sourceTree = "<group>"; };
 		D7A1E24C197F342F00E54CE0 /* increase_font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = increase_font.png; sourceTree = "<group>"; };
 		D7A1E24D197F342F00E54CE0 /* increase_font@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "increase_font@2x.png"; sourceTree = "<group>"; };
+		D7A4C5AC1F00B35900A53C9D /* SearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchEngine.h; sourceTree = "<group>"; };
+		D7A4C5AD1F00B35900A53C9D /* SearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchEngine.m; sourceTree = "<group>"; };
+		D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		D7A4C5B31F00BC3500A53C9D /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		D7A4C5B41F00BC3500A53C9D /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		D7D63295180CDA0F00B752A5 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
 		D7D63296180CDA0F00B752A5 /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@2x.png"; sourceTree = "<group>"; };
 		D7D6329A180CDC8B00B752A5 /* bookmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark@2x.png"; sourceTree = "<group>"; };
@@ -183,6 +197,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7A4C5B11F00B5C500A53C9D /* libsqlite3.tbd in Frameworks */,
 				D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */,
 				D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -197,6 +212,8 @@
 		0AE3F95F1257CEC7000C2097 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D798A0DC1F035ACC000B371E /* search.png */,
+				D798A0DD1F035ACC000B371E /* search@2x.png */,
 				D7A1E24A197F342F00E54CE0 /* decrease_font.png */,
 				D7A1E24B197F342F00E54CE0 /* decrease_font@2x.png */,
 				D7A1E24C197F342F00E54CE0 /* increase_font.png */,
@@ -263,6 +280,7 @@
 		28EEBF621118D79A00187D67 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				D7A4C5AB1F00B32B00A53C9D /* SearchEngine */,
 				D74BA3831ECC057100CAAB3D /* Settings */,
 				0AE3F9B61257D225000C2097 /* BookmarksManager.h */,
 				0AE3F93E1257CD66000C2097 /* BookmarksManager.m */,
@@ -295,6 +313,7 @@
 				28EEBF621118D79A00187D67 /* Shared */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				0AE3EF1E1257C67B000C2097 /* web_content */,
+				D736521E1F0606CB000212C7 /* pages.db */,
 				8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */,
 				0AE3F9B21257D1AE000C2097 /* iTunesArtwork */,
 				D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */,
@@ -324,6 +343,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */,
 				D73E9C451EE7B198008079E9 /* WebKit.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
@@ -343,6 +363,17 @@
 				D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		D7A4C5AB1F00B32B00A53C9D /* SearchEngine */ = {
+			isa = PBXGroup;
+			children = (
+				D7A4C5AC1F00B35900A53C9D /* SearchEngine.h */,
+				D7A4C5AD1F00B35900A53C9D /* SearchEngine.m */,
+				D7A4C5B31F00BC3500A53C9D /* SearchViewController.h */,
+				D7A4C5B41F00BC3500A53C9D /* SearchViewController.m */,
+			);
+			name = SearchEngine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -413,6 +444,7 @@
 				D7D63298180CDA0F00B752A5 /* home@2x.png in Resources */,
 				D7A1E251197F342F00E54CE0 /* increase_font@2x.png in Resources */,
 				0AE3F8EB1257C8A9000C2097 /* MainViewController_iPad.xib in Resources */,
+				D798A0DE1F035ACC000B371E /* search.png in Resources */,
 				D74BA3821ECBFE6100CAAB3D /* settings.png in Resources */,
 				0AE3F96B1257CEC7000C2097 /* 1leftarrow-20.png in Resources */,
 				D7A1E24F197F342F00E54CE0 /* decrease_font@2x.png in Resources */,
@@ -422,11 +454,13 @@
 				0AE3F96D1257CEC7000C2097 /* 2dowarrow-20.png in Resources */,
 				0AE3F96E1257CEC7000C2097 /* 2uparrow-20.png in Resources */,
 				D7DD89AC1B49CC0800DF13C4 /* iTunesArtwork@2x in Resources */,
+				D798A0DF1F035ACC000B371E /* search@2x.png in Resources */,
 				0AE3F96F1257CEC7000C2097 /* 53-house.png in Resources */,
 				D7FB27D7180CD8BC0089ED7B /* down.png in Resources */,
 				0AE3F9711257CEC7000C2097 /* AtoI_Banner.png in Resources */,
 				0AE3F9721257CEC7000C2097 /* AtoI_logo.png in Resources */,
 				D7DD89A71B49CBEF00DF13C4 /* Icon-60@3x.png in Resources */,
+				D736521F1F0606CB000212C7 /* pages.db in Resources */,
 				D7D63297180CDA0F00B752A5 /* home.png in Resources */,
 				D7A1E250197F342F00E54CE0 /* increase_font.png in Resources */,
 				0AE3F9731257CEC7000C2097 /* DefaultBookmarks.plist in Resources */,
@@ -475,8 +509,10 @@
 				2860E328111B887F00E27156 /* AppDelegate_iPhone.m in Sources */,
 				D722CE291EE8F7C100F7D7E8 /* ThemeManager.m in Sources */,
 				2860E32E111B888700E27156 /* AppDelegate_iPad.m in Sources */,
+				D7A4C5AE1F00B35900A53C9D /* SearchEngine.m in Sources */,
 				D7E5E3EB1ED1E9870090C6AB /* CSSManager.m in Sources */,
 				D76CC83A1ECFEB8600E2C025 /* TextSizeViewController.m in Sources */,
+				D7A4C5B51F00BC3500A53C9D /* SearchViewController.m in Sources */,
 				0AE3F9481257CD66000C2097 /* BookmarksManager.m in Sources */,
 				0AE3F9491257CD66000C2097 /* BookmarksTableController.m in Sources */,
 				0AE3F94B1257CD66000C2097 /* EventInterceptWindow.m in Sources */,
@@ -542,7 +578,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
@@ -592,7 +628,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
@@ -609,7 +645,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";

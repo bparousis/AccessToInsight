@@ -153,13 +153,16 @@
     NSString *fullPath = [NSString pathWithComponents:
                           [NSArray arrayWithObjects:resourcePath,
                            LOCAL_WEB_DATA_DIR, path, nil]];
+    NSString *readAccessPath = [NSString pathWithComponents:
+                                [NSArray arrayWithObjects:resourcePath,
+                                 LOCAL_WEB_DATA_DIR, nil]];
     NSURL *url = [NSURL fileURLWithPath:fullPath];
+    NSURL *readAccessURL = [NSURL fileURLWithPath:readAccessPath];
     if (hash) {
         url = [NSURL URLWithString:hash relativeToURL:url];
     }
     
-    NSURLRequest *req = [NSURLRequest requestWithURL:url];
-    [self.textSizeWebView loadRequest:req];
+    [self.textSizeWebView loadFileURL:url allowingReadAccessToURL:readAccessURL];
 }
 
 - (void)increaseTextFontSize:(BOOL)increase

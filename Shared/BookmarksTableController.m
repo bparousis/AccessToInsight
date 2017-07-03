@@ -13,6 +13,7 @@
 @interface BookmarksTableController()
 
 @property(nonatomic, assign) NSUInteger editBookmarkIndex;
+@property(nonatomic, retain) UIAlertAction *doneEditAction;
 
 @end
 
@@ -76,15 +77,26 @@
     LocalBookmark *bookmark = [bm bookmarkAtIndex:[indexPath row]];
     if (tableView.isEditing) {
         self.editBookmarkIndex = [indexPath row];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Edit Bookmark"
-                                                        message:@"Enter a title for the bookmark"
-                                                       delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Done", nil];
-        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-        UITextField *inputField = [alert textFieldAtIndex:0];
-        inputField.text = bookmark.title;
-        [alert show];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Edit Bookmark" message:@"Enter a title for the bookmark" preferredStyle:UIAlertControllerStyleAlert];
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.text = bookmark.title;
+            [textField addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+        }];
+        
+        self.doneEditAction = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            BookmarksManager *bm = [BookmarksManager sharedInstance];
+            LocalBookmark *bookmark = [bm bookmarkAtIndex:self.editBookmarkIndex];
+            bookmark.title = [alert textFields][0].text;
+            [bm save];
+            [self.tableView reloadData];
+            
+        }];
+        [alert addAction:self.doneEditAction];
+        
+        [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        }]];
+        
+        [self presentViewController:alert animated:YES completion:nil];
     }
     else {
         [self.delegate bookmarksController:self
@@ -122,28 +134,6 @@
 					toIndex:[toIndexPath row]];
 }
 
-#pragma mark - UIAlertViewDelegate
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([alertView.title isEqualToString:@"Edit Bookmark"]) {
-        if (buttonIndex == 1) {
-            BookmarksManager *bm = [BookmarksManager sharedInstance];
-            LocalBookmark *bookmark = [bm bookmarkAtIndex:self.editBookmarkIndex];
-            bookmark.title = [alertView textFieldAtIndex:0].text;
-            [bm save];
-            [self.tableView reloadData];
-        }
-    }
-}
-
-- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
-    BOOL shouldEnable = YES;
-    if ([alertView.title isEqualToString:@"Edit Bookmark"]) {
-        shouldEnable = [[alertView textFieldAtIndex:0].text length] > 0;
-    }
-    return shouldEnable;
-}
-
 #pragma mark -
 #pragma mark Nav bar actions
 
@@ -156,6 +146,9 @@
 #pragma mark -
 #pragma mark Standard methods
 
+-(void)textDidChange:(UITextField *)textField {
+    self.doneEditAction.enabled = textField.text.length > 0;
+}
 
 /*
  - (id)initWithStyle:(UITableViewStyle)style {
@@ -170,6 +163,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.title = @"Bookmarks";
+    self.tableView.backgroundColor = [ThemeManager backgroundColor];
     self.tableView.allowsSelectionDuringEditing = YES;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
@@ -207,6 +201,7 @@
 
 
 - (void)dealloc {
+    [_doneEditAction release];
     [super dealloc];
 }
 

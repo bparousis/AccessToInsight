@@ -128,12 +128,14 @@
             NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
             NSString *fullPath = [NSString pathWithComponents:
                                   [NSArray arrayWithObjects:resourcePath,
-                                   @"web_content", @"about.html", nil]];
+                                   LOCAL_WEB_DATA_DIR, @"about.html", nil]];
+            NSString *readAccessPath = [NSString pathWithComponents:
+                                        [NSArray arrayWithObjects:resourcePath,
+                                         LOCAL_WEB_DATA_DIR, nil]];
             NSURL *url = [NSURL fileURLWithPath:fullPath];
+            NSURL *readAccessURL = [NSURL fileURLWithPath:readAccessPath];
             
-            NSURLRequest *req = [NSURLRequest requestWithURL:url];
-
-            [infoWebView loadRequest:req];
+            [infoWebView loadFileURL:url allowingReadAccessToURL:readAccessURL];
             UIViewController *webVC = [[[UIViewController alloc] init] autorelease];
             webVC.title = @"Info";
             webVC.view = infoWebView;

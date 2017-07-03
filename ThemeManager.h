@@ -23,7 +23,6 @@
 + (void)decorateToolbar:(UIToolbar *)toolbar;
 + (void)decorateTableCell:(UITableViewCell *)cell;
 + (void)decorateTableView:(UITableView *)tableView;
-+ (void)updateStatusBarStyle;
 
 + (BOOL)isNightMode;
 

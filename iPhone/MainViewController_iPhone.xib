@@ -29,7 +29,6 @@
                                 <action selector="goBack" destination="-1" id="FWs-dP-v47"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="5" style="plain" systemItem="fixedSpace" id="35"/>
                         <barButtonItem image="forward.png" style="plain" id="11" userLabel="Forward">
                             <connections>
                                 <action selector="goForward" destination="-1" id="vPN-Cc-Wpb"/>
@@ -41,7 +40,7 @@
                                 <action selector="home" destination="-1" id="24"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="cFO-4N-Ygo"/>
+                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="7Ju-fs-lbz"/>
                         <barButtonItem style="plain" systemItem="action" id="42" userLabel="Add">
                             <connections>
                                 <action selector="actionButton" destination="-1" id="74"/>
@@ -51,6 +50,12 @@
                         <barButtonItem style="plain" systemItem="bookmarks" id="43" userLabel="Bookmarks">
                             <connections>
                                 <action selector="showBookmarks" destination="-1" id="45"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="lFn-vo-vZG"/>
+                        <barButtonItem image="search.png" id="W9K-uC-KA3" userLabel="Search">
+                            <connections>
+                                <action selector="showSearch" destination="-1" id="Au0-6k-NBq"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="31"/>
@@ -72,6 +77,7 @@
         <image name="back.png" width="25" height="25"/>
         <image name="forward.png" width="25" height="25"/>
         <image name="home.png" width="25" height="25"/>
+        <image name="search.png" width="25" height="25"/>
         <image name="settings.png" width="25" height="25"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

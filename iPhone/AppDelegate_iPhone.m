@@ -8,6 +8,7 @@
 
 #import "AppDelegate_iPhone.h"
 #import "MainViewController.h"
+#import "ThemeManager.h"
 
 @implementation AppDelegate_iPhone
 
@@ -21,10 +22,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
     
     // Override point for customization after application launch.
-    
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
-    navController.navigationBar.barStyle = UIBarStyleBlack;
-	application.statusBarStyle = UIStatusBarStyleDefault;
+    navController.navigationBar.barStyle = [ThemeManager isNightMode] ? UIBarStyleBlackTranslucent : UIBarStyleDefault;
     window.frame = [[UIScreen mainScreen] bounds];
     window.rootViewController = navController;
     [window makeKeyAndVisible];

@@ -8,7 +8,7 @@
 
 #import "AppDelegate_iPad.h"
 #import "MainViewController.h"
-
+#import "ThemeManager.h"
 
 @implementation AppDelegate_iPad
 
@@ -23,6 +23,7 @@
     
     // Override point for customization after application launch.
     UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
+    navController.navigationBar.barStyle = [ThemeManager isNightMode] ? UIBarStyleBlackTranslucent : UIBarStyleDefault;
     window.frame = [[UIScreen mainScreen] bounds];
     self.window.rootViewController = navController;
     [window makeKeyAndVisible];

@@ -77,10 +77,6 @@
     }
 }
 
-+ (void)updateStatusBarStyle {
-    [[UIApplication sharedApplication] setStatusBarStyle:([ThemeManager isNightMode] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault)];
-}
-
 + (BOOL)isNightMode {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults boolForKey:@"nightMode"];

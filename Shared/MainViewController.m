@@ -11,6 +11,7 @@
 #import "AboutViewController.h"
 #import "BookmarksManager.h"
 #import "ThemeManager.h"
+#import "SearchViewController.h"
 
 @interface MainViewController()
 
@@ -18,6 +19,7 @@
 @property(nonatomic, assign) BOOL toolbarHidden;
 @property(nonatomic, retain) LocalBookmark *bookmark;
 @property(nonatomic, assign) CGFloat startAlpha;
+@property(nonatomic, retain) UIAlertAction *doneAddBookmark;
 
 @property(nonatomic, retain) NSLayoutConstraint *topConstraint;
 @property(nonatomic, retain) NSLayoutConstraint *bottomConstraint;
@@ -28,9 +30,7 @@
 
 @synthesize webView;
 @synthesize toolbar;
-@synthesize bmPopover;
 @synthesize bmBarButtonItem;
-@synthesize externalURL;
 @synthesize actionBarButtonItem;
 
 -(id)init {
@@ -129,7 +129,6 @@
     NSData *data = [defaults objectForKey:@"lastLocationBookmark"];
     
     LocalBookmark *lastLocationBookmark = nil;
-    
     if (data) {
         NSKeyedUnarchiver *unarchiver = [[NSKeyedUnarchiver alloc]
                                          initForReadingWithData:data];
@@ -150,27 +149,27 @@
 
 - (void)toggleScreenDecorations {
 	// toolbar
+    self.toolbarHidden = !self.toolbarHidden;
 	[UIView beginAnimations:@"toolbar" context:nil];
-	if (self.toolbarHidden) {
+	if (self.toolbarHidden == NO) {
         self.topConstraint.constant = 20.0f;
         self.bottomConstraint.constant = -40.0f;
         [self.view layoutIfNeeded];
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, -toolbar.frame.size.height);
 		toolbar.alpha = 1;
-		self.toolbarHidden = NO;
+        
 	} else {
         self.topConstraint.constant = 0.0f;
         self.bottomConstraint.constant = 0.0f;
         [self.view layoutIfNeeded];
 		toolbar.frame = CGRectOffset(toolbar.frame, 0, +toolbar.frame.size.height);
 		toolbar.alpha = 0;
-		self.toolbarHidden = YES;
 	}
 	[UIView commitAnimations];
-	
-	// status bar
-	UIApplication *application = [UIApplication sharedApplication];
-	[application  setStatusBarHidden:(application.statusBarHidden ? NO : YES)];
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        [self setNeedsStatusBarAppearanceUpdate];
+    }];
 }
 
 
@@ -203,31 +202,29 @@
 
 
 - (void)loadLocalWebContent:(NSString *)path {
-    NSString *hash = nil;
     NSRange hashRange = [path rangeOfString:@"#" options:NSBackwardsSearch];
     if (hashRange.location != NSNotFound) {
-        hash = [path substringFromIndex:hashRange.location];
         path = [path substringToIndex:hashRange.location];
     }
     
 	NSString *resourcePath = [[NSBundle mainBundle] resourcePath];
+    NSString *readAccessPath = [NSString pathWithComponents:
+                                [NSArray arrayWithObjects:resourcePath,
+                                 LOCAL_WEB_DATA_DIR, nil]];
 	NSString *fullPath = [NSString pathWithComponents:
 						  [NSArray arrayWithObjects:resourcePath,
 						   LOCAL_WEB_DATA_DIR, path, nil]];
     NSURL *url = [NSURL fileURLWithPath:fullPath];
-    if (hash) {
-        url = [NSURL URLWithString:hash relativeToURL:url];
-    }
+    NSURL *readAccessURL = [NSURL fileURLWithPath:readAccessPath];
     
-	NSURLRequest *req = [NSURLRequest requestWithURL:url];
-	[self.webView loadRequest:req];
+    [self.webView loadFileURL:url allowingReadAccessToURL:readAccessURL];
 }
 
 - (void)loadLocalBookmark:(LocalBookmark *)bookmark {
 	rescrollX = bookmark.scrollX;
 	rescrollY = bookmark.scrollY;
 	needRescroll = YES;
-	[self loadLocalWebContent:bookmark.location];
+    [self loadLocalWebContent:bookmark.location];
 }
 
 #pragma mark -
@@ -268,20 +265,7 @@
         return;
     }
     
-    // Anything else needs to be launched externally.
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"External Link"
-                                                    message:@"This link must be launched in an external application."
-                          @" The current application will quit. Is this OK?"
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"OK", nil];
-    
-    // Save the external URL pending the result of the alert feedback.
-    self.externalURL = url;
-    
-    [alert show];
-    [alert release];
-    
+    [[UIApplication sharedApplication] openURL:url];
     decisionHandler(WKNavigationActionPolicyCancel);
 }
 
@@ -327,10 +311,10 @@
 }
 
 - (void)updateColorScheme {
-    [ThemeManager decorateToolbar:self.toolbar];
-    [ThemeManager updateStatusBarStyle];
+    [ThemeManager decorateToolbar:self.toolbar]; 
     self.view.backgroundColor = [ThemeManager backgroundColor];
     self.webView.backgroundColor = [ThemeManager backgroundColor];
+    self.navigationController.navigationBar.barStyle = [ThemeManager isNightMode] ? UIBarStyleBlackTranslucent : UIBarStyleDefault;
 }
 
 - (void)adjustFontForWebView {
@@ -339,37 +323,6 @@
                           (unsigned long)textFontSize];
     [self.webView evaluateJavaScript:jsString completionHandler:^(id result, NSError *error) {
     }];
-}
-
-- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
-    BOOL shouldEnable = YES;
-    if ([alertView.title isEqualToString:@"Add Bookmark"]) {
-        shouldEnable = [[alertView textFieldAtIndex:0].text length] > 0;
-    }
-    return shouldEnable;
-}
-
-// Open the external URL if anything but the cancel button is pressed.
-- (void)alertView:(UIAlertView *)alertView
-							didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if ([alertView.title isEqualToString:@"Add Bookmark"]) {
-        if (buttonIndex == 1) {
-            BookmarksManager *bm = [BookmarksManager sharedInstance];
-            self.bookmark.title = [alertView textFieldAtIndex:0].text;
-            [bm addBookmark:self.bookmark];
-        }
-    }
-    else if ([alertView.title isEqualToString:@"External Link"]) {
-        if (buttonIndex > 0) {
-                [[UIApplication sharedApplication] openURL:self.externalURL];
-        }
-    }
-}
-
-- (void)didPresentAlertView:(UIAlertView *)alertView {
-    if ([alertView.title isEqualToString:@"Add Bookmark"]) {
-        [[alertView textFieldAtIndex:0] selectAll:nil];
-    }
 }
 
 - (void)getBookmark:(void (^ _Nullable)(LocalBookmark * _Nullable))completionHandler {
@@ -411,11 +364,7 @@
 
 - (void)bookmarksController:(BookmarksTableController *)controller
 		   selectedBookmark:(LocalBookmark *)bookmark {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		[self.bmPopover dismissPopoverAnimated:YES];
-		self.bmPopover = nil;
-	} else
-		[self dismissViewControllerAnimated:YES completion:nil];
+	[self dismissViewControllerAnimated:YES completion:nil];
 	[self loadLocalBookmark:bookmark];
 }
 
@@ -428,6 +377,7 @@
 
 - (IBAction)home {
 	[self loadLocalWebContent:@"index.html"];
+    
 }
 
 - (IBAction)goBack {
@@ -450,11 +400,6 @@
 }
 
 - (IBAction)actionButton {
-    if (self.bmPopover) {
-        [self.bmPopover dismissPopoverAnimated:YES];
-        self.bmPopover = nil;
-    }
-    
     self.actionSheet = [UIAlertController alertControllerWithTitle:@"Select Action" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     if ([ThemeManager isNightMode]) {
         self.actionSheet.view.tintColor = [ThemeManager backgroundColor];
@@ -470,15 +415,27 @@
     [self.actionSheet addAction:[UIAlertAction actionWithTitle:@"Add Bookmark" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self getBookmark:^(LocalBookmark *bookmark) {
             self.bookmark = bookmark;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Add Bookmark"
-                                                            message:@"Enter a title for the bookmark"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"Add", nil];
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            UITextField *inputField = [alert textFieldAtIndex:0];
-            inputField.text = self.bookmark.title;
-            [alert show];
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Add Bookmark"
+                                                                           message:@"Enter a title for the bookmark"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.text = self.bookmark.title;
+                textField.delegate = self;
+                [textField addTarget:self action:@selector(textDidChange:) forControlEvents:UIControlEventEditingChanged];
+            }];
+            self.doneAddBookmark = [UIAlertAction actionWithTitle:@"Done" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSString *bookmarkTitle = [alert textFields][0].text;
+                BookmarksManager *bm = [BookmarksManager sharedInstance];
+                self.bookmark.title = bookmarkTitle;
+                [bm addBookmark:self.bookmark];
+            }];
+            [alert addAction:self.doneAddBookmark];
+            
+            [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+            }]];
+            
+            [self presentViewController:alert animated:YES completion:nil];
         }];
     }]];
     
@@ -503,44 +460,33 @@
     [self presentViewController:self.actionSheet animated:YES completion:nil];
 }
 
+-(void)textDidChange:(UITextField *)textField {
+    self.doneAddBookmark.enabled = textField.text.length > 0;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [textField selectAll:nil];
+}
+
 - (IBAction)showBookmarks {
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		if ([self.bmPopover isPopoverVisible]) {
-			return;
-		}
-    }
 	BookmarksTableController *btc = [[BookmarksTableController alloc]
 									 initWithStyle:UITableViewStylePlain];
-    btc.tableView.backgroundColor = [ThemeManager backgroundColor];
 	btc.delegate = self;
 	
 	UINavigationController *nav = [[UINavigationController alloc]
 								   initWithRootViewController:btc];
-	nav.navigationBar.barStyle = UIBarStyleBlack;
+    nav.navigationBar.barStyle = [ThemeManager isNightMode] ? UIBarStyleBlackTranslucent : UIBarStyleDefault;
+    
+    nav.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:nav animated:YES completion:nil];
+    
+    // configure the Popover presentation controller
+    UIPopoverPresentationController *popController = [nav popoverPresentationController];
+    
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.barButtonItem = self.bmBarButtonItem;
+    popController.delegate = self;
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		Class UIPopoverControllerClass = NSClassFromString(@"UIPopoverController");
-		if (UIPopoverControllerClass != nil) {
-            if (self.actionSheet) {
-                [self.actionSheet dismissViewControllerAnimated:YES completion:^{
-                }];
-            }
-            
-			UIPopoverController *popover = [[UIPopoverController alloc] initWithContentViewController:nav];
-			CGSize popoverSize = {300.0, 500.0};
-			popover.delegate = self;
-			popover.popoverContentSize = popoverSize;
-			self.bmPopover = popover;
-			[popover release];
-			
-			[self.bmPopover presentPopoverFromBarButtonItem:self.bmBarButtonItem
-								   permittedArrowDirections:UIPopoverArrowDirectionAny
-												   animated:YES];
-		}
-	} else {
-		[self presentViewController:nav animated:YES completion:nil];
-        [self.navigationController setNavigationBarHidden:YES animated:NO];
-	}
 	[btc release];
 	[nav release];
 }
@@ -550,6 +496,26 @@
     controller.title = @"Settings";
     [self.navigationController pushViewController:controller animated:YES];
 	[controller release];
+}
+
+- (IBAction)showSearch {
+    SearchViewController *controller = [[[SearchViewController alloc] init] autorelease];
+    controller.searchDelegate = self;
+    controller.title = @"Search";
+    
+    UINavigationController *nav = [[[UINavigationController alloc]
+                                    initWithRootViewController:controller] autorelease];
+    nav.navigationBar.barStyle = [ThemeManager isNightMode] ? UIBarStyleBlackTranslucent : UIBarStyleDefault;
+    [self presentViewController:nav animated:YES completion:nil];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
+- (void)loadPage:(NSString *)filePath {
+    [self loadLocalWebContent:filePath];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)searchViewControllerCancel:(SearchViewController *)controller {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 // Need to get rid of this. Too generic.
@@ -574,11 +540,6 @@
 		return (interfaceOrientation == UIInterfaceOrientationPortrait
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeLeft
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-}
-
-#pragma mark -  UI Popover Delegate
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    self.bmPopover = nil;
 }
 
 - (void)didRotateFromInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation {
@@ -609,6 +570,16 @@
     return self.toolbarHidden;
 }
 
+-(UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return [ThemeManager isNightMode] ? UIStatusBarStyleLightContent : UIStatusBarStyleDefault;
+}
+
 - (void)saveLastLocation {
     [self getBookmark:^(LocalBookmark *lastLocationBookmark) {
         NSMutableData *data = [[NSMutableData alloc] init];
@@ -628,10 +599,8 @@
 	// e.g. self.myOutlet = nil;
 	self.webView = nil;
 	self.toolbar = nil;
-	self.externalURL = nil;
 	self.bmBarButtonItem = nil;
     self.actionBarButtonItem = nil;
-	self.bmPopover = nil;
 	[super viewDidUnload];
 }
 
@@ -644,9 +613,8 @@
     [actionBarButtonItem release];
 	[webView release];
     [toolbar release];
-	[externalURL release];
-    [bmPopover release];
     [_bookmark release];
+    [_doneAddBookmark release];
     
     [_topConstraint release];
     [_bottomConstraint release];

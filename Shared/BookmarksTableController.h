@@ -15,8 +15,8 @@
 @protocol BookmarksControllerDelegate;
 
 
-@interface BookmarksTableController : UITableViewController {
-	id <BookmarksControllerDelegate, UIAlertViewDelegate> delegate;
+@interface BookmarksTableController : UITableViewController<UITextFieldDelegate> {
+	id <BookmarksControllerDelegate> delegate;
 }
 
 @property(nonatomic, assign) id <BookmarksControllerDelegate> delegate;
