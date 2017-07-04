@@ -114,13 +114,7 @@
      postNotificationName:@"NightMode"
      object:self];
     
-    [UIView animateWithDuration:1.0f animations:^{
-        [ThemeManager decorateTableView:self.tableView];
-    } completion:^(BOOL finished) {
-        if (finished) {
-           
-        }
-    }];
+    [ThemeManager decorateTableView:self.tableView];
     
     NSArray<UITableViewCell*> *cells = self.tableView.visibleCells;
     for (NSInteger i = 0; i < cells.count; i++) {

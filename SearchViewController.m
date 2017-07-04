@@ -16,6 +16,8 @@
 @property(nonatomic, retain) NSArray *tableData;
 @property(nonatomic, assign) BOOL showRecentSearches;
 @property(nonatomic, retain) NSTimer *searchTimer;
+@property(nonatomic, assign) BOOL isSearching;
+@property(nonatomic, retain) UIActivityIndicatorView *searchingIndicator;
 
 @end
 
@@ -23,6 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.isSearching = NO;
     self.searchTimer = nil;
     self.showRecentSearches = YES;
     self.tableView.backgroundColor = [ThemeManager backgroundColor];
@@ -39,9 +42,7 @@
     self.tableData = recentSearches;
     NSInteger lastSearchScopeIndex = [userDefaults integerForKey:@"lastSearchScopeIndex"];
     self.searchEngine = [[[SearchEngine alloc] init] autorelease];
-    [self.searchEngine setup];
     self.searchController = [[[UISearchController alloc] initWithSearchResultsController:nil] autorelease];
-    
     self.searchController.searchResultsUpdater = self;
     self.searchController.dimsBackgroundDuringPresentation = false;
     [self.searchController.searchBar sizeToFit];
@@ -92,12 +93,18 @@
         
         NSInteger scopeIndex = self.searchController.searchBar.selectedScopeButtonIndex;
         NSString *scopeType = [self.searchController.searchBar.scopeButtonTitles objectAtIndex:scopeIndex];
+        self.isSearching = YES;
+        self.tableData = @[];
+        [self.tableView reloadData];
         [scopeType retain];
         [queryString retain];
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             NSArray *queryResults = [self.searchEngine query:queryString type:scopeType];
             [queryResults retain];
             dispatch_async(dispatch_get_main_queue(), ^(void){
+                self.isSearching = NO;
+                [self.searchingIndicator stopAnimating];
+                [self.searchingIndicator removeFromSuperview];
                 self.showRecentSearches = NO;
                 self.tableData = queryResults;
                 [self.tableView reloadData];
@@ -132,7 +139,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger numOfSections = 0;
-    if ([self.tableData count] > 0 || self.showRecentSearches)
+    if ([self.tableData count] > 0 || self.showRecentSearches || self.isSearching)
     {
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         numOfSections = 1;
@@ -154,7 +161,16 @@
 
 // Customize the number of rows in the table view.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.tableData count];
+    if (self.isSearching) {
+        return 1;
+    }
+    else {
+        return [self.tableData count];
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 44;
 }
 
 
@@ -186,7 +202,16 @@
         startFontTag = @"<font color='black'>";
     }
     
-    if (self.showRecentSearches) {
+    if (self.isSearching) {
+        cell.textLabel.text = nil;
+        cell.detailTextLabel.text = nil;
+        UIActivityIndicatorViewStyle style = [ThemeManager isNightMode] ? UIActivityIndicatorViewStyleWhite : UIActivityIndicatorViewStyleGray;
+        self.searchingIndicator = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:style] autorelease];
+        [cell.contentView addSubview:self.searchingIndicator];
+        [self.searchingIndicator performSelector:@selector(startAnimating) withObject:nil afterDelay:0.25];
+        self.searchingIndicator.center = cell.contentView.center;
+    }
+    else if (self.showRecentSearches) {
         NSString *aSearch = [self.tableData objectAtIndex:indexPath.row];
         cell.textLabel.text = aSearch;
         cell.detailTextLabel.text = nil;
@@ -199,7 +224,7 @@
             NSString *subtitle = [resultData objectForKey:@"subtitle"];
             NSString *snippet = [resultData objectForKey:@"snippet"];
             NSString *formattedSnippet = [NSString stringWithFormat:@"%@%@%@", startFontTag, snippet, @"</font>"];
-            NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[formattedSnippet dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil];
+            NSAttributedString * attrStr = [[[NSAttributedString alloc] initWithData:[formattedSnippet dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType} documentAttributes:nil error:nil] autorelease];
             cell.textLabel.text = [resultData objectForKey:@"title"];
             if ([self isTitleSearch] && [subtitle length] > 0) {
                 cell.detailTextLabel.text = subtitle;
@@ -258,6 +283,7 @@
     [_searchController release];
     [_tableData release];
     [_searchTimer release];
+    [_searchingIndicator release];
     [super dealloc];
 }
 

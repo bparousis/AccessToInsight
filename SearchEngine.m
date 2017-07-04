@@ -10,6 +10,12 @@
 #import <sqlite3.h>
 #import <UIKit/UIKit.h>
 
+@interface SearchEngine ()
+
+@property(nonatomic, retain) NSCache *searchCache;
+
+@end
+
 @implementation SearchEngine
 
 static sqlite3 *database = nil;
@@ -59,7 +65,13 @@ static double rankFunc(unsigned int *aMatchinfo){
     return score;
 }
 
-- (void)setup {
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.searchCache = [[[NSCache alloc] init] autorelease];
+        self.searchCache.countLimit = 9;
+    }
+    return self;
 }
 
 - (NSArray *)query:(NSString *)queryString {
@@ -67,6 +79,12 @@ static double rankFunc(unsigned int *aMatchinfo){
 }
 
 - (NSArray *)query:(NSString *)queryString type:(NSString *)type {
+    NSString *cacheKey = [NSString stringWithFormat:@"%@%@", queryString, type];
+    NSArray *cacheResults = [self.searchCache objectForKey:cacheKey];
+    if (cacheResults != nil) {
+        return cacheResults;
+    }
+    
     int searchTextCol = 1;
     NSString *searchColumn = @"Page";
     if ([type isEqualToString:@"Title"]) {
@@ -116,12 +134,19 @@ static double rankFunc(unsigned int *aMatchinfo){
                                                                      ascending:NO];
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortByName];
         NSArray *sortedArray = [allResults sortedArrayUsingDescriptors:sortDescriptors];
+        [self.searchCache setObject:sortedArray forKey:cacheKey];
         return sortedArray;
     }
     else {
+        [self.searchCache setObject:@[] forKey:cacheKey];
         return @[];
     }
-    return allResults;
+}
+
+- (void) dealloc {
+    [_searchCache release];
+    
+    [super dealloc];
 }
 
 @end
