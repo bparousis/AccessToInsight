@@ -148,7 +148,7 @@
     }
     else
     {
-        UILabel *noDataLabel         = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)];
+        UILabel *noDataLabel         = [[[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, self.tableView.bounds.size.height)] autorelease];
         noDataLabel.text             = [self.searchController.searchBar.text length] > 0 ? @"No Results" : @"";
         noDataLabel.textColor        = [ThemeManager isNightMode] ? [UIColor whiteColor] : [UIColor blackColor];
         noDataLabel.textAlignment    = NSTextAlignmentCenter;

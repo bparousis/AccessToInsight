@@ -85,10 +85,8 @@ static double rankFunc(unsigned int *aMatchinfo){
         return cacheResults;
     }
     
-    int searchTextCol = 1;
     NSString *searchColumn = @"Page";
     if ([type isEqualToString:@"Title"]) {
-        searchTextCol = 0;
         searchColumn = @"title";
     }
     NSString *searchSQL = [NSString stringWithFormat:@"SELECT title, subtitle, snippet(Page), filePath, matchinfo(Page) FROM Page WHERE %@ MATCH ?", searchColumn];
