@@ -502,8 +502,8 @@
     self.startAlpha = [ThemeManager isNightMode] ? 0.0f : 1.0f;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
+- (BOOL)shouldAutorotate {
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 		return (interfaceOrientation == UIInterfaceOrientationPortrait
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeLeft
@@ -513,9 +513,6 @@
 		return (interfaceOrientation == UIInterfaceOrientationPortrait
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeLeft
 				|| interfaceOrientation == UIInterfaceOrientationLandscapeRight);
-}
-
-- (void)didRotateFromInterfaceOrientation: (UIInterfaceOrientation)toInterfaceOrientation {
 }
 
 - (void)didReceiveMemoryWarning {
@@ -566,17 +563,6 @@
         [defaults synchronize];
     }];
 }
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-	self.webView = nil;
-	self.toolbar = nil;
-	self.bmBarButtonItem = nil;
-    self.actionBarButtonItem = nil;
-	[super viewDidUnload];
-}
-
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

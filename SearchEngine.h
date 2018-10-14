@@ -13,7 +13,6 @@
     NSString *databasePath;
 }
 
-- (void)setup;
 - (NSArray *)query:(NSString *)queryString;
 - (NSArray *)query:(NSString *)queryString type:(NSString *)type;
 

@@ -178,8 +178,8 @@
 }
 
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations
+- (BOOL)shouldAutorotate {
+    UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
     return (interfaceOrientation == UIInterfaceOrientationPortrait
 			|| interfaceOrientation == UIInterfaceOrientationLandscapeLeft
 			|| interfaceOrientation == UIInterfaceOrientationLandscapeRight);
@@ -192,13 +192,6 @@
 	
 	// Release any cached data, images, etc that aren't in use.
 }
-
-
-- (void)viewDidUnload {
-	// Release any retained subviews of the main view.
-	// e.g. self.myOutlet = nil;
-}
-
 
 - (void)dealloc {
     [_doneEditAction release];
