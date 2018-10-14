@@ -23,9 +23,6 @@
 
 /* Begin PBXBuildFile section */
 		0A184CFE1265113200972013 /* web_content in Resources */ = {isa = PBXBuildFile; fileRef = 0AE3EF1E1257C67B000C2097 /* web_content */; };
-		0AE303B81258F385000C2097 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AE303B51258F385000C2097 /* Icon-72.png */; };
-		0AE303B91258F385000C2097 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AE303B61258F385000C2097 /* Icon.png */; };
-		0AE303BA1258F385000C2097 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0AE303B71258F385000C2097 /* Icon@2x.png */; };
 		0AE3F9481257CD66000C2097 /* BookmarksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F93E1257CD66000C2097 /* BookmarksManager.m */; };
 		0AE3F9491257CD66000C2097 /* BookmarksTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F93F1257CD66000C2097 /* BookmarksTableController.m */; };
 		0AE3F94D1257CD66000C2097 /* LocalBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9431257CD66000C2097 /* LocalBookmark.m */; };
@@ -44,6 +41,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		763F93D72173C371005E6A58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 763F93D62173C371005E6A58 /* Images.xcassets */; };
 		766F078B216EF036003340F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766F078A216EF036003340F9 /* Main.storyboard */; };
 		766F078E216EFF43003340F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 766F078D216EFF43003340F9 /* AppDelegate.m */; };
 		7691B8CA216C5E31008B97A1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */; };
@@ -71,11 +69,6 @@
 		D7D63298180CDA0F00B752A5 /* home@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D63296180CDA0F00B752A5 /* home@2x.png */; };
 		D7D6329C180CDC8B00B752A5 /* bookmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D6329A180CDC8B00B752A5 /* bookmark@2x.png */; };
 		D7D6329E180CDCFA00B752A5 /* bookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = D7D6329D180CDCFA00B752A5 /* bookmark.png */; };
-		D7DD89A61B49CBEF00DF13C4 /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A11B49CBEF00DF13C4 /* Icon-60@2x.png */; };
-		D7DD89A71B49CBEF00DF13C4 /* Icon-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A21B49CBEF00DF13C4 /* Icon-60@3x.png */; };
-		D7DD89A81B49CBEF00DF13C4 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A31B49CBEF00DF13C4 /* Icon-72@2x.png */; };
-		D7DD89A91B49CBEF00DF13C4 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A41B49CBEF00DF13C4 /* Icon-76.png */; };
-		D7DD89AA1B49CBEF00DF13C4 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89A51B49CBEF00DF13C4 /* Icon-76@2x.png */; };
 		D7DD89AC1B49CC0800DF13C4 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */; };
 		D7E5E3EB1ED1E9870090C6AB /* CSSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D7E5E3EA1ED1E9870090C6AB /* CSSManager.m */; };
 		D7FB27CF180CD6F40089ED7B /* forward.png in Resources */ = {isa = PBXBuildFile; fileRef = D7FB27CD180CD6F40089ED7B /* forward.png */; };
@@ -98,9 +91,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0AE303B51258F385000C2097 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		0AE303B61258F385000C2097 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
-		0AE303B71258F385000C2097 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		0AE3EF1E1257C67B000C2097 /* web_content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web_content; sourceTree = "<group>"; };
 		0AE3F93E1257CD66000C2097 /* BookmarksManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BookmarksManager.m; path = Shared/BookmarksManager.m; sourceTree = "<group>"; };
 		0AE3F93F1257CD66000C2097 /* BookmarksTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BookmarksTableController.m; path = Shared/BookmarksTableController.m; sourceTree = "<group>"; };
@@ -127,6 +117,7 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessToInsight_Universal_Prefix.pch; sourceTree = "<group>"; };
+		763F93D62173C371005E6A58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		766F078A216EF036003340F9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		766F078C216EFF43003340F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		766F078D216EFF43003340F9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -162,11 +153,6 @@
 		D7D63296180CDA0F00B752A5 /* home@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home@2x.png"; sourceTree = "<group>"; };
 		D7D6329A180CDC8B00B752A5 /* bookmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bookmark@2x.png"; sourceTree = "<group>"; };
 		D7D6329D180CDCFA00B752A5 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bookmark.png; sourceTree = "<group>"; };
-		D7DD89A11B49CBEF00DF13C4 /* Icon-60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@2x.png"; sourceTree = "<group>"; };
-		D7DD89A21B49CBEF00DF13C4 /* Icon-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-60@3x.png"; sourceTree = "<group>"; };
-		D7DD89A31B49CBEF00DF13C4 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
-		D7DD89A41B49CBEF00DF13C4 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
-		D7DD89A51B49CBEF00DF13C4 /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
 		D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		D7E5E3E91ED1E9870090C6AB /* CSSManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSSManager.h; sourceTree = "<group>"; };
 		D7E5E3EA1ED1E9870090C6AB /* CSSManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSSManager.m; sourceTree = "<group>"; };
@@ -271,6 +257,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				763F93D62173C371005E6A58 /* Images.xcassets */,
 				7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */,
 				766F078A216EF036003340F9 /* Main.storyboard */,
 				D7407B151790F5D800204EEF /* MessageUI.framework */,
@@ -281,14 +268,6 @@
 				8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */,
 				0AE3F9B21257D1AE000C2097 /* iTunesArtwork */,
 				D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */,
-				D7DD89A11B49CBEF00DF13C4 /* Icon-60@2x.png */,
-				D7DD89A21B49CBEF00DF13C4 /* Icon-60@3x.png */,
-				D7DD89A31B49CBEF00DF13C4 /* Icon-72@2x.png */,
-				D7DD89A41B49CBEF00DF13C4 /* Icon-76.png */,
-				D7DD89A51B49CBEF00DF13C4 /* Icon-76@2x.png */,
-				0AE303B51258F385000C2097 /* Icon-72.png */,
-				0AE303B61258F385000C2097 /* Icon.png */,
-				0AE303B71258F385000C2097 /* Icon@2x.png */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -399,10 +378,10 @@
 				D798A0DE1F035ACC000B371E /* search.png in Resources */,
 				D74BA3821ECBFE6100CAAB3D /* settings.png in Resources */,
 				0AE3F96B1257CEC7000C2097 /* 1leftarrow-20.png in Resources */,
+				763F93D72173C371005E6A58 /* Images.xcassets in Resources */,
 				D7A1E24F197F342F00E54CE0 /* decrease_font@2x.png in Resources */,
 				D7FB27D8180CD8BC0089ED7B /* down@2x.png in Resources */,
 				0AE3F96C1257CEC7000C2097 /* 1rightarrow-20.png in Resources */,
-				D7DD89A91B49CBEF00DF13C4 /* Icon-76.png in Resources */,
 				0AE3F96D1257CEC7000C2097 /* 2dowarrow-20.png in Resources */,
 				0AE3F96E1257CEC7000C2097 /* 2uparrow-20.png in Resources */,
 				766F078B216EF036003340F9 /* Main.storyboard in Resources */,
@@ -412,26 +391,19 @@
 				D7FB27D7180CD8BC0089ED7B /* down.png in Resources */,
 				0AE3F9711257CEC7000C2097 /* AtoI_Banner.png in Resources */,
 				0AE3F9721257CEC7000C2097 /* AtoI_logo.png in Resources */,
-				D7DD89A71B49CBEF00DF13C4 /* Icon-60@3x.png in Resources */,
 				D736521F1F0606CB000212C7 /* pages.db in Resources */,
 				D7D63297180CDA0F00B752A5 /* home.png in Resources */,
 				D7A1E250197F342F00E54CE0 /* increase_font.png in Resources */,
 				0AE3F9731257CEC7000C2097 /* DefaultBookmarks.plist in Resources */,
-				D7DD89A61B49CBEF00DF13C4 /* Icon-60@2x.png in Resources */,
 				0AE3F9741257CEC7000C2097 /* Left-arrow-32.png in Resources */,
 				0AE3F9751257CEC7000C2097 /* Right-arrow-32.png in Resources */,
 				D74BA3801ECBFE5800CAAB3D /* settings@2x.png in Resources */,
 				D7A1E24E197F342F00E54CE0 /* decrease_font.png in Resources */,
-				0AE303B81258F385000C2097 /* Icon-72.png in Resources */,
 				D7FB27D0180CD6F40089ED7B /* forward@2x.png in Resources */,
-				0AE303B91258F385000C2097 /* Icon.png in Resources */,
 				D757EC1C180CD5560057E45A /* back.png in Resources */,
-				D7DD89A81B49CBEF00DF13C4 /* Icon-72@2x.png in Resources */,
-				0AE303BA1258F385000C2097 /* Icon@2x.png in Resources */,
 				D7FB27DA180CD8BC0089ED7B /* up@2x.png in Resources */,
 				D7D6329E180CDCFA00B752A5 /* bookmark.png in Resources */,
 				0A184CFE1265113200972013 /* web_content in Resources */,
-				D7DD89AA1B49CBEF00DF13C4 /* Icon-76@2x.png in Resources */,
 				D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -489,6 +461,7 @@
 		0AE3038F1257D619000C2097 /* App Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -620,6 +593,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -659,6 +633,7 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
