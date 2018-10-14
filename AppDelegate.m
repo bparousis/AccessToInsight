@@ -1,16 +1,15 @@
 //
-//  AppDelegate_iPad.m
-//  AccessToInsight-Universal
+//  AppDelegate.m
+//  AccessToInsight
 //
-//  Created by Robert Stone on 10/2/10.
-//  Copyright 2010 Appmagination. All rights reserved.
+//  Created by Bill Parousis on 2018-10-10.
 //
 
-#import "AppDelegate_iPad.h"
+#import "AppDelegate.h"
 #import "MainViewController.h"
 #import "ThemeManager.h"
 
-@implementation AppDelegate_iPad
+@implementation AppDelegate
 
 @synthesize window;
 @synthesize viewController;
@@ -19,15 +18,7 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
-    // Override point for customization after application launch.
-    UINavigationController *navController = [[[UINavigationController alloc] initWithRootViewController:viewController] autorelease];
-    navController.navigationBar.barStyle = [ThemeManager isNightMode] ? UIBarStyleBlackTranslucent : UIBarStyleDefault;
-    window.frame = [[UIScreen mainScreen] bounds];
-    self.window.rootViewController = navController;
-    [window makeKeyAndVisible];
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     return YES;
 }
 
@@ -37,13 +28,14 @@
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
+    
     [self.viewController saveLastLocation];
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
      If your application supports background execution, called instead of applicationWillTerminate: when the user quits.
      */
     [self.viewController saveLastLocation];

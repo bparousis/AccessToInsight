@@ -41,16 +41,21 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [ThemeManager decorateTableView:self.tableView];
-    self.tableView.autoresizesSubviews = YES;
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin |
-    UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.tableView];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.tableView.frame = self.view.frame;
+    if (@available(iOS 11, *)) {
+        UILayoutGuide * guide = self.view.safeAreaLayoutGuide;
+        [self.tableView.topAnchor constraintEqualToAnchor:guide.topAnchor].active = YES;
+        [self.tableView.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor].active = YES;
+        [self.tableView.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor].active = YES;
+        [self.tableView.bottomAnchor constraintEqualToAnchor:guide.bottomAnchor].active = YES;
+    } else {
+        UILayoutGuide *margins = self.view.layoutMarginsGuide;
+        [self.tableView.topAnchor constraintEqualToAnchor:margins.topAnchor].active = YES;
+        [self.tableView.leadingAnchor constraintEqualToAnchor:margins.leadingAnchor].active = YES;
+        [self.tableView.trailingAnchor constraintEqualToAnchor:margins.trailingAnchor].active = YES;
+        [self.tableView.bottomAnchor constraintEqualToAnchor:margins.bottomAnchor].active = YES;
+    }
 }
 
 #pragma mark - UITable View Delegate/Datasource

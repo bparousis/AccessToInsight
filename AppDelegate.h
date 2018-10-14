@@ -1,16 +1,15 @@
 //
-//  AppDelegate_iPad.h
-//  AccessToInsight-Universal
+//  AppDelegate.h
+//  AccessToInsight
 //
-//  Created by Robert Stone on 10/2/10.
-//  Copyright 2010 Appmagination. All rights reserved.
+//  Created by Bill Parousis on 2018-10-10.
 //
 
 #import <UIKit/UIKit.h>
 
 @class MainViewController;
 
-@interface AppDelegate_iPad : NSObject <UIApplicationDelegate> {
+@interface AppDelegate : NSObject <UIApplicationDelegate> {
     UIWindow *window;
     MainViewController *viewController;
 }

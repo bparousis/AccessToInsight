@@ -79,49 +79,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolbarHidden = NO;
+    
     self.webView = [[[WKWebView alloc] init] autorelease];
     self.webView.navigationDelegate = self;
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     
+    UITapGestureRecognizer *tapGesture = [[[UITapGestureRecognizer alloc]
+                                           initWithTarget:self action:@selector(handleTapGesture:)] autorelease];
+    tapGesture.delegate = self;
+    tapGesture.numberOfTapsRequired = 2;
+    [self.webView addGestureRecognizer:tapGesture];
+
     [self determineStartAlpha];
     self.webView.opaque = NO;
     [self updateColorScheme];
     [self.view addSubview:self.webView];
     
-    self.topConstraint = [NSLayoutConstraint constraintWithItem:self.webView
-                                                      attribute:NSLayoutAttributeTop
-                                                      relatedBy:NSLayoutRelationEqual
-                                                         toItem:self.view
-                                                      attribute:NSLayoutAttributeTop
-                                                     multiplier:1.0
-                                                       constant:20.0];
-    [self.view addConstraint:self.topConstraint];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.webView
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.webView
-                                                         attribute:NSLayoutAttributeBottom
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.view
-                                                         attribute:NSLayoutAttributeBottom
-                                                        multiplier:1.0
-                                                          constant:-40.0];
-    [self.view addConstraint:self.bottomConstraint];
-    
+    if (@available(iOS 11, *)) {
+        UILayoutGuide * guide = self.view.safeAreaLayoutGuide;
+        [self.webView.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor].active = YES;
+        [self.webView.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor].active = YES;
+        self.topConstraint = [self.webView.topAnchor constraintEqualToAnchor:guide.topAnchor];
+        self.bottomConstraint = [self.webView.bottomAnchor constraintEqualToAnchor:guide.bottomAnchor];
+    } else {
+        UILayoutGuide *margins = self.view.layoutMarginsGuide;
+        [self.webView.leadingAnchor constraintEqualToAnchor:margins.leadingAnchor].active = YES;
+        [self.webView.trailingAnchor constraintEqualToAnchor:margins.trailingAnchor].active = YES;
+        self.topConstraint = [self.webView.topAnchor constraintEqualToAnchor:self.topLayoutGuide.bottomAnchor];
+        self.bottomConstraint = [self.webView.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.topAnchor];
+    }
+    self.topConstraint.active = YES;
+    self.bottomConstraint.constant = -44.0f;
+    self.bottomConstraint.active = YES;
+    [self.view layoutIfNeeded];
     
     // Load the last page the user was viewing.
     // Unfortunately I don't know of a way to save and load the history.
@@ -144,52 +134,36 @@
     }
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+- (void)handleTapGesture:(UITapGestureRecognizer *) recognizer {
+    [self toggleScreenDecorations];
+}
+
 #pragma mark -
 #pragma mark Event Intercept Window delegate stuff
 
 - (void)toggleScreenDecorations {
-	// toolbar
+    // toolbar
     self.toolbarHidden = !self.toolbarHidden;
-	[UIView beginAnimations:@"toolbar" context:nil];
-	if (self.toolbarHidden == NO) {
-        self.topConstraint.constant = 20.0f;
-        self.bottomConstraint.constant = -40.0f;
-        [self.view layoutIfNeeded];
-		toolbar.frame = CGRectOffset(toolbar.frame, 0, -toolbar.frame.size.height);
-		toolbar.alpha = 1;
-        
-	} else {
-        self.topConstraint.constant = 0.0f;
+    [UIView beginAnimations:@"toolbar" context:nil];
+    if (self.toolbarHidden == NO) {
+        self.bottomConstraint.constant = -44.0f;
+        toolbar.hidden = false;
+
+    } else {
         self.bottomConstraint.constant = 0.0f;
-        [self.view layoutIfNeeded];
-		toolbar.frame = CGRectOffset(toolbar.frame, 0, +toolbar.frame.size.height);
-		toolbar.alpha = 0;
-	}
-	[UIView commitAnimations];
-    
+        toolbar.hidden = true;
+    }
+    [self.view layoutIfNeeded];
+    [UIView commitAnimations];
+
     [UIView animateWithDuration:0.25 animations:^{
         [self setNeedsStatusBarAppearanceUpdate];
     }];
 }
-
-
-- (BOOL)interceptEvent:(UIEvent *)event {
-	NSSet *touches = [event allTouches];
-	UITouch	*oneTouch = [touches anyObject];
-	UIView *touchView = [oneTouch view];
-	//	NSLog(@"tap count = %d", [oneTouch tapCount]);
-	// check for taps on the web view which really end up being dispatched to
-	// a scroll view
-	if (touchView && [touchView isDescendantOfView:webView]
-			&& touches && oneTouch.phase == UITouchPhaseBegan) {
-		if ([oneTouch tapCount] == 2) {
-			[self toggleScreenDecorations];
-			return YES;
-		}
-	}	
-	return NO;
-}
-
 
 #pragma mark -
 #pragma mark Web view stuff
@@ -377,7 +351,6 @@
 
 - (IBAction)home {
 	[self loadLocalWebContent:@"index.html"];
-    
 }
 
 - (IBAction)goBack {

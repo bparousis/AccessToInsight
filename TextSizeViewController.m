@@ -70,69 +70,29 @@
     [self.view addSubview:self.textSizeWebView];
     [self.view addSubview:self.toolbar];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.toolbar
-                                                          attribute:NSLayoutAttributeHeight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:nil
-                                                          attribute:NSLayoutAttributeNotAnAttribute
-                                                         multiplier:1.0
-                                                           constant:44.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.textSizeWebView
-                                                          attribute:NSLayoutAttributeTop
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.textSizeWebView
-                                                          attribute:NSLayoutAttributeLeft
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeLeft
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.textSizeWebView
-                                                          attribute:NSLayoutAttributeRight
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeRight
-                                                         multiplier:1.0
-                                                           constant:0.0]];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.textSizeWebView
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.toolbar
-                                                          attribute:NSLayoutAttributeTop
-                                                         multiplier:1.0
-                                                           constant:0.0]];
+    if (@available(iOS 11, *)) {
+        UILayoutGuide * guide = self.view.safeAreaLayoutGuide;
+        
+        [self.textSizeWebView.topAnchor constraintEqualToAnchor:guide.topAnchor].active = YES;
+        [self.textSizeWebView.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor].active = YES;
+        [self.textSizeWebView.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor].active = YES;
+        [self.textSizeWebView.bottomAnchor constraintEqualToAnchor:self.toolbar.topAnchor].active = YES;
+        
+        [self.toolbar.leadingAnchor constraintEqualToAnchor:guide.leadingAnchor].active = YES;
+        [self.toolbar.trailingAnchor constraintEqualToAnchor:guide.trailingAnchor].active = YES;
+        [self.toolbar.bottomAnchor constraintEqualToAnchor:guide.bottomAnchor].active = YES;
+    } else {
+        UILayoutGuide *margins = self.view.layoutMarginsGuide;
+        
+        [self.textSizeWebView.topAnchor constraintEqualToAnchor:margins.topAnchor].active = YES;
+        [self.textSizeWebView.leadingAnchor constraintEqualToAnchor:margins.leadingAnchor].active = YES;
+        [self.textSizeWebView.trailingAnchor constraintEqualToAnchor:margins.trailingAnchor].active = YES;
+        [self.textSizeWebView.bottomAnchor constraintEqualToAnchor:self.toolbar.topAnchor].active = YES;
+        
+        [self.toolbar.leadingAnchor constraintEqualToAnchor:margins.leadingAnchor].active = YES;
+        [self.toolbar.trailingAnchor constraintEqualToAnchor:margins.trailingAnchor].active = YES;
+        [self.toolbar.bottomAnchor constraintEqualToAnchor:self.bottomLayoutGuide.topAnchor].active = YES;
+    }
 }
 
 - (void)webView:(WKWebView *)webView didCommitNavigation:(WKNavigation *)navigation {
@@ -198,14 +158,6 @@
 
 - (void)decreaseFontSize:(id)sender {
     [self increaseTextFontSize:NO];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
 }
 
 - (void)dealloc {

@@ -9,16 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/Webkit.h>
 
-#import "EventInterceptWindow.h"
 #import "BookmarksTableController.h"
 #import "SearchViewController.h"
 
 #define TEXT_FONT_SIZE_KEY @"fontSize"
 
 
-@interface MainViewController : UIViewController <EventInterceptWindowDelegate,
-		WKNavigationDelegate, BookmarksControllerDelegate,
-        UIPopoverPresentationControllerDelegate, SearchViewDelegate, UITextFieldDelegate>
+@interface MainViewController : UIViewController <WKNavigationDelegate, BookmarksControllerDelegate,
+        UIPopoverPresentationControllerDelegate, SearchViewDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate>
 {
 	WKWebView *webView;
 	IBOutlet UIToolbar *toolbar;

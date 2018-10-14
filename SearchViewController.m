@@ -50,6 +50,7 @@
     [self.searchController.searchBar setSelectedScopeButtonIndex:lastSearchScopeIndex];
     self.searchController.searchBar.delegate = self;
     self.definesPresentationContext = true;
+    self.extendedLayoutIncludesOpaqueBars = YES;
     
     self.tableView.tableHeaderView = self.searchController.searchBar;
 }
