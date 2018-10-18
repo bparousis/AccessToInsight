@@ -2,7 +2,7 @@
 //  CSSManager.m
 //  AccessToInsight
 //
-//  Created by Dev on 2017-05-21.
+//  Created by Bill Parousis on 2017-05-21.
 //
 //
 

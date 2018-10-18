@@ -2,7 +2,7 @@
 //  TextSizeViewController.m
 //  AccessToInsight
 //
-//  Created by Dev on 2017-05-19.
+//  Created by Bill Parousis on 2017-05-19.
 //
 //
 #import <WebKit/Webkit.h>

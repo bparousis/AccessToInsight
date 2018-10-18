@@ -2,7 +2,7 @@
 //  ThemeManager.m
 //  AccessToInsight
 //
-//  Created by Dev on 2017-06-07.
+//  Created by Bill Parousis on 2017-06-07.
 //
 //
 

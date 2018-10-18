@@ -2,7 +2,7 @@
 //  AboutViewController.m
 //  AccessToInsight
 //
-//  Created by Dev on 2013-07-11.
+//  Created by Bill Parousis on 2013-07-11.
 //
 //
 

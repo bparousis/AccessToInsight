@@ -2,7 +2,7 @@
 //  SearchViewController.h
 //  AccessToInsight
 //
-//  Created by Dev on 2017-06-25.
+//  Created by Bill Parousis on 2017-06-25.
 //
 //
 

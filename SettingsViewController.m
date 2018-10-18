@@ -2,7 +2,7 @@
 //  SettingsViewController.m
 //  AccessToInsight
 //
-//  Created by Dev on 2017-05-17.
+//  Created by Bill Parousis on 2017-05-17.
 //
 #import "SettingsViewController.h"
 #import "AboutViewController.h"
