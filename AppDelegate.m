@@ -19,8 +19,6 @@
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSArray *array = [[[[NSArray alloc] init] autorelease] autorelease];
-    
     return YES;
 }
 
