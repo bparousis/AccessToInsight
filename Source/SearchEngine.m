@@ -12,7 +12,7 @@
 
 @interface SearchEngine ()
 
-@property(nonatomic, retain) NSCache *searchCache;
+@property(nonatomic, strong) NSCache *searchCache;
 
 @end
 
@@ -68,7 +68,7 @@ static double rankFunc(unsigned int *aMatchinfo){
 - (id)init {
     self = [super init];
     if (self) {
-        self.searchCache = [[[NSCache alloc] init] autorelease];
+        self.searchCache = [[NSCache alloc] init];
         self.searchCache.countLimit = 9;
     }
     return self;
@@ -139,12 +139,6 @@ static double rankFunc(unsigned int *aMatchinfo){
         [self.searchCache setObject:@[] forKey:cacheKey];
         return @[];
     }
-}
-
-- (void) dealloc {
-    [_searchCache release];
-    
-    [super dealloc];
 }
 
 @end

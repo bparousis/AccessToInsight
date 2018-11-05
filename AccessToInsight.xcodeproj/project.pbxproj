@@ -23,17 +23,22 @@
 
 /* Begin PBXBuildFile section */
 		0A184CFE1265113200972013 /* web_content in Resources */ = {isa = PBXBuildFile; fileRef = 0AE3EF1E1257C67B000C2097 /* web_content */; };
-		0AE3F9561257CDCD000C2097 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AE3F9551257CDCD000C2097 /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		763F93D72173C371005E6A58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 763F93D62173C371005E6A58 /* Images.xcassets */; };
-		7647D06021895CFD0011651D /* BookmarksManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7647D05821895CFC0011651D /* BookmarksManager.m */; };
-		7647D06121895CFD0011651D /* BookmarksTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7647D05921895CFC0011651D /* BookmarksTableController.m */; };
-		7647D06221895CFD0011651D /* LocalBookmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 7647D05D21895CFC0011651D /* LocalBookmark.m */; };
-		7647D06321895CFD0011651D /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7647D05E21895CFC0011651D /* MainViewController.m */; };
+		764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */; };
+		764A07F1218E2BD500F4DE22 /* BookmarksControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */; };
+		764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F2218E47E900F4DE22 /* MainViewController.swift */; };
+		764A07F5218E95DF00F4DE22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F4218E95DF00F4DE22 /* Constants.swift */; };
+		764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F6218EADAC00F4DE22 /* SearchViewController.swift */; };
 		766F078B216EF036003340F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766F078A216EF036003340F9 /* Main.storyboard */; };
-		766F078E216EFF43003340F9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 766F078D216EFF43003340F9 /* AppDelegate.m */; };
+		7675BE95218D1B8500B53D26 /* LocalBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE94218D1B8500B53D26 /* LocalBookmark.swift */; };
+		7675BE97218D291000B53D26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE96218D291000B53D26 /* AppDelegate.swift */; };
+		7675BE99218D2F6E00B53D26 /* WKWebViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE98218D2F6E00B53D26 /* WKWebViewExtension.swift */; };
+		7675BE9B218D310300B53D26 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE9A218D310300B53D26 /* AboutViewController.swift */; };
+		7675BE9D218D3D7500B53D26 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE9C218D3D7500B53D26 /* SettingsViewController.swift */; };
+		7675BE9F218D48BF00B53D26 /* BookmarksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE9E218D48BF00B53D26 /* BookmarksManager.swift */; };
 		7688F62C218BF84000DAA890 /* 53-house.png in Resources */ = {isa = PBXBuildFile; fileRef = 7688F60E218BF83E00DAA890 /* 53-house.png */; };
 		7688F62D218BF84000DAA890 /* DefaultBookmarks.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7688F60F218BF83E00DAA890 /* DefaultBookmarks.plist */; };
 		7688F62E218BF84000DAA890 /* increase_font.png in Resources */ = {isa = PBXBuildFile; fileRef = 7688F610218BF83E00DAA890 /* increase_font.png */; };
@@ -64,18 +69,16 @@
 		7688F647218BF84000DAA890 /* 2uparrow-20.png in Resources */ = {isa = PBXBuildFile; fileRef = 7688F629218BF83F00DAA890 /* 2uparrow-20.png */; };
 		7688F648218BF84000DAA890 /* bookmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 7688F62A218BF83F00DAA890 /* bookmark.png */; };
 		7688F649218BF84000DAA890 /* down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7688F62B218BF84000DAA890 /* down@2x.png */; };
+		7688F64E218BFDC400DAA890 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7688F64D218BFDC400DAA890 /* ThemeManager.swift */; };
+		7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7688F64F218C067100DAA890 /* TextSizeViewController.swift */; };
 		7691B8CA216C5E31008B97A1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */; };
-		D722CE291EE8F7C100F7D7E8 /* ThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D722CE281EE8F7C100F7D7E8 /* ThemeManager.m */; };
+		76CE7E39218F4D8300D2C18C /* SearchViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E38218F4D8300D2C18C /* SearchViewDelegate.swift */; };
+		76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E3A218FD7F200D2C18C /* SearchEngine.m */; };
 		D736521F1F0606CB000212C7 /* pages.db in Resources */ = {isa = PBXBuildFile; fileRef = D736521E1F0606CB000212C7 /* pages.db */; };
 		D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73E9C451EE7B198008079E9 /* WebKit.framework */; };
 		D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7407B151790F5D800204EEF /* MessageUI.framework */; };
-		D7511FC6178F9F7D00BC85CF /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7511FC5178F9F7D00BC85CF /* AboutViewController.m */; };
-		D75677A11ECD441A007444EF /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D75677A01ECD441A007444EF /* SettingsViewController.m */; };
-		D76CC83A1ECFEB8600E2C025 /* TextSizeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */; };
 		D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D77E8D51177D4436006C8C0D /* Default-568h@2x.png */; };
-		D7A4C5AE1F00B35900A53C9D /* SearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A4C5AD1F00B35900A53C9D /* SearchEngine.m */; };
 		D7A4C5B11F00B5C500A53C9D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */; };
-		D7A4C5B51F00BC3500A53C9D /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D7A4C5B41F00BC3500A53C9D /* SearchViewController.m */; };
 		D7DD89AC1B49CC0800DF13C4 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */; };
 /* End PBXBuildFile section */
 
@@ -91,7 +94,6 @@
 
 /* Begin PBXFileReference section */
 		0AE3EF1E1257C67B000C2097 /* web_content */ = {isa = PBXFileReference; lastKnownFileType = folder; path = web_content; sourceTree = "<group>"; };
-		0AE3F9551257CDCD000C2097 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0AE3F9B21257D1AE000C2097 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* AccessToInsight.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AccessToInsight.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,17 +101,18 @@
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessToInsight_Universal_Prefix.pch; sourceTree = "<group>"; };
 		763F93D62173C371005E6A58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		7647D05821895CFC0011651D /* BookmarksManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksManager.m; sourceTree = "<group>"; };
-		7647D05921895CFC0011651D /* BookmarksTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookmarksTableController.m; sourceTree = "<group>"; };
-		7647D05A21895CFC0011651D /* LocalBookmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalBookmark.h; sourceTree = "<group>"; };
-		7647D05B21895CFC0011651D /* BookmarksTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksTableController.h; sourceTree = "<group>"; };
-		7647D05C21895CFC0011651D /* BookmarksManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookmarksManager.h; sourceTree = "<group>"; };
-		7647D05D21895CFC0011651D /* LocalBookmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalBookmark.m; sourceTree = "<group>"; };
-		7647D05E21895CFC0011651D /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
-		7647D05F21895CFD0011651D /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksTableController.swift; path = Source/BookmarksTableController.swift; sourceTree = "<group>"; };
+		764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksControllerDelegate.swift; path = Source/BookmarksControllerDelegate.swift; sourceTree = "<group>"; };
+		764A07F2218E47E900F4DE22 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Source/MainViewController.swift; sourceTree = "<group>"; };
+		764A07F4218E95DF00F4DE22 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Source/Constants.swift; sourceTree = "<group>"; };
+		764A07F6218EADAC00F4DE22 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/SearchViewController.swift; sourceTree = "<group>"; };
 		766F078A216EF036003340F9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		766F078C216EFF43003340F9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		766F078D216EFF43003340F9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7675BE94218D1B8500B53D26 /* LocalBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalBookmark.swift; path = Source/LocalBookmark.swift; sourceTree = "<group>"; };
+		7675BE96218D291000B53D26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Source/AppDelegate.swift; sourceTree = "<group>"; };
+		7675BE98218D2F6E00B53D26 /* WKWebViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WKWebViewExtension.swift; path = Source/WKWebViewExtension.swift; sourceTree = "<group>"; };
+		7675BE9A218D310300B53D26 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AboutViewController.swift; path = Source/AboutViewController.swift; sourceTree = "<group>"; };
+		7675BE9C218D3D7500B53D26 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Source/SettingsViewController.swift; sourceTree = "<group>"; };
+		7675BE9E218D48BF00B53D26 /* BookmarksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksManager.swift; path = Source/BookmarksManager.swift; sourceTree = "<group>"; };
 		7688F60E218BF83E00DAA890 /* 53-house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "53-house.png"; path = "Resources/53-house.png"; sourceTree = "<group>"; };
 		7688F60F218BF83E00DAA890 /* DefaultBookmarks.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = DefaultBookmarks.plist; path = Resources/DefaultBookmarks.plist; sourceTree = "<group>"; };
 		7688F610218BF83E00DAA890 /* increase_font.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = increase_font.png; path = Resources/increase_font.png; sourceTree = "<group>"; };
@@ -140,25 +143,19 @@
 		7688F629218BF83F00DAA890 /* 2uparrow-20.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "2uparrow-20.png"; path = "Resources/2uparrow-20.png"; sourceTree = "<group>"; };
 		7688F62A218BF83F00DAA890 /* bookmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bookmark.png; path = Resources/bookmark.png; sourceTree = "<group>"; };
 		7688F62B218BF84000DAA890 /* down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "down@2x.png"; path = "Resources/down@2x.png"; sourceTree = "<group>"; };
+		7688F64C218BFCAC00DAA890 /* AccessToInsight-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AccessToInsight-Bridging-Header.h"; sourceTree = "<group>"; };
+		7688F64D218BFDC400DAA890 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThemeManager.swift; path = Source/ThemeManager.swift; sourceTree = "<group>"; };
+		7688F64F218C067100DAA890 /* TextSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextSizeViewController.swift; path = Source/TextSizeViewController.swift; sourceTree = "<group>"; };
 		7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		76CE7E38218F4D8300D2C18C /* SearchViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewDelegate.swift; path = Source/SearchViewDelegate.swift; sourceTree = "<group>"; };
+		76CE7E3A218FD7F200D2C18C /* SearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchEngine.m; path = Source/SearchEngine.m; sourceTree = "<group>"; };
+		76CE7E3B218FD7F200D2C18C /* SearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngine.h; path = Source/SearchEngine.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		D722CE271EE8F7C100F7D7E8 /* ThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeManager.h; sourceTree = "<group>"; };
-		D722CE281EE8F7C100F7D7E8 /* ThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeManager.m; sourceTree = "<group>"; };
 		D736521E1F0606CB000212C7 /* pages.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = pages.db; sourceTree = "<group>"; };
 		D73E9C451EE7B198008079E9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		D7407B151790F5D800204EEF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		D7511FC4178F9F7D00BC85CF /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		D7511FC5178F9F7D00BC85CF /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
-		D756779F1ECD441A007444EF /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
-		D75677A01ECD441A007444EF /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
-		D76CC8381ECFEB8600E2C025 /* TextSizeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextSizeViewController.h; sourceTree = "<group>"; };
-		D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextSizeViewController.m; sourceTree = "<group>"; };
 		D77E8D51177D4436006C8C0D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		D7A4C5AC1F00B35900A53C9D /* SearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchEngine.h; sourceTree = "<group>"; };
-		D7A4C5AD1F00B35900A53C9D /* SearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchEngine.m; sourceTree = "<group>"; };
 		D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		D7A4C5B31F00BC3500A53C9D /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
-		D7A4C5B41F00BC3500A53C9D /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -194,14 +191,13 @@
 				7647D067218962B40011651D /* Bookmark */,
 				D7A4C5AB1F00B32B00A53C9D /* SearchEngine */,
 				D74BA3831ECC057100CAAB3D /* Settings */,
-				7647D05F21895CFD0011651D /* MainViewController.h */,
-				7647D05E21895CFC0011651D /* MainViewController.m */,
-				766F078C216EFF43003340F9 /* AppDelegate.h */,
-				766F078D216EFF43003340F9 /* AppDelegate.m */,
-				D722CE271EE8F7C100F7D7E8 /* ThemeManager.h */,
-				D722CE281EE8F7C100F7D7E8 /* ThemeManager.m */,
+				7675BE96218D291000B53D26 /* AppDelegate.swift */,
+				764A07F4218E95DF00F4DE22 /* Constants.swift */,
+				764A07F2218E47E900F4DE22 /* MainViewController.swift */,
+				7688F64D218BFDC400DAA890 /* ThemeManager.swift */,
+				7675BE98218D2F6E00B53D26 /* WKWebViewExtension.swift */,
 				32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */,
-				0AE3F9551257CDCD000C2097 /* main.m */,
+				7688F64C218BFCAC00DAA890 /* AccessToInsight-Bridging-Header.h */,
 			);
 			name = AccessToInsight;
 			sourceTree = "<group>";
@@ -241,12 +237,10 @@
 		7647D067218962B40011651D /* Bookmark */ = {
 			isa = PBXGroup;
 			children = (
-				7647D05C21895CFC0011651D /* BookmarksManager.h */,
-				7647D05821895CFC0011651D /* BookmarksManager.m */,
-				7647D05B21895CFC0011651D /* BookmarksTableController.h */,
-				7647D05921895CFC0011651D /* BookmarksTableController.m */,
-				7647D05A21895CFC0011651D /* LocalBookmark.h */,
-				7647D05D21895CFC0011651D /* LocalBookmark.m */,
+				7675BE9E218D48BF00B53D26 /* BookmarksManager.swift */,
+				764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */,
+				764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */,
+				7675BE94218D1B8500B53D26 /* LocalBookmark.swift */,
 			);
 			name = Bookmark;
 			sourceTree = "<group>";
@@ -291,12 +285,9 @@
 		D74BA3831ECC057100CAAB3D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				D7511FC4178F9F7D00BC85CF /* AboutViewController.h */,
-				D7511FC5178F9F7D00BC85CF /* AboutViewController.m */,
-				D756779F1ECD441A007444EF /* SettingsViewController.h */,
-				D75677A01ECD441A007444EF /* SettingsViewController.m */,
-				D76CC8381ECFEB8600E2C025 /* TextSizeViewController.h */,
-				D76CC8391ECFEB8600E2C025 /* TextSizeViewController.m */,
+				7675BE9A218D310300B53D26 /* AboutViewController.swift */,
+				7688F64F218C067100DAA890 /* TextSizeViewController.swift */,
+				7675BE9C218D3D7500B53D26 /* SettingsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -304,10 +295,10 @@
 		D7A4C5AB1F00B32B00A53C9D /* SearchEngine */ = {
 			isa = PBXGroup;
 			children = (
-				D7A4C5AC1F00B35900A53C9D /* SearchEngine.h */,
-				D7A4C5AD1F00B35900A53C9D /* SearchEngine.m */,
-				D7A4C5B31F00BC3500A53C9D /* SearchViewController.h */,
-				D7A4C5B41F00BC3500A53C9D /* SearchViewController.m */,
+				76CE7E3B218FD7F200D2C18C /* SearchEngine.h */,
+				76CE7E3A218FD7F200D2C18C /* SearchEngine.m */,
+				764A07F6218EADAC00F4DE22 /* SearchViewController.swift */,
+				76CE7E38218F4D8300D2C18C /* SearchViewDelegate.swift */,
 			);
 			name = SearchEngine;
 			sourceTree = "<group>";
@@ -434,18 +425,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D722CE291EE8F7C100F7D7E8 /* ThemeManager.m in Sources */,
-				D7A4C5AE1F00B35900A53C9D /* SearchEngine.m in Sources */,
-				7647D06221895CFD0011651D /* LocalBookmark.m in Sources */,
-				7647D06321895CFD0011651D /* MainViewController.m in Sources */,
-				D76CC83A1ECFEB8600E2C025 /* TextSizeViewController.m in Sources */,
-				D7A4C5B51F00BC3500A53C9D /* SearchViewController.m in Sources */,
-				7647D06121895CFD0011651D /* BookmarksTableController.m in Sources */,
-				D75677A11ECD441A007444EF /* SettingsViewController.m in Sources */,
-				766F078E216EFF43003340F9 /* AppDelegate.m in Sources */,
-				0AE3F9561257CDCD000C2097 /* main.m in Sources */,
-				D7511FC6178F9F7D00BC85CF /* AboutViewController.m in Sources */,
-				7647D06021895CFD0011651D /* BookmarksManager.m in Sources */,
+				764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */,
+				7675BE99218D2F6E00B53D26 /* WKWebViewExtension.swift in Sources */,
+				764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */,
+				76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */,
+				764A07F1218E2BD500F4DE22 /* BookmarksControllerDelegate.swift in Sources */,
+				7675BE9D218D3D7500B53D26 /* SettingsViewController.swift in Sources */,
+				764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */,
+				7688F64E218BFDC400DAA890 /* ThemeManager.swift in Sources */,
+				7675BE97218D291000B53D26 /* AppDelegate.swift in Sources */,
+				7675BE9B218D310300B53D26 /* AboutViewController.swift in Sources */,
+				7675BE95218D1B8500B53D26 /* LocalBookmark.swift in Sources */,
+				7675BE9F218D48BF00B53D26 /* BookmarksManager.swift in Sources */,
+				7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */,
+				764A07F5218E95DF00F4DE22 /* Constants.swift in Sources */,
+				76CE7E39218F4D8300D2C18C /* SearchViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,6 +500,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -562,6 +557,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -587,6 +583,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
