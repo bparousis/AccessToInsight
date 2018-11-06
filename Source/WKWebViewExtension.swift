@@ -56,24 +56,27 @@ extension WKWebView {
                 return s.replace(spaceRegexp, ' ')
             };
         """
-        evaluateJavaScript(js,  completionHandler: { [unowned self] (result, error) in
-            self.evaluateJavaScript("document.title", completionHandler: { [unowned self] (result, error) in
+        evaluateJavaScript(js,  completionHandler: { (result, error) in
+            self.evaluateJavaScript("document.title", completionHandler: { (result, error) in
                 let title = result as? String
-                self.evaluateJavaScript("location.href", completionHandler: {[unowned self] (result, error) in
+                self.evaluateJavaScript("location.href", completionHandler: { (result, error) in
                     if let urlString = result as? String {
                         let location = self.URLStringToLocalContentPath(urlString: urlString)
                         self.evaluateJavaScript("document.getElementById('H_tipitakaID').innerHTML.stripHTML()", completionHandler:
-                            { [unowned self] (result, error) in
+                            { (result, error) in
                                 let tipitakaID = result as? String
-                                self.evaluateJavaScript("scrollX", completionHandler: {[unowned self] (result, error) in
+                                self.evaluateJavaScript("scrollX", completionHandler: { (result, error) in
                                     let xPos = result as? Int
                                     self.evaluateJavaScript("scrollY", completionHandler: {(result, error) in
                                         let yPos = result as? Int
-                                        let bookmark = LocalBookmark(title: title!,
+                                        var bookmark : LocalBookmark? = nil
+                                        if title != nil && location != nil && xPos != nil && yPos != nil {
+                                            bookmark = LocalBookmark(title: title!,
                                                                      location: location!,
                                                                      scrollX: xPos!,
                                                                      scrollY: yPos!)
-                                        bookmark.note = tipitakaID
+                                        }
+                                        bookmark?.note = tipitakaID
                                         completionHandler(bookmark)
                                     })
                                 })

@@ -93,9 +93,9 @@ class MainViewController: UIViewController, WKNavigationDelegate, UIGestureRecog
         // Unfortunately I don't know of a way to save and load the history.
         
         var lastLocationBookmark: LocalBookmark? = nil
-        if let data = UserDefaults.standard.object(forKey: "lastLocationBookmark") as? Data {
+        if let data = UserDefaults.standard.object(forKey: Constants.LAST_LOCATION_BOOKMARK_KEY) as? Data {
             let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-            lastLocationBookmark = unarchiver.decodeObject(forKey: "bookmark") as? LocalBookmark
+            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.BOOKMARK_KEY) as? LocalBookmark
             unarchiver.finishDecoding()
         }
 
@@ -197,7 +197,6 @@ class MainViewController: UIViewController, WKNavigationDelegate, UIGestureRecog
         self.webView?.alpha = CGFloat(self.startAlpha)
         self.webView?.goBack()
         UIView.animate(withDuration: 1.0) {
-            [unowned self] in
             self.webView?.alpha = 1.0
         }
     }
@@ -206,7 +205,6 @@ class MainViewController: UIViewController, WKNavigationDelegate, UIGestureRecog
         self.webView?.alpha = CGFloat(self.startAlpha)
         self.webView?.goForward()
         UIView.animate(withDuration: 1.0) {
-            [unowned self] in
             self.webView?.alpha = 0.5
         }
     }
@@ -342,7 +340,6 @@ class MainViewController: UIViewController, WKNavigationDelegate, UIGestureRecog
         self.view.layoutIfNeeded()
         UIView.commitAnimations()
         UIView.animate(withDuration: 0.25) {
-            [unowned self] in
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
@@ -411,9 +408,9 @@ class MainViewController: UIViewController, WKNavigationDelegate, UIGestureRecog
         self.webView?.getBookmark { (lastLocationBookmark) in
             let data = NSMutableData()
             let archiver = NSKeyedArchiver(forWritingWith: data)
-            archiver.encode(lastLocationBookmark, forKey: "bookmark")
+            archiver.encode(lastLocationBookmark, forKey: Constants.BOOKMARK_KEY)
             archiver.finishEncoding()
-            UserDefaults.standard.set(data, forKey: "lastLocationBookmark")
+            UserDefaults.standard.set(data, forKey: Constants.LAST_LOCATION_BOOKMARK_KEY)
             UserDefaults.standard.synchronize()
         }
     }

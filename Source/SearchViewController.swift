@@ -9,6 +9,8 @@ import UIKit
 
 class SearchViewController: UITableViewController, UISearchResultsUpdating, UISearchBarDelegate {
     
+    static let recentSearchesKey = "recentSearches"
+    static let lastSearchScopeIndexKey = "lastSearchScopeIndex"
     var searchEngine: SearchEngine?
     var tableData: [Any] = []
     var showRecentSearches = true
@@ -29,11 +31,11 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
         let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
         self.navigationItem.leftBarButtonItem = cancelButtonItem
         
-        if let recentSearches = UserDefaults.standard.stringArray(forKey: "recentSearches") {
+        if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
             self.tableData = recentSearches
         }
         
-        let lastSearchScopeIndex = UserDefaults.standard.integer(forKey: "lastSearchScopeIndex")
+        let lastSearchScopeIndex = UserDefaults.standard.integer(forKey: SearchViewController.lastSearchScopeIndexKey)
         self.searchEngine = SearchEngine()
         self.searchController = UISearchController(searchResultsController: nil)
         self.searchController?.searchResultsUpdater = self
@@ -70,7 +72,7 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
     }
     
     private func updateRecentSearches(_ newQuery: String) {
-        if let recentSearches = UserDefaults.standard.stringArray(forKey: "recentSearches") {
+        if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
             let containsQuery = recentSearches.contains(where: { (elem) -> Bool in
                 return elem == newQuery
             })
@@ -81,12 +83,12 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
                     newSearches.removeLast()
                 }
                 newSearches.insert(newQuery, at: 0)
-                UserDefaults.standard.set(newSearches, forKey: "recentSearches")
+                UserDefaults.standard.set(newSearches, forKey: SearchViewController.recentSearchesKey)
                 UserDefaults.standard.synchronize()
             }
         }
         else {
-            UserDefaults.standard.set([newQuery], forKey: "recentSearches")
+            UserDefaults.standard.set([newQuery], forKey: SearchViewController.recentSearchesKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -123,7 +125,7 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         self.showRecentSearches = true
-        if let recentSearches = UserDefaults.standard.stringArray(forKey: "recentSearches") {
+        if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
            self.tableData = recentSearches
         }
         self.tableView.reloadData()
@@ -131,7 +133,7 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        UserDefaults.standard.set(selectedScope, forKey: "lastSearchScopeIndex")
+        UserDefaults.standard.set(selectedScope, forKey: SearchViewController.lastSearchScopeIndexKey)
         UserDefaults.standard.synchronize()
         self.requestSearch()
     }
@@ -266,7 +268,7 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
             var recentSearches = self.tableData
             recentSearches.remove(at: indexPath.row)
             self.tableData = recentSearches
-            UserDefaults.standard.set(recentSearches, forKey: "recentSearches")
+            UserDefaults.standard.set(recentSearches, forKey: SearchViewController.recentSearchesKey)
             UserDefaults.standard.synchronize()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

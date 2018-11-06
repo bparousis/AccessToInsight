@@ -7,7 +7,7 @@
 
 import Foundation
 
-@objc protocol BookmarksControllerDelegate : class {
+protocol BookmarksControllerDelegate : class {
     func bookmarksController(_ controller: BookmarksTableController!, selectedBookmark:LocalBookmark!)
 
     func bookmarksControllerCancel(_ controller: BookmarksTableController!)

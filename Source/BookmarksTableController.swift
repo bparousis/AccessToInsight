@@ -12,7 +12,7 @@ class BookmarksTableController: UITableViewController {
     private var editBookmarkIndex = 0
     private var doneEditAction: UIAlertAction? = nil
 
-    @objc weak var delegate: BookmarksControllerDelegate?
+    weak var delegate: BookmarksControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +67,7 @@ class BookmarksTableController: UITableViewController {
         if tableView.isEditing {
             self.editBookmarkIndex = indexPath.row
             let alert = UIAlertController(title: "Edit Bookmark", message: "Enter a title for the bookmark", preferredStyle: .alert)
-            alert.addTextField {[unowned self] (textField) in
+            alert.addTextField {(textField) in
                 textField.text = bookmark.title
                 textField.addTarget(self, action: #selector(self.textDidChange(_:)), for: .editingChanged)
             }

@@ -26,10 +26,10 @@ class TextSizeViewController: UIViewController, WKNavigationDelegate {
         var lastLocationBookmark : LocalBookmark? = nil
         
         let defaults = UserDefaults.standard
-        let data = defaults.object(forKey: "lastLocationBookmark") as? Data
+        let data = defaults.object(forKey: Constants.LAST_LOCATION_BOOKMARK_KEY) as? Data
         if  let lastData = data {
             let unarchiver = NSKeyedUnarchiver(forReadingWith: lastData)
-            lastLocationBookmark = unarchiver.decodeObject(forKey: "bookmark") as? LocalBookmark
+            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.BOOKMARK_KEY) as? LocalBookmark
             unarchiver.finishDecoding()
         }
         

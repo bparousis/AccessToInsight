@@ -12,16 +12,16 @@ class BookmarksManager: NSObject {
     private static let BookmarksArchiveFilename = "LocalBookmarks"
     private static let BookmarksKey = "bookmarks"
     
-    private var bookmarks : Array<LocalBookmark>?
+    private var bookmarks : [LocalBookmark] = []
     
-    @objc static let instance = BookmarksManager()
+    static let instance = BookmarksManager()
     
     private override init() {
         super.init()
         load()
     }
     
-    @objc class func sharedInstance() -> BookmarksManager {
+    class func sharedInstance() -> BookmarksManager {
         return instance
     }
     
@@ -32,7 +32,9 @@ class BookmarksManager: NSObject {
             do {
                 let data = try Data(contentsOf: archiveFilePath)
                 let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-                self.bookmarks = unarchiver.decodeObject(forKey: BookmarksManager.BookmarksKey) as? Array<LocalBookmark>
+                if let archiveBookmarks = unarchiver.decodeObject(forKey: BookmarksManager.BookmarksKey) as? [LocalBookmark] {
+                    self.bookmarks = archiveBookmarks
+                }
                 unarchiver.finishDecoding()
             }
             catch {
@@ -50,11 +52,11 @@ class BookmarksManager: NSObject {
         
         var newBookmarks:[LocalBookmark] = []
         for obj: Any in defaultBookmarks {
-            if let dict = obj as? NSDictionary {
-                if let title = dict["title"] as? String, let location = dict["location"] as? String,
-                    let scrollX = dict["scrollX"] as? Int, let scrollY = dict["scrollY"] as? Int {
+            if let dict = obj as? Dictionary<String,Any> {
+                if let title = dict[LocalBookmark.titleKey] as? String, let location = dict[LocalBookmark.locationKey] as? String,
+                    let scrollX = dict[LocalBookmark.scrollXKey] as? Int, let scrollY = dict[LocalBookmark.scrollYKey] as? Int {
                     let bm: LocalBookmark = LocalBookmark(title: title, location: location, scrollX: scrollX, scrollY: scrollY)
-                    if let note = dict["note"] as? String {
+                    if let note = dict[LocalBookmark.noteKey] as? String {
                         bm.note = note
                     }
                     newBookmarks.append(bm)
@@ -70,7 +72,7 @@ class BookmarksManager: NSObject {
         return documentsPathURL
     }
     
-    @objc func save() {
+    func save() {
         let data = NSMutableData()
         let archiver = NSKeyedArchiver(forWritingWith: data)
         archiver.encode(bookmarks, forKey: BookmarksManager.BookmarksKey)
@@ -80,34 +82,28 @@ class BookmarksManager: NSObject {
         }
     }
     
-    @objc func getCount() -> Int {
-        if let count = bookmarks?.count {
-            return count
-        }
-        else {
-            return 0
-        }
+    func getCount() -> Int {
+        return bookmarks.count
     }
     
-    @objc func bookmarkAtIndex(_ index: Int) -> LocalBookmark? {
-        return bookmarks?[index]
+    func bookmarkAtIndex(_ index: Int) -> LocalBookmark? {
+        return bookmarks[index]
     }
     
-    @objc func addBookmark(_ bookmark: LocalBookmark) {
-        bookmarks?.append(bookmark)
+    func addBookmark(_ bookmark: LocalBookmark) {
+        bookmarks.append(bookmark)
         save()
     }
     
-    @objc func deleteBookmarkAtIndex(_ index: Int) {
-        bookmarks?.remove(at: index)
+    func deleteBookmarkAtIndex(_ index: Int) {
+        bookmarks.remove(at: index)
         save()
     }
     
-    @objc func moveBookmarkAtIndex(_ fromIndex: Int, toIndex:Int) {
-        if let bookmarkToMove = bookmarks?[fromIndex] {
-            bookmarks?.remove(at: fromIndex)
-            bookmarks?.insert(bookmarkToMove, at: toIndex)
-            save()
-        }
+    func moveBookmarkAtIndex(_ fromIndex: Int, toIndex:Int) {
+        let bookmarkToMove = bookmarks[fromIndex]
+        bookmarks.remove(at: fromIndex)
+        bookmarks.insert(bookmarkToMove, at: toIndex)
+        save()
     }
 }
