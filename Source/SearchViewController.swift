@@ -259,6 +259,7 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating, UISe
             }
             
         }
+        // This is just a test.
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
     
