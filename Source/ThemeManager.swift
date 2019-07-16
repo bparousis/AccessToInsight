@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ThemeManager: NSObject {
+struct ThemeManager {
     
     private static let SCREEN_CSS_PATH = "css/screen.css"
     private static let IPHONE_CSS = "iphone.css"
@@ -16,7 +16,7 @@ class ThemeManager: NSObject {
     private static let IPAD_CSS = "ipad.css"
     private static let IPAD_NIGHT_CSS = "ipad_night.css"
     
-    class func getCSSJavascript() -> String {
+    static func getCSSJavascript() -> String {
         var cssFile : String = IPHONE_CSS
         let nightMode = UserDefaults.standard.bool(forKey: "nightMode")
         switch UIDevice.current.userInterfaceIdiom {
@@ -39,15 +39,15 @@ class ThemeManager: NSObject {
         return javascript
     }
     
-    class func isNightMode() -> Bool {
+    static func isNightMode() -> Bool {
         return UserDefaults.standard.bool(forKey: "nightMode")
     }
     
-    class func backgroundColor() -> UIColor {
+    static func backgroundColor() -> UIColor {
         return isNightMode() ? UIColor(red: 39.0/255.0, green: 40.0/255.0, blue: 34.0/255.0, alpha: 1.0) : UIColor.white
     }
     
-    class func decorateTableCell(_ cell: UITableViewCell) {
+    static func decorateTableCell(_ cell: UITableViewCell) {
         if isNightMode() {
             cell.backgroundColor = UIColor(red:68.0/255.0, green:68.0/255.0, blue:68.0/255.0, alpha:1.0)
             cell.textLabel?.textColor = UIColor.white
@@ -60,7 +60,7 @@ class ThemeManager: NSObject {
         }
     }
     
-    class func decorateToolbar(_ toolbar : UIToolbar?) {
+    static func decorateToolbar(_ toolbar : UIToolbar?) {
         if let decorateToolbar = toolbar {
             decorateToolbar.isTranslucent = true
             if isNightMode() {
@@ -74,7 +74,7 @@ class ThemeManager: NSObject {
         }
     }
     
-    class func decorateTableView(_ tableView: UITableView?) {
+    static func decorateTableView(_ tableView: UITableView?) {
         if let decorateTableView = tableView {
             if isNightMode() {
                 decorateTableView.backgroundColor = backgroundColor()

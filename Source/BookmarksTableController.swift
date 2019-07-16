@@ -17,13 +17,13 @@ class BookmarksTableController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "Bookmarks"
-        self.tableView.backgroundColor = ThemeManager.backgroundColor()
-        self.tableView.allowsSelectionDuringEditing = true
-        self.navigationItem.rightBarButtonItem = self.editButtonItem
+        title = "Bookmarks"
+        tableView.backgroundColor = ThemeManager.backgroundColor()
+        tableView.allowsSelectionDuringEditing = true
+        navigationItem.rightBarButtonItem = editButtonItem
         if UIDevice.current.userInterfaceIdiom == .phone {
             let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
-            self.navigationItem.leftBarButtonItem = cancelButtonItem
+            navigationItem.leftBarButtonItem = cancelButtonItem
         }
     }
 
@@ -65,13 +65,13 @@ class BookmarksTableController: UITableViewController {
         }
 
         if tableView.isEditing {
-            self.editBookmarkIndex = indexPath.row
+            editBookmarkIndex = indexPath.row
             let alert = UIAlertController(title: "Edit Bookmark", message: "Enter a title for the bookmark", preferredStyle: .alert)
             alert.addTextField {(textField) in
                 textField.text = bookmark.title
                 textField.addTarget(self, action: #selector(self.textDidChange(_:)), for: .editingChanged)
             }
-            self.doneEditAction = UIAlertAction(title: "Done", style: .default, handler: {[unowned self] (action) in
+            doneEditAction = UIAlertAction(title: "Done", style: .default, handler: {[unowned self] (action) in
                 let bookmark = BookmarksManager.instance.bookmarkAtIndex(self.editBookmarkIndex)
                 if let newTitle = alert.textFields?.first?.text {
                     bookmark?.title = newTitle
@@ -84,24 +84,15 @@ class BookmarksTableController: UITableViewController {
             present(alert, animated: true, completion: nil)
         }
         else {
-            self.delegate?.bookmarksController(self, selectedBookmark: bookmark)
+            delegate?.bookmarksController(self, selectedBookmark: bookmark)
         }
     }
 
     @objc func textDidChange(_ textField: UITextField) {
         if let count = textField.text?.count {
-            self.doneEditAction?.isEnabled = count > 0
+            doneEditAction?.isEnabled = count > 0
         }
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -118,25 +109,6 @@ class BookmarksTableController: UITableViewController {
     }
 
     @objc func cancel(_ cancelItem: UIBarButtonItem) {
-        self.delegate?.bookmarksControllerCancel(self)
+        delegate?.bookmarksControllerCancel(self)
     }
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

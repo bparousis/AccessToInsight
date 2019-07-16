@@ -9,41 +9,50 @@ import UIKit
 import WebKit
 import MessageUI
 
-class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MFMailComposeViewControllerDelegate, WKNavigationDelegate {
+class AboutViewController: UIViewController {
     
-    private var tableView: UITableView?
+    private var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "About"
-        self.tableView = UITableView(frame: .zero, style: .grouped)
-        ThemeManager.decorateTableView(self.tableView)
-        self.tableView?.delegate = self
-        self.tableView?.dataSource = self
-        self.view.addSubview(self.tableView!)
-        self.tableView?.translatesAutoresizingMaskIntoConstraints = false
+        title = "About"
+        tableView = UITableView(frame: .zero, style: .grouped)
+        ThemeManager.decorateTableView(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
 
         // Do any additional setup after loading the view.
         if #available(iOS 11, *) {
             let guide = view.safeAreaLayoutGuide
             NSLayoutConstraint.activate([
-                tableView!.topAnchor.constraint(equalTo: guide.topAnchor),
-                tableView!.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-                tableView!.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-                tableView!.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+                tableView.topAnchor.constraint(equalTo: guide.topAnchor),
+                tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
                 ])
         } else {
             let margins = view.layoutMarginsGuide
             NSLayoutConstraint.activate([
-                tableView!.topAnchor.constraint(equalTo: margins.topAnchor),
-                tableView!.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-                tableView!.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-                tableView!.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
+                tableView.topAnchor.constraint(equalTo: margins.topAnchor),
+                tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
                 ])
         }
-        tableView?.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
     }
+    
+    func openURL(_ urlString: String ) {
+        if let url = URL(string: urlString) {
+            UIApplication.shared.openURL(url)
+        }
+    }
+}
+
+extension AboutViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -87,7 +96,10 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         return cell
     }
-    
+}
+
+extension AboutViewController: UITableViewDelegate {
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.section == 1) {
             if indexPath.row == 0 {
@@ -101,7 +113,7 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
                 present(mailComposer, animated: true, completion: nil)
             }
             else if indexPath.row == 2 {
-                let infoWebView = WKWebView(frame: self.view.frame)
+                let infoWebView = WKWebView(frame: view.frame)
                 infoWebView.navigationDelegate = self
                 infoWebView.loadLocalWebContent("about.html")
                 
@@ -112,17 +124,9 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
     }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func openURL(_ urlString: String ) {
-        if let url = URL(string: urlString) {
-            UIApplication.shared.openURL(url)
-        }
-    }
-    
+}
+
+extension AboutViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.applyTheme()
     }
@@ -130,15 +134,10 @@ class AboutViewController: UIViewController, UITableViewDelegate, UITableViewDat
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         webView.fitContentToScreen()
     }
+}
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+extension AboutViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        dismiss(animated: true, completion: nil)
     }
-    */
-
 }

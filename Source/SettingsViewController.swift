@@ -7,39 +7,80 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    private var tableView : UITableView?
+class SettingsViewController: UIViewController {
+    private var tableView : UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Settings"
-        self.tableView = UITableView(frame: .zero, style: .grouped)
-        self.tableView?.delegate = self
-        self.tableView?.dataSource = self
-        ThemeManager.decorateTableView(self.tableView)
-        self.tableView?.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.tableView!)
-        // Do any additional setup after loading the view.
+        title = "Settings"
+        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.delegate = self
+        tableView.dataSource = self
+        ThemeManager.decorateTableView(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
         if #available(iOS 11, *) {
             let guide = view.safeAreaLayoutGuide
             NSLayoutConstraint.activate([
-                tableView!.topAnchor.constraint(equalTo: guide.topAnchor),
-                tableView!.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-                tableView!.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-                tableView!.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+                tableView.topAnchor.constraint(equalTo: guide.topAnchor),
+                tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
                 ])
         } else {
             let margins = view.layoutMarginsGuide
             NSLayoutConstraint.activate([
-                tableView!.topAnchor.constraint(equalTo: margins.topAnchor),
-                tableView!.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-                tableView!.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-                tableView!.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
+                tableView.topAnchor.constraint(equalTo: margins.topAnchor),
+                tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+                tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+                tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
                 ])
         }
-        tableView?.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
     }
+    
+    @objc func nightModeToggled(_ nightModeSwitch: UISwitch) {
+        let nightMode = nightModeSwitch.isOn
+        UserDefaults.standard.set(nightMode, forKey: "nightMode")
+        UserDefaults.standard.synchronize()
+        let notificationName = Notification.Name("NightMode")
+        NotificationCenter.default.post(name: notificationName, object: self)
+
+        ThemeManager.decorateTableView(tableView)
+        let cells = tableView.visibleCells
+        for cell in cells {
+            ThemeManager.decorateTableCell(cell)
+        }
+    }
+    
+    func openURL(_ urlString:String) {
+        if let url = URL(string: urlString) {
+            UIApplication.shared.openURL(url)
+        }
+    }
+}
+
+extension SettingsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            if indexPath.row == 0 {
+                let aboutVC = AboutViewController()
+                navigationController?.pushViewController(aboutVC, animated: true)
+            }
+        }
+        if indexPath.section == 1 {
+            if indexPath.row == 0 {
+                let textSizeVC = TextSizeViewController()
+                navigationController?.pushViewController(textSizeVC, animated: true)
+            }
+        }
+    }
+}
+
+extension SettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
@@ -82,51 +123,4 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         
         return cell
     }
-    
-    @objc func nightModeToggled(_ nightModeSwitch: UISwitch) {
-        let nightMode = nightModeSwitch.isOn
-        UserDefaults.standard.set(nightMode, forKey: "nightMode")
-        UserDefaults.standard.synchronize()
-        let notificationName = Notification.Name("NightMode")
-        NotificationCenter.default.post(name: notificationName, object: self)
-
-        ThemeManager.decorateTableView(self.tableView)
-        if let cells = self.tableView?.visibleCells {
-            for cell in cells {
-                ThemeManager.decorateTableCell(cell)
-            }
-        }
-    }
-    
-    func openURL(_ urlString:String) {
-        if let url = URL(string: urlString) {
-            UIApplication.shared.openURL(url)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                let aboutVC = AboutViewController()
-                self.navigationController?.pushViewController(aboutVC, animated: true)
-            }
-        }
-        if indexPath.section == 1 {
-            if indexPath.row == 0 {
-                let textSizeVC = TextSizeViewController()
-                self.navigationController?.pushViewController(textSizeVC, animated: true)
-            }
-        }
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
