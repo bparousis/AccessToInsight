@@ -10,6 +10,7 @@ import WebKit
 
 class MainViewController: UIViewController
 {
+    typealias ScrollPosition = (x: Int, y: Int)
     
     static let nightModeNotificationName = NSNotification.Name("NightMode")
     
@@ -21,9 +22,7 @@ class MainViewController: UIViewController
     
     var topConstraint: NSLayoutConstraint? = nil
     var bottomConstraint: NSLayoutConstraint? = nil
-    var rescrollX: Int = 0
-    var rescrollY: Int = 0
-    var needRescroll = false
+    var rescrollPosition: ScrollPosition? = nil
     
     var webView: WKWebView!
     @IBOutlet var toolbar: UIToolbar!
@@ -118,9 +117,7 @@ class MainViewController: UIViewController
     }
     
     func loadLocalBookmark(_ bookmark: LocalBookmark) {
-        rescrollX = bookmark.scrollX
-        rescrollY = bookmark.scrollY
-        needRescroll = false
+        rescrollPosition = (bookmark.scrollX, bookmark.scrollY)
         webView.loadLocalWebContent(bookmark.location)
     }
     
@@ -385,10 +382,9 @@ extension MainViewController: WKNavigationDelegate {
         }
         
         webView.adjustTextSize()
-        if (needRescroll) {
-            //            if (rescrollY || rescrollX)
-            scrollTo(x: rescrollX, y: rescrollY)
-            needRescroll = false
+        if let rescrollPosition = rescrollPosition {
+            scrollTo(x: rescrollPosition.x, y: rescrollPosition.y)
+            self.rescrollPosition = nil
         }
     }
 }

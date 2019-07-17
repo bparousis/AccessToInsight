@@ -32,6 +32,7 @@
 		764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F2218E47E900F4DE22 /* MainViewController.swift */; };
 		764A07F5218E95DF00F4DE22 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F4218E95DF00F4DE22 /* Constants.swift */; };
 		764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F6218EADAC00F4DE22 /* SearchViewController.swift */; };
+		765676B822DD69C00079ADD0 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 765676B722DD69710079ADD0 /* MessageUI.framework */; };
 		766F078B216EF036003340F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766F078A216EF036003340F9 /* Main.storyboard */; };
 		7675BE95218D1B8500B53D26 /* LocalBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE94218D1B8500B53D26 /* LocalBookmark.swift */; };
 		7675BE97218D291000B53D26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE96218D291000B53D26 /* AppDelegate.swift */; };
@@ -76,7 +77,6 @@
 		76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E3A218FD7F200D2C18C /* SearchEngine.m */; };
 		D736521F1F0606CB000212C7 /* pages.db in Resources */ = {isa = PBXBuildFile; fileRef = D736521E1F0606CB000212C7 /* pages.db */; };
 		D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73E9C451EE7B198008079E9 /* WebKit.framework */; };
-		D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7407B151790F5D800204EEF /* MessageUI.framework */; };
 		D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D77E8D51177D4436006C8C0D /* Default-568h@2x.png */; };
 		D7A4C5B11F00B5C500A53C9D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */; };
 		D7DD89AC1B49CC0800DF13C4 /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */; };
@@ -106,6 +106,7 @@
 		764A07F2218E47E900F4DE22 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Source/MainViewController.swift; sourceTree = "<group>"; };
 		764A07F4218E95DF00F4DE22 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = Source/Constants.swift; sourceTree = "<group>"; };
 		764A07F6218EADAC00F4DE22 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/SearchViewController.swift; sourceTree = "<group>"; };
+		765676B722DD69710079ADD0 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		766F078A216EF036003340F9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7675BE94218D1B8500B53D26 /* LocalBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalBookmark.swift; path = Source/LocalBookmark.swift; sourceTree = "<group>"; };
 		7675BE96218D291000B53D26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Source/AppDelegate.swift; sourceTree = "<group>"; };
@@ -153,7 +154,6 @@
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D736521E1F0606CB000212C7 /* pages.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = pages.db; sourceTree = "<group>"; };
 		D73E9C451EE7B198008079E9 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		D7407B151790F5D800204EEF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		D77E8D51177D4436006C8C0D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
@@ -164,9 +164,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				765676B822DD69C00079ADD0 /* MessageUI.framework in Frameworks */,
 				D7A4C5B11F00B5C500A53C9D /* libsqlite3.tbd in Frameworks */,
 				D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */,
-				D7407B161790F5D800204EEF /* MessageUI.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
@@ -208,7 +208,6 @@
 				763F93D62173C371005E6A58 /* Images.xcassets */,
 				7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */,
 				766F078A216EF036003340F9 /* Main.storyboard */,
-				D7407B151790F5D800204EEF /* MessageUI.framework */,
 				D77E8D51177D4436006C8C0D /* Default-568h@2x.png */,
 				28EEBF621118D79A00187D67 /* AccessToInsight */,
 				0AE3EF1E1257C67B000C2097 /* web_content */,
@@ -225,6 +224,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				765676B722DD69710079ADD0 /* MessageUI.framework */,
 				D7A4C5B01F00B5C500A53C9D /* libsqlite3.tbd */,
 				D73E9C451EE7B198008079E9 /* WebKit.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
