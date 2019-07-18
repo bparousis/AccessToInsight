@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JSd-TO-rxd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JSd-TO-rxd">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -24,18 +24,18 @@
                                     <constraint firstAttribute="height" constant="44" id="eho-Jq-z68"/>
                                 </constraints>
                                 <items>
-                                    <barButtonItem image="back.png" style="plain" id="MFA-Jj-soG" userLabel="Back">
+                                    <barButtonItem image="back" style="plain" id="MFA-Jj-soG" userLabel="Back">
                                         <connections>
                                             <action selector="goBack" destination="mpm-mj-EHi" id="l8B-QE-QbE"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem image="forward.png" style="plain" id="a4z-Qe-Sgc" userLabel="Forward">
+                                    <barButtonItem image="forward" style="plain" id="a4z-Qe-Sgc" userLabel="Forward">
                                         <connections>
                                             <action selector="goForward" destination="mpm-mj-EHi" id="3zM-VQ-cCj"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="k8M-Mh-NYT"/>
-                                    <barButtonItem image="home.png" style="plain" id="Dcy-Y3-YBg" userLabel="Home">
+                                    <barButtonItem image="home" style="plain" id="Dcy-Y3-YBg" userLabel="Home">
                                         <connections>
                                             <action selector="home" destination="mpm-mj-EHi" id="VaG-rP-WVP"/>
                                         </connections>
@@ -53,13 +53,13 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="ajY-CD-s3R"/>
-                                    <barButtonItem image="search.png" id="u2i-bU-Enq" userLabel="Search">
+                                    <barButtonItem image="search" id="u2i-bU-Enq" userLabel="Search">
                                         <connections>
                                             <action selector="showSearch" destination="mpm-mj-EHi" id="kmc-vA-guI"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="noM-tX-0X5"/>
-                                    <barButtonItem image="settings.png" id="BCT-88-iIu" userLabel="Settings">
+                                    <barButtonItem image="settings" id="BCT-88-iIu" userLabel="Settings">
                                         <connections>
                                             <action selector="showSettings" destination="mpm-mj-EHi" id="6w3-6w-JU3"/>
                                         </connections>
@@ -111,10 +111,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="back.png" width="25" height="25"/>
-        <image name="forward.png" width="25" height="25"/>
-        <image name="home.png" width="25" height="25"/>
-        <image name="search.png" width="25" height="25"/>
-        <image name="settings.png" width="25" height="25"/>
+        <image name="back" width="25" height="25"/>
+        <image name="forward" width="25" height="25"/>
+        <image name="home" width="25" height="25"/>
+        <image name="search" width="25" height="25"/>
+        <image name="settings" width="25" height="25"/>
     </resources>
 </document>
