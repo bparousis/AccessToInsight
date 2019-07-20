@@ -10,15 +10,15 @@ import WebKit
 
 extension WKWebView {
     func loadLocalWebContent(_ path: String) {
-        var pathWithoutHash : String = path
+        var pathWithoutHash = path
         
         if let hashRange = path.range(of: "#", options: .backwards) {
             pathWithoutHash = String(path[..<hashRange.lowerBound])
         }
         
         if let resourcePath = Bundle.main.resourcePath {
-            let fullPath = NSString.path(withComponents:[resourcePath,Constants.LOCAL_WEB_DATA_DIR, pathWithoutHash])
-            let readAccessPath = NSString.path(withComponents:[resourcePath,Constants.LOCAL_WEB_DATA_DIR])
+            let fullPath = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir, pathWithoutHash])
+            let readAccessPath = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir])
             let url = URL(fileURLWithPath: fullPath)
             let readAccessURL = URL(fileURLWithPath: readAccessPath)
             loadFileURL(url, allowingReadAccessTo: readAccessURL)
@@ -39,12 +39,15 @@ extension WKWebView {
     }
     
     func applyTheme() {
-        evaluateJavaScript(ThemeManager.getCSSJavascript(), completionHandler: nil)
+        evaluateJavaScript(ThemeManager.javascriptCSS, completionHandler: nil)
     }
     
-    private func URLStringToLocalContentPath(urlString: String ) -> String? {
-        let urlArray = urlString.components(separatedBy: Constants.LOCAL_WEB_DATA_DIR)
-        return urlArray.count >= 2 ? urlArray[1] : nil
+    private func urlStringToLocalContentPath(urlString: String ) -> String? {
+        let urlArray = urlString.components(separatedBy: Constants.localWebDataDir)
+        guard urlArray.count >= 2 else {
+            return nil
+        }
+        return urlArray[1]
     }
     
     func getBookmark(completionHandler: @escaping (LocalBookmark?) -> Void) {
@@ -61,7 +64,7 @@ extension WKWebView {
                 let title = result as? String
                 self.evaluateJavaScript("location.href", completionHandler: { (result, error) in
                     if let urlString = result as? String {
-                        let location = self.URLStringToLocalContentPath(urlString: urlString)
+                        let location = self.urlStringToLocalContentPath(urlString: urlString)
                         self.evaluateJavaScript("document.getElementById('H_tipitakaID').innerHTML.stripHTML()", completionHandler:
                             { (result, error) in
                                 let tipitakaID = result as? String

@@ -14,10 +14,9 @@ class MainViewController: UIViewController
     
     static let nightModeNotificationName = NSNotification.Name("NightMode")
     
-    var actionSheet: UIAlertController? = nil
     var toolbarHidden: Bool = false
     var bookmark: LocalBookmark? = nil
-    var startAlpha: Float = 1.0
+    var startAlpha: CGFloat = 1.0
     var doneAddBookmark: UIAlertAction? = nil
     
     var topConstraint: NSLayoutConstraint? = nil
@@ -91,9 +90,9 @@ class MainViewController: UIViewController
         // Unfortunately I don't know of a way to save and load the history.
         
         var lastLocationBookmark: LocalBookmark? = nil
-        if let data = UserDefaults.standard.object(forKey: Constants.LAST_LOCATION_BOOKMARK_KEY) as? Data {
+        if let data = UserDefaults.standard.object(forKey: Constants.lastLocationBookmarkKey) as? Data {
             let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.BOOKMARK_KEY) as? LocalBookmark
+            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.bookmarkKey) as? LocalBookmark
             unarchiver.finishDecoding()
         }
 
@@ -110,7 +109,7 @@ class MainViewController: UIViewController
     
     class func textFontSize() -> Int {
         var textFontSize = 100
-        if let textFontSizeNum = UserDefaults.standard.object(forKey: Constants.TEXT_FONT_SIZE_KEY) as? Int {
+        if let textFontSizeNum = UserDefaults.standard.object(forKey: Constants.textFontSizeKey) as? Int {
             textFontSize = textFontSizeNum
         }
         return textFontSize
@@ -126,7 +125,7 @@ class MainViewController: UIViewController
     }
     
     @IBAction func goBack() {
-        webView.alpha = CGFloat(startAlpha)
+        webView.alpha = startAlpha
         webView.goBack()
         UIView.animate(withDuration: 1.0) {
             self.webView.alpha = 1.0
@@ -134,7 +133,7 @@ class MainViewController: UIViewController
     }
     
     @IBAction func goForward() {
-        webView.alpha = CGFloat(startAlpha)
+        webView.alpha = startAlpha
         webView.goForward()
         UIView.animate(withDuration: 1.0) {
             self.webView.alpha = 0.5
@@ -142,17 +141,14 @@ class MainViewController: UIViewController
     }
     
     @IBAction func actionButton() {
-        actionSheet = UIAlertController(title: "Select Action", message: nil, preferredStyle: .actionSheet)
-        
-        if ThemeManager.isNightMode() {
-            actionSheet?.view.tintColor = ThemeManager.backgroundColor()
-        }
-        actionSheet?.popoverPresentationController?.barButtonItem = actionBarButtonItem
-        actionSheet?.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [unowned self] (action) in
+        let actionSheet = UIAlertController(title: "Select Action", message: nil, preferredStyle: .actionSheet)
+        ThemeManager.decorateActionSheet(actionSheet)
+        actionSheet.popoverPresentationController?.barButtonItem = actionBarButtonItem
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [unowned self] (action) in
             self.dismiss(animated: true, completion: nil)
         }))
         
-        actionSheet?.addAction(UIAlertAction(title: "Add Bookmark", style: .default, handler: { [unowned self] (action) in
+        actionSheet.addAction(UIAlertAction(title: "Add Bookmark", style: .default, handler: { [unowned self] (action) in
             self.webView.getBookmark(completionHandler: { [unowned self] (bookmark) in
                 self.bookmark = bookmark
                 let alert = UIAlertController(title: "Add Bookmark", message: "Enter a title for the bookmark", preferredStyle: .alert)
@@ -174,7 +170,7 @@ class MainViewController: UIViewController
                 self.present(alert, animated: true, completion: nil)
             })
         }))
-        actionSheet?.addAction(UIAlertAction(title: "Open on Live Site", style: .default, handler: {[unowned self] (alert) in
+        actionSheet.addAction(UIAlertAction(title: "Open on Live Site", style: .default, handler: {[unowned self] (alert) in
             self.webView.getBookmark(completionHandler: { (bookmark) in
                 guard let location = bookmark?.location, let url = URL(string:"http://www.accesstoinsight.org\(location)")
                     else {
@@ -184,15 +180,15 @@ class MainViewController: UIViewController
             })
         }))
         
-        actionSheet?.addAction(UIAlertAction(title: "Random Sutta", style: .default, handler: { [unowned self] (alert) in
+        actionSheet.addAction(UIAlertAction(title: "Random Sutta", style: .default, handler: { [unowned self] (alert) in
             self.webView.loadLocalWebContent("random-sutta.html")
         }))
         
-        actionSheet?.addAction(UIAlertAction(title: "Random Article", style: .default, handler: { [unowned self] (alert) in
+        actionSheet.addAction(UIAlertAction(title: "Random Article", style: .default, handler: { [unowned self] (alert) in
             self.webView.loadLocalWebContent("random-article.html")
         }))
         
-        present(actionSheet!, animated: true, completion: nil)
+        present(actionSheet, animated: true, completion: nil)
     }
     
     @objc func textDidChange(_ textField: UITextField) {
@@ -206,7 +202,7 @@ class MainViewController: UIViewController
         btc.delegate = self
     
         let nav = UINavigationController(rootViewController: btc)
-        nav.navigationBar.barStyle = ThemeManager.isNightMode() ? .blackTranslucent : .default
+        ThemeManager.decorateNavigationController(nav)
         nav.modalPresentationStyle = .popover
         present(nav, animated: true, completion: nil)
     
@@ -218,18 +214,15 @@ class MainViewController: UIViewController
     }
     
     @IBAction func showSettings() {
-        let controller = SettingsViewController()
-        controller.title = "Settings"
-        navigationController?.pushViewController(controller, animated: true)
+        navigationController?.pushViewController(SettingsViewController(), animated: true)
     }
 
     @IBAction func showSearch() {
-        let controller = SearchViewController()
-        controller.searchDelegate = self
-        controller.title = "Search"
+        let searchViewController = SearchViewController()
+        searchViewController.searchDelegate = self
 
-        let nav = UINavigationController(rootViewController: controller)
-        nav.navigationBar.barStyle = ThemeManager.isNightMode() ? .blackTranslucent : .default
+        let nav = UINavigationController(rootViewController: searchViewController)
+        ThemeManager.decorateNavigationController(nav)
         present(nav, animated: true, completion: nil)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -249,15 +242,15 @@ class MainViewController: UIViewController
     }
     
     func toggleScreenDecorations() {
-        toolbarHidden = !toolbarHidden
+        toolbarHidden.toggle()
         UIView.beginAnimations("toolbar", context: nil)
-        if toolbarHidden == false {
-            bottomConstraint?.constant = -44.0
-            toolbar?.isHidden = false
-        }
-        else {
+        
+        if toolbarHidden {
             bottomConstraint?.constant = 0.0
             toolbar?.isHidden = true
+        } else {
+            bottomConstraint?.constant = -44.0
+            toolbar?.isHidden = false
         }
         view.layoutIfNeeded()
         UIView.commitAnimations()
@@ -273,22 +266,21 @@ class MainViewController: UIViewController
     
     @objc func nightModeNotification(_ notification:NSNotification)
     {
-        if notification.name == MainViewController.nightModeNotificationName {
-            determineStartAlpha()
-            updateColorScheme()
-            webView.reload()
-        }
+        guard notification.name == MainViewController.nightModeNotificationName else { return }
+        determineStartAlpha()
+        updateColorScheme()
+        webView.reload()
     }
     
     func determineStartAlpha() {
-        startAlpha = ThemeManager.isNightMode() ? 0.0 : 1.0
+        startAlpha = ThemeManager.webViewAlpha
     }
     
     func updateColorScheme() {
         ThemeManager.decorateToolbar(toolbar)
-        view.backgroundColor = ThemeManager.backgroundColor()
-        webView.backgroundColor = ThemeManager.backgroundColor()
-        navigationController?.navigationBar.barStyle = ThemeManager.isNightMode() ? .blackTranslucent : .default
+        ThemeManager.decorateView(view)
+        ThemeManager.decorateView(webView)
+        ThemeManager.decorateNavigationController(navigationController)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -314,16 +306,16 @@ class MainViewController: UIViewController
     
     func preferredStatusBarStyle() -> UIStatusBarStyle
     {
-        return ThemeManager.isNightMode() ? .lightContent : .default
+        return ThemeManager.preferredStatusBarStyle
     }
     
     func saveLastLocation() {
         webView.getBookmark { (lastLocationBookmark) in
             let data = NSMutableData()
             let archiver = NSKeyedArchiver(forWritingWith: data)
-            archiver.encode(lastLocationBookmark, forKey: Constants.BOOKMARK_KEY)
+            archiver.encode(lastLocationBookmark, forKey: Constants.bookmarkKey)
             archiver.finishEncoding()
-            UserDefaults.standard.set(data, forKey: Constants.LAST_LOCATION_BOOKMARK_KEY)
+            UserDefaults.standard.set(data, forKey: Constants.lastLocationBookmarkKey)
             UserDefaults.standard.synchronize()
         }
     }
@@ -339,11 +331,11 @@ extension MainViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        webView.alpha = CGFloat(startAlpha)
+        webView.alpha = startAlpha
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        webView.alpha = CGFloat(startAlpha)
+        webView.alpha = startAlpha
         UIView.animate(withDuration: 1.0) {
             [unowned webView] in
             webView.alpha = 1.0

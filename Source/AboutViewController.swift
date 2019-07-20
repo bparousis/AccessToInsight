@@ -71,7 +71,7 @@ extension AboutViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableCellId", for: indexPath)
         cell.selectionStyle = .none
-        ThemeManager.decorateTableCell(cell)
+        ThemeManager.decorateGroupedTableCell(cell)
         
         if indexPath.section == 0 {
             if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {

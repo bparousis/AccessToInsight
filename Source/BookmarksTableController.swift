@@ -18,7 +18,8 @@ class BookmarksTableController: UITableViewController {
         super.viewDidLoad()
 
         title = "Bookmarks"
-        tableView.backgroundColor = ThemeManager.backgroundColor()
+        ThemeManager.decorateTableView(tableView)
+        tableView.tableFooterView = UIView()
         tableView.allowsSelectionDuringEditing = true
         navigationItem.rightBarButtonItem = editButtonItem
         if UIDevice.current.userInterfaceIdiom == .phone {
@@ -29,13 +30,7 @@ class BookmarksTableController: UITableViewController {
 
     // MARK: - Table view data source
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return BookmarksManager.instance.getCount()
     }
 
@@ -49,9 +44,6 @@ class BookmarksTableController: UITableViewController {
         }()
         
         ThemeManager.decorateTableCell(cell)
-        if ThemeManager.isNightMode() {
-            cell.backgroundColor = UIColor.clear
-        }
         let bookmark = BookmarksManager.instance.bookmarkAtIndex(indexPath.row)
         cell.textLabel?.text = bookmark?.title
         cell.detailTextLabel?.text = bookmark?.note
@@ -105,7 +97,7 @@ class BookmarksTableController: UITableViewController {
 
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        BookmarksManager.instance.moveBookmarkAtIndex(fromIndexPath.row, toIndex: to.row)
+        BookmarksManager.instance.moveBookmark(from: fromIndexPath.row, to: to.row)
     }
 
     @objc func cancel(_ cancelItem: UIBarButtonItem) {

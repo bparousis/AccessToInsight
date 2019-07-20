@@ -26,10 +26,10 @@ class TextSizeViewController: UIViewController  {
         var lastLocationBookmark : LocalBookmark? = nil
         
         let defaults = UserDefaults.standard
-        let data = defaults.object(forKey: Constants.LAST_LOCATION_BOOKMARK_KEY) as? Data
+        let data = defaults.object(forKey: Constants.lastLocationBookmarkKey) as? Data
         if  let lastData = data {
             let unarchiver = NSKeyedUnarchiver(forReadingWith: lastData)
-            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.BOOKMARK_KEY) as? LocalBookmark
+            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.bookmarkKey) as? LocalBookmark
             unarchiver.finishDecoding()
         }
         
@@ -95,7 +95,7 @@ class TextSizeViewController: UIViewController  {
     
     @objc func resetTextFontSize(_ sender: UIBarButtonItem) {
         let textFontSize = 100
-        UserDefaults.standard.set(textFontSize, forKey: Constants.TEXT_FONT_SIZE_KEY)
+        UserDefaults.standard.set(textFontSize, forKey: Constants.textFontSizeKey)
         UserDefaults.standard.synchronize()
         textSizeWebView.adjustTextSize()
     }
@@ -109,7 +109,7 @@ class TextSizeViewController: UIViewController  {
             textFontSize = textFontSize > 50 ? textFontSize - 5 : textFontSize
         }
         
-        UserDefaults.standard.set(textFontSize, forKey: Constants.TEXT_FONT_SIZE_KEY)
+        UserDefaults.standard.set(textFontSize, forKey: Constants.textFontSizeKey)
         UserDefaults.standard.synchronize()
         textSizeWebView.adjustTextSize()
     }

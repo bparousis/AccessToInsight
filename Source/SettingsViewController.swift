@@ -51,7 +51,7 @@ class SettingsViewController: UIViewController {
         ThemeManager.decorateTableView(tableView)
         let cells = tableView.visibleCells
         for cell in cells {
-            ThemeManager.decorateTableCell(cell)
+            ThemeManager.decorateGroupedTableCell(cell)
         }
     }
     
@@ -99,7 +99,7 @@ extension SettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableCellId", for: indexPath)
         cell.selectionStyle = .none
-        ThemeManager.decorateTableCell(cell)
+        ThemeManager.decorateGroupedTableCell(cell)
         
         if indexPath.section == 0 {
             cell.textLabel?.text = "About"

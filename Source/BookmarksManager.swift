@@ -40,6 +40,7 @@ class BookmarksManager: NSObject {
     }
     
     func bookmarkAtIndex(_ index: Int) -> LocalBookmark? {
+        guard bookmarks.indices.contains(index) else { return nil }
         return bookmarks[index]
     }
     
@@ -49,11 +50,16 @@ class BookmarksManager: NSObject {
     }
     
     func deleteBookmarkAtIndex(_ index: Int) {
+        guard bookmarks.indices.contains(index) else { return }
         bookmarks.remove(at: index)
         save()
     }
     
-    func moveBookmarkAtIndex(_ fromIndex: Int, toIndex:Int) {
+    func moveBookmark(from fromIndex: Int, to toIndex:Int) {
+        guard bookmarks.indices.contains(fromIndex) && bookmarks.indices.contains(toIndex) else {
+            return
+        }
+        
         let bookmarkToMove = bookmarks[fromIndex]
         bookmarks.remove(at: fromIndex)
         bookmarks.insert(bookmarkToMove, at: toIndex)

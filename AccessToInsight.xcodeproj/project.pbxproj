@@ -26,6 +26,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
+		7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7622974622E174210051B184 /* UIColor+AppColors.swift */; };
 		763F93D72173C371005E6A58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 763F93D62173C371005E6A58 /* Images.xcassets */; };
 		764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */; };
 		764A07F1218E2BD500F4DE22 /* BookmarksControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */; };
@@ -36,7 +37,7 @@
 		766F078B216EF036003340F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766F078A216EF036003340F9 /* Main.storyboard */; };
 		7675BE95218D1B8500B53D26 /* LocalBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE94218D1B8500B53D26 /* LocalBookmark.swift */; };
 		7675BE97218D291000B53D26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE96218D291000B53D26 /* AppDelegate.swift */; };
-		7675BE99218D2F6E00B53D26 /* WKWebViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE98218D2F6E00B53D26 /* WKWebViewExtension.swift */; };
+		7675BE99218D2F6E00B53D26 /* WKWebView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE98218D2F6E00B53D26 /* WKWebView+Extension.swift */; };
 		7675BE9B218D310300B53D26 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE9A218D310300B53D26 /* AboutViewController.swift */; };
 		7675BE9D218D3D7500B53D26 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE9C218D3D7500B53D26 /* SettingsViewController.swift */; };
 		7675BE9F218D48BF00B53D26 /* BookmarksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE9E218D48BF00B53D26 /* BookmarksManager.swift */; };
@@ -71,6 +72,7 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765FC0DF74451002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessToInsight_Universal_Prefix.pch; sourceTree = "<group>"; };
+		7622974622E174210051B184 /* UIColor+AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+AppColors.swift"; sourceTree = "<group>"; };
 		763F93D62173C371005E6A58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksTableController.swift; path = Source/BookmarksTableController.swift; sourceTree = "<group>"; };
 		764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksControllerDelegate.swift; path = Source/BookmarksControllerDelegate.swift; sourceTree = "<group>"; };
@@ -81,7 +83,7 @@
 		766F078A216EF036003340F9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7675BE94218D1B8500B53D26 /* LocalBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalBookmark.swift; path = Source/LocalBookmark.swift; sourceTree = "<group>"; };
 		7675BE96218D291000B53D26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Source/AppDelegate.swift; sourceTree = "<group>"; };
-		7675BE98218D2F6E00B53D26 /* WKWebViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WKWebViewExtension.swift; path = Source/WKWebViewExtension.swift; sourceTree = "<group>"; };
+		7675BE98218D2F6E00B53D26 /* WKWebView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "WKWebView+Extension.swift"; path = "Source/WKWebView+Extension.swift"; sourceTree = "<group>"; };
 		7675BE9A218D310300B53D26 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AboutViewController.swift; path = Source/AboutViewController.swift; sourceTree = "<group>"; };
 		7675BE9C218D3D7500B53D26 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = Source/SettingsViewController.swift; sourceTree = "<group>"; };
 		7675BE9E218D48BF00B53D26 /* BookmarksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksManager.swift; path = Source/BookmarksManager.swift; sourceTree = "<group>"; };
@@ -131,13 +133,13 @@
 			children = (
 				7688F60B218BF81800DAA890 /* Resources */,
 				7647D067218962B40011651D /* Bookmark */,
+				7622974522E173EC0051B184 /* Extensions */,
 				D7A4C5AB1F00B32B00A53C9D /* SearchEngine */,
 				D74BA3831ECC057100CAAB3D /* Settings */,
 				7675BE96218D291000B53D26 /* AppDelegate.swift */,
 				764A07F4218E95DF00F4DE22 /* Constants.swift */,
 				764A07F2218E47E900F4DE22 /* MainViewController.swift */,
 				7688F64D218BFDC400DAA890 /* ThemeManager.swift */,
-				7675BE98218D2F6E00B53D26 /* WKWebViewExtension.swift */,
 				32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */,
 				7688F64C218BFCAC00DAA890 /* AccessToInsight-Bridging-Header.h */,
 			);
@@ -174,6 +176,15 @@
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7622974522E173EC0051B184 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7675BE98218D2F6E00B53D26 /* WKWebView+Extension.swift */,
+				7622974622E174210051B184 /* UIColor+AppColors.swift */,
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		7647D067218962B40011651D /* Bookmark */ = {
@@ -310,7 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */,
-				7675BE99218D2F6E00B53D26 /* WKWebViewExtension.swift in Sources */,
+				7675BE99218D2F6E00B53D26 /* WKWebView+Extension.swift in Sources */,
 				764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */,
 				76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */,
 				764A07F1218E2BD500F4DE22 /* BookmarksControllerDelegate.swift in Sources */,
@@ -322,6 +333,7 @@
 				7675BE95218D1B8500B53D26 /* LocalBookmark.swift in Sources */,
 				7675BE9F218D48BF00B53D26 /* BookmarksManager.swift in Sources */,
 				7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */,
+				7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */,
 				764A07F5218E95DF00F4DE22 /* Constants.swift in Sources */,
 				76CE7E39218F4D8300D2C18C /* SearchViewDelegate.swift in Sources */,
 			);

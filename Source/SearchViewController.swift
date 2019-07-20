@@ -25,11 +25,13 @@ class SearchViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        title = "Search"
         isSearching = false
         searchTimer = nil
         showRecentSearches = true
-        tableView.backgroundColor = ThemeManager.backgroundColor()
+        ThemeManager.decorateTableView(tableView)
+        tableView.tableFooterView = UIView()
         
         let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
         navigationItem.leftBarButtonItem = cancelButtonItem
@@ -73,7 +75,7 @@ class SearchViewController: UITableViewController {
             if let searchTextLength = searchController.searchBar.text?.count {
                 noDataLabel.text  = searchTextLength > 0 ? "No Result" : ""
             }
-            noDataLabel.textColor        = ThemeManager.isNightMode() ? UIColor.white: UIColor.black
+            ThemeManager.decorateLabel(noDataLabel)
             noDataLabel.textAlignment    = .center
             tableView.backgroundView = noDataLabel
             tableView.separatorStyle = .none
@@ -99,22 +101,12 @@ class SearchViewController: UITableViewController {
             return cell
         }()
         
-        var startFontTag : String
         ThemeManager.decorateTableCell(cell)
-        if ThemeManager.isNightMode() {
-            cell.backgroundColor = UIColor.clear
-            startFontTag = "<font color='white'>"
-        }
-        else {
-            startFontTag = "<font color='black'>"
-        }
-    
         if isSearching {
             cell.textLabel?.text = nil
             cell.detailTextLabel?.text = nil
-            let style : UIActivityIndicatorView.Style = ThemeManager.isNightMode() ? .white : .gray
             
-            searchingIndicator = UIActivityIndicatorView(style: style)
+            searchingIndicator = ThemeManager.makeDecoratedActivityIndicator()
             cell.contentView.addSubview(searchingIndicator!)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 self.searchingIndicator?.startAnimating()
@@ -132,11 +124,12 @@ class SearchViewController: UITableViewController {
             cell.detailTextLabel?.attributedText = nil
         }
         else {
-            if indexPath.row < tableData.count {
+            
+            if tableData.indices.contains(indexPath.row) {
                 if let resultData = tableData[indexPath.row] as? Dictionary<String,Any> {
                     let subtitle = resultData["subtitle"] as? String
                     let snippet = resultData["snippet"] as! String
-                    let formattedSnippet = "\(startFontTag)\(snippet)</font>"
+                    let formattedSnippet = ThemeManager.htmlFontTag(content: snippet)
                     if let data = formattedSnippet.data(using: .unicode) {
                         do {
                             let attrStr = try NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
@@ -179,10 +172,8 @@ class SearchViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            var recentSearches = tableData
-            recentSearches.remove(at: indexPath.row)
-            tableData = recentSearches
-            UserDefaults.standard.set(recentSearches, forKey: SearchViewController.recentSearchesKey)
+            tableData.remove(at: indexPath.row)
+            UserDefaults.standard.set(tableData, forKey: SearchViewController.recentSearchesKey)
             UserDefaults.standard.synchronize()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -205,7 +196,8 @@ private extension SearchViewController {
         DispatchQueue.global(qos: .userInitiated).async {
             let queryResults = self.searchEngine.query(queryString, type: scopeType)
             DispatchQueue.main.async {
-                [unowned self] in
+                [weak self] in
+                guard let self = self else { return }
                 self.isSearching = false
                 self.searchingIndicator?.stopAnimating()
                 self.searchingIndicator?.removeFromSuperview()

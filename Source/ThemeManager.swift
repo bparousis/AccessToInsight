@@ -10,21 +10,17 @@ import UIKit
 
 struct ThemeManager {
     
-    private static let SCREEN_CSS_PATH = "css/screen.css"
-    private static let IPHONE_CSS = "iphone.css"
-    private static let IPHONE_NIGHT_CSS = "iphone_night.css"
-    private static let IPAD_CSS = "ipad.css"
-    private static let IPAD_NIGHT_CSS = "ipad_night.css"
+    static var preferredStatusBarStyle: UIStatusBarStyle {
+        return isNightMode ? .lightContent : .default
+    }
     
-    static func getCSSJavascript() -> String {
-        var cssFile : String = IPHONE_CSS
-        let nightMode = UserDefaults.standard.bool(forKey: "nightMode")
+    static var javascriptCSS: String {
+        var cssFile: String
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
-            cssFile = nightMode ? IPAD_NIGHT_CSS : IPAD_CSS
-            break
+            cssFile = isNightMode ? ipadNightCSS : ipadCSS
         default:
-            cssFile = nightMode ? IPHONE_NIGHT_CSS : IPHONE_CSS
+            cssFile = isNightMode ? iphoneNightCSS : iphoneCSS
         }
         
         let javascript = """
@@ -39,50 +35,96 @@ struct ThemeManager {
         return javascript
     }
     
-    static func isNightMode() -> Bool {
-        return UserDefaults.standard.bool(forKey: "nightMode")
+    static var webViewAlpha: CGFloat {
+        return isNightMode ? 0.0 : 1.0
     }
     
-    static func backgroundColor() -> UIColor {
-        return isNightMode() ? UIColor(red: 39.0/255.0, green: 40.0/255.0, blue: 34.0/255.0, alpha: 1.0) : UIColor.white
+    static func decorateNavigationController(_ navigationController: UINavigationController?) {
+        if let navigationController = navigationController {
+            navigationController.navigationBar.barStyle = isNightMode ? .blackTranslucent : .default
+        }
+    }
+    
+    static func decorateLabel(_ label: UILabel) {
+        label.textColor = theme.labelColor
+    }
+    
+    static func makeDecoratedActivityIndicator() -> UIActivityIndicatorView {
+        return UIActivityIndicatorView(style: isNightMode ? .white : .gray)
+    }
+    
+    static func decorateActionSheet(_ actionSheet: UIAlertController) {
+        guard actionSheet.preferredStyle == .actionSheet else {
+            return
+        }
+        
+        if isNightMode {
+            actionSheet.view.tintColor = theme.backgroundColor
+        }
+    }
+    
+    static func decorateView(_ view: UIView) {
+        view.backgroundColor = theme.backgroundColor
+    }
+    
+    static func htmlFontTag(content: String) -> String {
+        let color = isNightMode ? "white" : "black"
+        return "<font color='\(color)'>\(content)</font>"
+    }
+    
+    static func decorateGroupedTableCell(_ cell: UITableViewCell) {
+        cell.textLabel?.textColor = theme.labelColor
+        cell.detailTextLabel?.textColor = theme.labelColor
+        cell.backgroundColor = theme.cellBackgroundColor
     }
     
     static func decorateTableCell(_ cell: UITableViewCell) {
-        if isNightMode() {
-            cell.backgroundColor = UIColor(red:68.0/255.0, green:68.0/255.0, blue:68.0/255.0, alpha:1.0)
-            cell.textLabel?.textColor = UIColor.white
-            cell.detailTextLabel?.textColor = UIColor.white
-        }
-        else {
-            cell.backgroundColor = UIColor.white
-            cell.textLabel?.textColor = UIColor.black
-            cell.detailTextLabel?.textColor = UIColor.black
-        }
+        cell.backgroundColor = theme.backgroundColor
+        cell.textLabel?.textColor = theme.labelColor
+        cell.detailTextLabel?.textColor = theme.labelColor
     }
     
-    static func decorateToolbar(_ toolbar : UIToolbar?) {
-        if let decorateToolbar = toolbar {
-            decorateToolbar.isTranslucent = true
-            if isNightMode() {
-                decorateToolbar.barTintColor = backgroundColor()
-                decorateToolbar.tintColor = UIColor(red:227.0/255.0, green:227.0/255.0, blue:227.0/255.0, alpha:1.0)
-            }
-            else {
-                decorateToolbar.barTintColor = nil
-                decorateToolbar.tintColor = nil
-            }
-        }
+    static func decorateToolbar(_ toolbar : UIToolbar) {
+        toolbar.isTranslucent = true
+        toolbar.barTintColor = theme.barTintColor
+        toolbar.tintColor = theme.tintColor
     }
     
-    static func decorateTableView(_ tableView: UITableView?) {
-        if let decorateTableView = tableView {
-            if isNightMode() {
-                decorateTableView.backgroundColor = backgroundColor()
-            }
-            else {
-                let aTableView = UITableView(frame: .zero, style: .grouped)
-                decorateTableView.backgroundColor = aTableView.backgroundColor
-            }
+    static func decorateTableView(_ tableView: UITableView) {
+        switch tableView.style {
+        case .plain:
+            tableView.backgroundColor = theme.backgroundColor
+        default:
+            tableView.backgroundColor = theme.tableBackgroundColor
         }
+    }
+}
+
+private extension ThemeManager {
+    
+    static let iphoneCSS = "iphone.css"
+    static let iphoneNightCSS = "iphone_night.css"
+    static let ipadCSS = "ipad.css"
+    static let ipadNightCSS = "ipad_night.css"
+    
+    struct Theme {
+        var backgroundColor: UIColor
+        var cellBackgroundColor: UIColor
+        var labelColor: UIColor
+        var barTintColor: UIColor?
+        var tintColor: UIColor?
+        var tableBackgroundColor: UIColor
+        
+        static let light = Theme(backgroundColor: .white, cellBackgroundColor: .white, labelColor: .black, barTintColor: nil, tintColor: nil, tableBackgroundColor: .groupTableViewBackground)
+        
+        static let night = Theme(backgroundColor: .midnight, cellBackgroundColor: .charcoal, labelColor: .white, barTintColor: .midnight, tintColor: .babyBlue, tableBackgroundColor: .midnight)
+    }
+    
+    static var isNightMode: Bool {
+        return UserDefaults.standard.bool(forKey: "nightMode")
+    }
+    
+    static var theme: Theme {
+        return isNightMode ? .night : .light
     }
 }
