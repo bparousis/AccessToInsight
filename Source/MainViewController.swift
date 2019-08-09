@@ -295,17 +295,15 @@ class MainViewController: UIViewController
         saveLastLocation()
     }
     
-    func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden: Bool {
         return toolbarHidden
     }
     
-    func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation
-    {
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return .slide
     }
     
-    func preferredStatusBarStyle() -> UIStatusBarStyle
-    {
+    override var preferredStatusBarStyle: UIStatusBarStyle {
         return ThemeManager.preferredStatusBarStyle
     }
     
