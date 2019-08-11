@@ -11,9 +11,19 @@ class BookmarksTableController: UITableViewController {
 
     private var editBookmarkIndex = 0
     private var doneEditAction: UIAlertAction? = nil
+    private var bookmarksManager: BookmarksManager
 
     weak var delegate: BookmarksControllerDelegate?
-
+    
+    init(bookmarksManager: BookmarksManager) {
+        self.bookmarksManager = bookmarksManager
+        super.init(style: .plain)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,11 +37,25 @@ class BookmarksTableController: UITableViewController {
             navigationItem.leftBarButtonItem = cancelButtonItem
         }
     }
+}
 
-    // MARK: - Table view data source
+private extension BookmarksTableController {
+    @objc func textDidChange(_ textField: UITextField) {
+        if let count = textField.text?.count {
+            doneEditAction?.isEnabled = count > 0
+        }
+    }
+    
+    @objc func cancel(_ cancelItem: UIBarButtonItem) {
+        delegate?.bookmarksControllerCancel(self)
+    }
+}
+
+// MARK: - Table view delegates
+internal extension BookmarksTableController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return BookmarksManager.instance.getCount()
+        return bookmarksManager.getCount()
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,18 +68,31 @@ class BookmarksTableController: UITableViewController {
         }()
         
         ThemeManager.decorateTableCell(cell)
-        let bookmark = BookmarksManager.instance.bookmarkAtIndex(indexPath.row)
+        let bookmark = bookmarksManager.bookmarkAtIndex(indexPath.row)
         cell.textLabel?.text = bookmark?.title
         cell.detailTextLabel?.text = bookmark?.note
         return cell
     }
-
+    
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            bookmarksManager.deleteBookmarkAtIndex(indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
+    
+    // Override to support rearranging the table view.
+    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+        bookmarksManager.moveBookmark(from: fromIndexPath.row, to: to.row)
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        guard let bookmark = BookmarksManager.instance.bookmarkAtIndex(indexPath.row) else {
+        guard let bookmark = bookmarksManager.bookmarkAtIndex(indexPath.row) else {
             return
         }
-
+        
         if tableView.isEditing {
             editBookmarkIndex = indexPath.row
             let alert = UIAlertController(title: "Edit Bookmark", message: "Enter a title for the bookmark", preferredStyle: .alert)
@@ -64,10 +101,10 @@ class BookmarksTableController: UITableViewController {
                 textField.addTarget(self, action: #selector(self.textDidChange(_:)), for: .editingChanged)
             }
             doneEditAction = UIAlertAction(title: "Done", style: .default, handler: {[unowned self] (action) in
-                let bookmark = BookmarksManager.instance.bookmarkAtIndex(self.editBookmarkIndex)
+                let bookmark = self.bookmarksManager.bookmarkAtIndex(self.editBookmarkIndex)
                 if let newTitle = alert.textFields?.first?.text {
                     bookmark?.title = newTitle
-                    BookmarksManager.instance.save()
+                    self.bookmarksManager.save()
                     self.tableView.reloadData()
                 }
             })
@@ -78,29 +115,5 @@ class BookmarksTableController: UITableViewController {
         else {
             delegate?.bookmarksController(self, selectedBookmark: bookmark)
         }
-    }
-
-    @objc func textDidChange(_ textField: UITextField) {
-        if let count = textField.text?.count {
-            doneEditAction?.isEnabled = count > 0
-        }
-    }
-
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            BookmarksManager.instance.deleteBookmarkAtIndex(indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        }
-    }
-
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        BookmarksManager.instance.moveBookmark(from: fromIndexPath.row, to: to.row)
-    }
-
-    @objc func cancel(_ cancelItem: UIBarButtonItem) {
-        delegate?.bookmarksControllerCancel(self)
     }
 }

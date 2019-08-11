@@ -9,19 +9,18 @@ import Foundation
 import WebKit
 
 extension WKWebView {
+
     func loadLocalWebContent(_ path: String) {
-        var pathWithoutHash = path
+        var path = path
         
         if let hashRange = path.range(of: "#", options: .backwards) {
-            pathWithoutHash = String(path[..<hashRange.lowerBound])
+            path = String(path[..<hashRange.lowerBound])
         }
         
         if let resourcePath = Bundle.main.resourcePath {
-            let fullPath = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir, pathWithoutHash])
-            let readAccessPath = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir])
+            let fullPath = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir, path])
             let url = URL(fileURLWithPath: fullPath)
-            let readAccessURL = URL(fileURLWithPath: readAccessPath)
-            loadFileURL(url, allowingReadAccessTo: readAccessURL)
+            loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
         }
     }
     

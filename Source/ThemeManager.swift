@@ -18,9 +18,9 @@ struct ThemeManager {
         var cssFile: String
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
-            cssFile = isNightMode ? ipadNightCSS : ipadCSS
+            cssFile = ipadCSS
         default:
-            cssFile = isNightMode ? iphoneNightCSS : iphoneCSS
+            cssFile = iphoneCSS
         }
         
         let javascript = """
@@ -101,12 +101,15 @@ struct ThemeManager {
 }
 
 private extension ThemeManager {
-    
-    static let iphoneCSS = "iphone.css"
-    static let iphoneNightCSS = "iphone_night.css"
-    static let ipadCSS = "ipad.css"
-    static let ipadNightCSS = "ipad_night.css"
-    
+
+    static var ipadCSS: String {
+        return isNightMode ? "ipad_night.css" : "ipad.css"
+    }
+
+    static var iphoneCSS: String {
+        return isNightMode ? "iphone_night.css" : "iphone.css"
+    }
+
     struct Theme {
         var backgroundColor: UIColor
         var cellBackgroundColor: UIColor

@@ -11,9 +11,7 @@ class SearchViewController: UITableViewController {
     
     static let recentSearchesKey = "recentSearches"
     static let lastSearchScopeIndexKey = "lastSearchScopeIndex"
-    lazy var searchEngine: SearchEngine = {
-       return SearchEngine()
-    }()
+    private lazy var searchEngine = SearchEngine()
     
     var tableData: [Any] = []
     var showRecentSearches = true

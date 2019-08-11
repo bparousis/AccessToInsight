@@ -12,17 +12,21 @@ class BookmarksManager: NSObject {
     private static let BookmarksArchiveFilename = "LocalBookmarks"
     private static let BookmarksKey = "bookmarks"
     
-    private var bookmarks : [LocalBookmark] = []
+    private var bookmarks: [LocalBookmark] = []
     
-    static let instance = BookmarksManager()
-    
-    private override init() {
-        super.init()
-        load()
+    static var lastLocationBookmark: LocalBookmark? {
+        var lastLocationBookmark: LocalBookmark?
+        if let data = UserDefaults.standard.object(forKey: Constants.lastLocationBookmarkKey) as? Data {
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.bookmarkKey) as? LocalBookmark
+            unarchiver.finishDecoding()
+        }
+        return lastLocationBookmark
     }
     
-    class func sharedInstance() -> BookmarksManager {
-        return instance
+    override init() {
+        super.init()
+        load()
     }
     
     func save() {
@@ -64,6 +68,11 @@ class BookmarksManager: NSObject {
         bookmarks.remove(at: fromIndex)
         bookmarks.insert(bookmarkToMove, at: toIndex)
         save()
+    }
+    
+    static func setLocalBookmarkKeyedUnarchived() {
+        // Needed for migration from old LocalBookmark class from Objective-C code.
+        NSKeyedUnarchiver.setClass(LocalBookmark.self, forClassName: "LocalBookmark")
     }
 }
 

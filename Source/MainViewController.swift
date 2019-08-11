@@ -15,7 +15,6 @@ class MainViewController: UIViewController
     static let nightModeNotificationName = NSNotification.Name("NightMode")
     
     var toolbarHidden: Bool = false
-    var bookmark: LocalBookmark? = nil
     var startAlpha: CGFloat = 1.0
     var doneAddBookmark: UIAlertAction? = nil
     
@@ -23,6 +22,8 @@ class MainViewController: UIViewController
     var bottomConstraint: NSLayoutConstraint? = nil
     var rescrollPosition: ScrollPosition? = nil
     
+    private lazy var bookmarksManager = BookmarksManager()
+
     var webView: WKWebView!
     @IBOutlet var toolbar: UIToolbar!
     @IBOutlet var bmBarButtonItem: UIBarButtonItem!
@@ -41,8 +42,7 @@ class MainViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Needed for migration from old LocalBookmark class from Objective-C code.
-        NSKeyedUnarchiver.setClass(LocalBookmark.self, forClassName: "LocalBookmark")
+        BookmarksManager.setLocalBookmarkKeyedUnarchived()
         
         toolbarHidden = false
         
@@ -85,19 +85,9 @@ class MainViewController: UIViewController
         bottomConstraint?.constant = -44.0
         bottomConstraint?.isActive = true
         view.layoutIfNeeded()
-
-        // Load the last page the user was viewing.
-        // Unfortunately I don't know of a way to save and load the history.
         
-        var lastLocationBookmark: LocalBookmark? = nil
-        if let data = UserDefaults.standard.object(forKey: Constants.lastLocationBookmarkKey) as? Data {
-            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.bookmarkKey) as? LocalBookmark
-            unarchiver.finishDecoding()
-        }
-
-        if (lastLocationBookmark != nil) {
-            loadLocalBookmark(lastLocationBookmark!)
+        if let lastLocationBookmark = BookmarksManager.lastLocationBookmark {
+            loadLocalBookmark(lastLocationBookmark)
         } else {
             home()
         }
@@ -150,7 +140,6 @@ class MainViewController: UIViewController
         
         actionSheet.addAction(UIAlertAction(title: "Add Bookmark", style: .default, handler: { [unowned self] (action) in
             self.webView.getBookmark(completionHandler: { [unowned self] (bookmark) in
-                self.bookmark = bookmark
                 let alert = UIAlertController(title: "Add Bookmark", message: "Enter a title for the bookmark", preferredStyle: .alert)
                 alert.addTextField(configurationHandler: { [unowned self] (textField) in
                     textField.text = bookmark?.title
@@ -160,9 +149,8 @@ class MainViewController: UIViewController
                 self.doneAddBookmark = UIAlertAction(title: "Done", style: .default, handler: { (action) in
                     if let addBookmark = bookmark, let bookmarkTitle = alert.textFields?.first?.text {
                         addBookmark.title = bookmarkTitle
-                        BookmarksManager.instance.addBookmark(addBookmark)
+                        self.bookmarksManager.addBookmark(addBookmark)
                     }
-                    
                 })
                 alert.addAction(self.doneAddBookmark!)
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
@@ -198,7 +186,7 @@ class MainViewController: UIViewController
     }
     
     @IBAction func showBookmarks() {
-        let btc = BookmarksTableController(style: .plain)
+        let btc = BookmarksTableController(bookmarksManager: bookmarksManager)
         btc.delegate = self
     
         let nav = UINavigationController(rootViewController: btc)
@@ -225,11 +213,6 @@ class MainViewController: UIViewController
         ThemeManager.decorateNavigationController(nav)
         present(nav, animated: true, completion: nil)
         navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-
-    func loadPage(_ filePath: String) {
-        webView.loadLocalWebContent(filePath)
-        dismiss(animated: true, completion: nil)
     }
     
     // Need to get rid of this. Too generic.
@@ -292,7 +275,6 @@ class MainViewController: UIViewController
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(false, animated: animated)
         super.viewWillDisappear(animated)
-        saveLastLocation()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -376,6 +358,7 @@ extension MainViewController: WKNavigationDelegate {
             scrollTo(x: rescrollPosition.x, y: rescrollPosition.y)
             self.rescrollPosition = nil
         }
+        saveLastLocation()
     }
 }
 
@@ -386,6 +369,12 @@ extension MainViewController: UITextFieldDelegate {
 }
 
 extension MainViewController: SearchViewDelegate {
+    
+    func loadPage(_ filePath: String) {
+        webView.loadLocalWebContent(filePath)
+        dismiss(animated: true, completion: nil)
+    }
+    
     func searchViewControllerCancel(_ controller: SearchViewController) {
         dismiss(animated: true, completion: nil)
     }
