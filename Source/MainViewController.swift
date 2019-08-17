@@ -94,7 +94,7 @@ class MainViewController: UIViewController
     }
     
     func scrollTo(x scrollX: Int, y scrollY: Int) {
-        webView.evaluateJavaScript("window.scrollTo(\(scrollX), \(scrollY))", completionHandler: nil)
+        webView.evaluateJavaScript("window.scrollTo(\(scrollX), \(scrollY))")
     }
     
     class func textFontSize() -> Int {

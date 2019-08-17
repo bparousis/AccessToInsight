@@ -27,18 +27,18 @@ extension WKWebView {
     func adjustTextSize() {
         let textFontSize = MainViewController.textFontSize()
         let jsString = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '\(textFontSize)%'"
-        evaluateJavaScript(jsString, completionHandler:nil)
+        evaluateJavaScript(jsString)
     }
     
     func fitContentToScreen() {
         let javascript = """
                 var meta = document.createElement('meta');meta.setAttribute('name', 'viewport');meta.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');document.getElementsByTagName('head')[0].appendChild(meta);
                 """
-        evaluateJavaScript(javascript, completionHandler: nil)
+        evaluateJavaScript(javascript)
     }
     
     func applyTheme() {
-        evaluateJavaScript(ThemeManager.javascriptCSS, completionHandler: nil)
+        evaluateJavaScript(ThemeManager.javascriptCSS)
     }
     
     private func urlStringToLocalContentPath(urlString: String ) -> String? {
@@ -58,18 +58,18 @@ extension WKWebView {
                 return s.replace(spaceRegexp, ' ')
             };
         """
-        evaluateJavaScript(js,  completionHandler: { (result, error) in
-            self.evaluateJavaScript("document.title", completionHandler: { (result, error) in
+        evaluateJavaScript(js) { (result, error) in
+            self.evaluateJavaScript("document.title") { (result, error) in
                 let title = result as? String
-                self.evaluateJavaScript("location.href", completionHandler: { (result, error) in
+                self.evaluateJavaScript("location.href") { (result, error) in
                     if let urlString = result as? String {
                         let location = self.urlStringToLocalContentPath(urlString: urlString)
-                        self.evaluateJavaScript("document.getElementById('H_tipitakaID').innerHTML.stripHTML()", completionHandler:
+                        self.evaluateJavaScript("document.getElementById('H_tipitakaID').innerHTML.stripHTML()")
                             { (result, error) in
                                 let tipitakaID = result as? String
-                                self.evaluateJavaScript("scrollX", completionHandler: { (result, error) in
+                                self.evaluateJavaScript("scrollX") { (result, error) in
                                     let xPos = result as? Int
-                                    self.evaluateJavaScript("scrollY", completionHandler: {(result, error) in
+                                    self.evaluateJavaScript("scrollY") {(result, error) in
                                         let yPos = result as? Int
                                         var bookmark : LocalBookmark? = nil
                                         if title != nil && location != nil && xPos != nil && yPos != nil {
@@ -80,16 +80,15 @@ extension WKWebView {
                                         }
                                         bookmark?.note = tipitakaID
                                         completionHandler(bookmark)
-                                    })
-                                })
-                                
-                        })
+                                    }
+                                }
+                        }
                     }
                     else {
                         completionHandler(nil)
                     }
-                })
-            })
-        })
+                }
+            }
+        }
     }
 }

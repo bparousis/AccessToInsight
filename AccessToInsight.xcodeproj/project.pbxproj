@@ -45,7 +45,6 @@
 		7688F64E218BFDC400DAA890 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7688F64D218BFDC400DAA890 /* ThemeManager.swift */; };
 		7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7688F64F218C067100DAA890 /* TextSizeViewController.swift */; };
 		7691B8CA216C5E31008B97A1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */; };
-		76CE7E39218F4D8300D2C18C /* SearchViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E38218F4D8300D2C18C /* SearchViewDelegate.swift */; };
 		76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E3A218FD7F200D2C18C /* SearchEngine.m */; };
 		D736521F1F0606CB000212C7 /* pages.db in Resources */ = {isa = PBXBuildFile; fileRef = D736521E1F0606CB000212C7 /* pages.db */; };
 		D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73E9C451EE7B198008079E9 /* WebKit.framework */; };
@@ -92,7 +91,6 @@
 		7688F64D218BFDC400DAA890 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThemeManager.swift; path = Source/ThemeManager.swift; sourceTree = "<group>"; };
 		7688F64F218C067100DAA890 /* TextSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextSizeViewController.swift; path = Source/TextSizeViewController.swift; sourceTree = "<group>"; };
 		7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		76CE7E38218F4D8300D2C18C /* SearchViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewDelegate.swift; path = Source/SearchViewDelegate.swift; sourceTree = "<group>"; };
 		76CE7E3A218FD7F200D2C18C /* SearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchEngine.m; path = Source/SearchEngine.m; sourceTree = "<group>"; };
 		76CE7E3B218FD7F200D2C18C /* SearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngine.h; path = Source/SearchEngine.h; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -222,7 +220,6 @@
 				76CE7E3B218FD7F200D2C18C /* SearchEngine.h */,
 				76CE7E3A218FD7F200D2C18C /* SearchEngine.m */,
 				764A07F6218EADAC00F4DE22 /* SearchViewController.swift */,
-				76CE7E38218F4D8300D2C18C /* SearchViewDelegate.swift */,
 			);
 			name = SearchEngine;
 			sourceTree = "<group>";
@@ -253,7 +250,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1030;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = QF6M4CC7RV;
@@ -335,7 +332,6 @@
 				7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */,
 				7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */,
 				764A07F5218E95DF00F4DE22 /* Constants.swift in Sources */,
-				76CE7E39218F4D8300D2C18C /* SearchViewDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,7 +350,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -502,7 +498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -542,7 +538,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -574,6 +570,7 @@
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};

@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol SearchViewDelegate : class {
+    func loadPage(_ filePath: String)
+    func searchViewControllerCancel(_ controller: SearchViewController)
+}
+
 class SearchViewController: UITableViewController {
     
     static let recentSearchesKey = "recentSearches"
