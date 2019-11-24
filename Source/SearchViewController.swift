@@ -54,7 +54,13 @@ class SearchViewController: UITableViewController {
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
         
-        tableView.tableHeaderView = searchController.searchBar
+        if #available(iOS 11.0, *) {
+           navigationItem.searchController = searchController
+           // Make the search bar always visible.
+           navigationItem.hidesSearchBarWhenScrolling = false
+       } else {
+           tableView.tableHeaderView = searchController.searchBar
+       }
     }
     
     @objc func cancel(_ cancelItem: UIBarButtonItem) {

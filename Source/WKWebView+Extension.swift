@@ -38,7 +38,16 @@ extension WKWebView {
     }
     
     func applyTheme() {
-        evaluateJavaScript(ThemeManager.javascriptCSS)
+        if #available(iOS 13.0, *) {
+            let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
+            evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: isDarkMode))
+        } else {
+            evaluateJavaScript(ThemeManager.getJavascriptCSS())
+        }
+    }
+    
+    func applyTheme(darkMode: Bool) {
+        evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: darkMode))
     }
     
     private func urlStringToLocalContentPath(urlString: String ) -> String? {
@@ -47,6 +56,22 @@ extension WKWebView {
             return nil
         }
         return urlArray[1]
+    }
+    
+    func getScrollPosition(completionHandler: @escaping (ScrollPosition?) -> Void) {
+        self.evaluateJavaScript("scrollX") { (result, error) in
+            guard let xPos = result as? Int else {
+                completionHandler(nil)
+                return
+            }
+            self.evaluateJavaScript("scrollY") {(result, error) in
+                guard let yPos = result as? Int else {
+                    completionHandler(nil)
+                    return
+                }
+                completionHandler((xPos, yPos))
+            }
+        }
     }
     
     func getBookmark(completionHandler: @escaping (LocalBookmark?) -> Void) {
@@ -62,29 +87,20 @@ extension WKWebView {
             self.evaluateJavaScript("document.title") { (result, error) in
                 let title = result as? String
                 self.evaluateJavaScript("location.href") { (result, error) in
-                    if let urlString = result as? String {
-                        let location = self.urlStringToLocalContentPath(urlString: urlString)
+                    if let urlString = result as? String, let location = self.urlStringToLocalContentPath(urlString: urlString) {
                         self.evaluateJavaScript("document.getElementById('H_tipitakaID').innerHTML.stripHTML()")
                             { (result, error) in
                                 let tipitakaID = result as? String
-                                self.evaluateJavaScript("scrollX") { (result, error) in
-                                    let xPos = result as? Int
-                                    self.evaluateJavaScript("scrollY") {(result, error) in
-                                        let yPos = result as? Int
-                                        var bookmark : LocalBookmark? = nil
-                                        if title != nil && location != nil && xPos != nil && yPos != nil {
-                                            bookmark = LocalBookmark(title: title!,
-                                                                     location: location!,
-                                                                     scrollX: xPos!,
-                                                                     scrollY: yPos!)
-                                        }
-                                        bookmark?.note = tipitakaID
-                                        completionHandler(bookmark)
-                                    }
+                                self.getScrollPosition { scrollPosition in
+                                    let bookmark = LocalBookmark(title: title ?? "Untitled Bookmark",
+                                                                 location: location,
+                                                                 scrollX: scrollPosition?.x ?? 0,
+                                                                 scrollY: scrollPosition?.y ?? 0)
+                                    bookmark.note = tipitakaID
+                                    completionHandler(bookmark)
                                 }
                         }
-                    }
-                    else {
+                    } else {
                         completionHandler(nil)
                     }
                 }

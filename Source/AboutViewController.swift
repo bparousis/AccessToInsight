@@ -11,38 +11,21 @@ import MessageUI
 
 class AboutViewController: UIViewController {
     
-    private var tableView: UITableView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = "About"
-        tableView = UITableView(frame: .zero, style: .grouped)
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
         ThemeManager.decorateTableView(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        // Do any additional setup after loading the view.
-        if #available(iOS 11, *) {
-            let guide = view.safeAreaLayoutGuide
-            NSLayoutConstraint.activate([
-                tableView.topAnchor.constraint(equalTo: guide.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                ])
-        } else {
-            let margins = view.layoutMarginsGuide
-            NSLayoutConstraint.activate([
-                tableView.topAnchor.constraint(equalTo: margins.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
-                ])
-        }
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
+        return tableView
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "About"
+        view.addSubview(tableView)
+        anchor(to: tableView)
     }
     
     func openURL(_ urlString: String ) {
@@ -113,26 +96,9 @@ extension AboutViewController: UITableViewDelegate {
                 present(mailComposer, animated: true, completion: nil)
             }
             else if indexPath.row == 2 {
-                let infoWebView = WKWebView(frame: view.frame)
-                infoWebView.navigationDelegate = self
-                infoWebView.loadLocalWebContent("about.html")
-                
-                let webVC = UIViewController()
-                webVC.title = "Info"
-                webVC.view = infoWebView
-                navigationController?.pushViewController(webVC, animated: true)
+                navigationController?.pushViewController(InfoViewController(), animated: true)
             }
         }
-    }
-}
-
-extension AboutViewController: WKNavigationDelegate {
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.applyTheme()
-    }
-    
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        webView.fitContentToScreen()
     }
 }
 

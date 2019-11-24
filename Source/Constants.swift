@@ -12,4 +12,6 @@ struct Constants {
     static let localWebDataDir = "web_content"
     static let bookmarkKey = "bookmark"
     static let lastLocationBookmarkKey = "lastLocationBookmark"
+    static let lastXScrollPosition = "lastXScrollPosition"
+    static let lastYScrollPosition = "lastYScrollPosition"
 }

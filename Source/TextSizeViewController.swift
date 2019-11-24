@@ -9,20 +9,28 @@ import UIKit
 import WebKit
 
 class TextSizeViewController: UIViewController  {
-    private var textSizeWebView : WKWebView!
-    private var toolbar: UIToolbar!
-    private var pageLoaded = false
+    private lazy var textSizeWebView : WKWebView = {
+        let webConfig = WKWebViewConfiguration()
+        let webView = WKWebView(frame: .zero, configuration: webConfig)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.navigationDelegate = self
+        return webView
+    }()
+
+    private lazy var toolbar: UIToolbar = {
+        let toolbar = UIToolbar()
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        ThemeManager.decorateToolbar(toolbar)
+        return toolbar
+    }()
+
+    private var allowPageLoad = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        pageLoaded = false
+        allowPageLoad = true
         title = "Text Size"
-        let webConfig = WKWebViewConfiguration()
-        textSizeWebView = WKWebView(frame: .zero, configuration: webConfig)
-        textSizeWebView.translatesAutoresizingMaskIntoConstraints = false
-        textSizeWebView.navigationDelegate = self
-        
         var lastLocationBookmark : LocalBookmark? = nil
         
         let defaults = UserDefaults.standard
@@ -39,10 +47,7 @@ class TextSizeViewController: UIViewController  {
         else {
             textSizeWebView.loadLocalWebContent("index.html")
         }
-        
-        toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        ThemeManager.decorateToolbar(toolbar)
+
         let increaseImage = UIImage(named: "increase_font")
         let leftFlex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let middleFixed = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
@@ -113,6 +118,13 @@ class TextSizeViewController: UIViewController  {
         UserDefaults.standard.synchronize()
         textSizeWebView.adjustTextSize()
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13, *) {
+            allowPageLoad = true
+            textSizeWebView.reload()
+        }
+    }
 }
 
 extension TextSizeViewController: WKNavigationDelegate {
@@ -122,17 +134,12 @@ extension TextSizeViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if pageLoaded == false {
-            decisionHandler(.allow)
-        }
-        else {
-            decisionHandler(.cancel)
-        }
+        decisionHandler(allowPageLoad ? .allow : .cancel)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.applyTheme()
         webView.adjustTextSize()
-        pageLoaded = true
+        allowPageLoad = false
     }
 }

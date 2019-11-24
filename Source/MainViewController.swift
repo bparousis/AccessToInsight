@@ -8,10 +8,10 @@
 import UIKit
 import WebKit
 
+typealias ScrollPosition = (x: Int, y: Int)
+
 class MainViewController: UIViewController
 {
-    typealias ScrollPosition = (x: Int, y: Int)
-    
     static let nightModeNotificationName = NSNotification.Name("NightMode")
     
     var toolbarHidden: Bool = false
@@ -24,10 +24,29 @@ class MainViewController: UIViewController
     
     private lazy var bookmarksManager = BookmarksManager()
 
-    var webView: WKWebView!
+    lazy var webView: WKWebView = {
+        let webView = WKWebView(frame: .zero)
+        webView.navigationDelegate = self
+        webView.scrollView.delegate = self
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        tapGesture.delegate = self
+        tapGesture.numberOfTapsRequired = 2
+        webView.addGestureRecognizer(tapGesture)
+        
+        webView.isOpaque = false
+        return webView
+    }()
+
     @IBOutlet var toolbar: UIToolbar!
-    @IBOutlet var bmBarButtonItem: UIBarButtonItem!
+    @IBOutlet var backButtonItem: UIBarButtonItem!
+    @IBOutlet var forwardButtonItem: UIBarButtonItem!
+    @IBOutlet var homeButtonItem: UIBarButtonItem!
     @IBOutlet var actionBarButtonItem: UIBarButtonItem!
+    @IBOutlet var bmBarButtonItem: UIBarButtonItem!
+    @IBOutlet var searchButtonItem: UIBarButtonItem!
+    @IBOutlet var settingsButtonItem: UIBarButtonItem!
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -38,25 +57,28 @@ class MainViewController: UIViewController
         super.init(coder: aDecoder)
         addNightModeNotification()
     }
+    
+    func setupToolbarIcons() {
+        if #available(iOS 13, *) {
+        } else {
+            backButtonItem.image = UIImage(named: "back")
+            forwardButtonItem.image = UIImage(named: "forward")
+            homeButtonItem.image = UIImage(named: "home")
+            actionBarButtonItem.image = UIImage(named: "action")
+            bmBarButtonItem.image = UIImage(named: "bookmark")
+            searchButtonItem.image = UIImage(named: "search")
+            settingsButtonItem.image = UIImage(named: "settings")
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupToolbarIcons()
         BookmarksManager.setLocalBookmarkKeyedUnarchived()
         
         toolbarHidden = false
-        
-        webView = WKWebView(frame: .zero)
-        webView.navigationDelegate = self
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        tapGesture.delegate = self
-        tapGesture.numberOfTapsRequired = 2
-        webView.addGestureRecognizer(tapGesture)
-        
-        determineStartAlpha()
-        webView.isOpaque = false
+        startAlpha = 0.0
         updateColorScheme()
         view.addSubview(webView)
         
@@ -87,7 +109,9 @@ class MainViewController: UIViewController
         view.layoutIfNeeded()
         
         if let lastLocationBookmark = BookmarksManager.lastLocationBookmark {
-            loadLocalBookmark(lastLocationBookmark)
+            let lastX = UserDefaults.standard.integer(forKey: Constants.lastXScrollPosition)
+            let lastY = UserDefaults.standard.integer(forKey: Constants.lastYScrollPosition)
+            loadLocalBookmark(lastLocationBookmark, scrollPosition: (lastX, lastY))
         } else {
             home()
         }
@@ -105,8 +129,12 @@ class MainViewController: UIViewController
         return textFontSize
     }
     
-    func loadLocalBookmark(_ bookmark: LocalBookmark) {
-        rescrollPosition = (bookmark.scrollX, bookmark.scrollY)
+    func loadLocalBookmark(_ bookmark: LocalBookmark, scrollPosition: ScrollPosition? = nil) {
+        if let scrollPosition = scrollPosition {
+            rescrollPosition = scrollPosition
+        } else {
+            rescrollPosition = (bookmark.scrollX, bookmark.scrollY)
+        }
         webView.loadLocalWebContent(bookmark.location)
     }
     
@@ -250,13 +278,9 @@ class MainViewController: UIViewController
     @objc func nightModeNotification(_ notification:NSNotification)
     {
         guard notification.name == MainViewController.nightModeNotificationName else { return }
-        determineStartAlpha()
+        startAlpha = 0.0
         updateColorScheme()
         webView.reload()
-    }
-    
-    func determineStartAlpha() {
-        startAlpha = ThemeManager.webViewAlpha
     }
     
     func updateColorScheme() {
@@ -286,7 +310,17 @@ class MainViewController: UIViewController
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return ThemeManager.preferredStatusBarStyle
+        if #available(iOS 13.0, *) {
+            return super.preferredStatusBarStyle
+        } else {
+            return ThemeManager.preferredStatusBarStyle
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if #available(iOS 13, *) {
+            webView.reload()
+        }
     }
     
     func saveLastLocation() {
@@ -394,5 +428,12 @@ extension MainViewController: BookmarksControllerDelegate {
 extension MainViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+}
+
+extension MainViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        UserDefaults.standard.set(scrollView.contentOffset.x, forKey: Constants.lastXScrollPosition)
+        UserDefaults.standard.set(scrollView.contentOffset.y, forKey: Constants.lastYScrollPosition)
     }
 }
