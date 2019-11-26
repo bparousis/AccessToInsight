@@ -15,7 +15,7 @@ class MainViewController: UIViewController
     static let nightModeNotificationName = NSNotification.Name("NightMode")
     
     var toolbarHidden: Bool = false
-    var startAlpha: CGFloat = 1.0
+    var startAlpha: CGFloat = 0.0
     var doneAddBookmark: UIAlertAction? = nil
     
     var topConstraint: NSLayoutConstraint? = nil
@@ -78,7 +78,6 @@ class MainViewController: UIViewController
         BookmarksManager.setLocalBookmarkKeyedUnarchived()
         
         toolbarHidden = false
-        startAlpha = 0.0
         updateColorScheme()
         view.addSubview(webView)
         
@@ -154,7 +153,7 @@ class MainViewController: UIViewController
         webView.alpha = startAlpha
         webView.goForward()
         UIView.animate(withDuration: 1.0) {
-            self.webView.alpha = 0.5
+            self.webView.alpha = 1.0
         }
     }
     

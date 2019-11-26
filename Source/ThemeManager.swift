@@ -38,9 +38,7 @@ struct ThemeManager {
     static func decorateNavigationController(_ navigationController: UINavigationController?) {
         if #available(iOS 13.0, *) {
         } else {
-            if let navigationController = navigationController {
-                navigationController.navigationBar.barStyle = isNightMode ? .blackTranslucent : .default
-            }
+            navigationController?.navigationBar.barStyle = isNightMode ? .blackTranslucent : .default
         }
     }
     
@@ -62,6 +60,7 @@ struct ThemeManager {
         }
         
         if #available(iOS 13.0, *) {
+            actionSheet.view.tintColor = theme.labelColor
         } else {
             if isNightMode {
                 actionSheet.view.tintColor = theme.backgroundColor
@@ -72,10 +71,9 @@ struct ThemeManager {
     static func decorateView(_ view: UIView) {
         view.backgroundColor = theme.backgroundColor
     }
-    
-    //TODO: FIX THIS FOR DARK MODE
+
     static func htmlFontTag(content: String, darkMode: Bool = isNightMode) -> String {
-        let color = isNightMode ? "white" : "black"
+        let color = darkMode ? "white" : "black"
         return "<font color='\(color)'>\(content)</font>"
     }
     
@@ -103,6 +101,10 @@ struct ThemeManager {
             tableView.backgroundColor = theme.backgroundColor
         default:
             tableView.backgroundColor = theme.tableBackgroundColor
+        }
+        
+        if #available(iOS 13.0, *) {
+            tableView.separatorColor = UIColor(named: "tableSeparatorColor")
         }
     }
 }

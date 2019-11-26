@@ -138,16 +138,17 @@ class SearchViewController: UITableViewController {
                 if let resultData = tableData[indexPath.row] as? Dictionary<String,Any> {
                     let subtitle = resultData["subtitle"] as? String
                     let snippet = resultData["snippet"] as! String
-                    let formattedSnippet = ThemeManager.htmlFontTag(content: snippet)
+                    let formattedSnippet = formatSnippet(snippet)
+
                     if let data = formattedSnippet.data(using: .unicode) {
                         do {
                             let attrStr = try NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
                             cell.textLabel?.text = resultData["title"] as? String
-                            if isTitleSearch() && subtitle != nil && subtitle!.count > 0 {
+                            if isTitleSearch && subtitle != nil && subtitle!.count > 0 {
                                 cell.detailTextLabel?.text = subtitle
                             }
                             else {
-                                cell.detailTextLabel?.attributedText = isTitleSearch() ? nil : attrStr
+                                cell.detailTextLabel?.attributedText = isTitleSearch ? nil : attrStr
                             }
                         } catch {}
                     }
@@ -250,8 +251,18 @@ private extension SearchViewController {
                                            userInfo: nil, repeats: false)
     }
     
-    func isTitleSearch() -> Bool {
+    var isTitleSearch: Bool {
         return searchController.searchBar.selectedScopeButtonIndex == 0
+    }
+    
+    func formatSnippet(_ snippet: String) -> String {
+        if #available(iOS 13.0, *) {
+            let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
+            let formattedSnippet = ThemeManager.htmlFontTag(content: snippet, darkMode: isDarkMode)
+            return formattedSnippet
+        } else {
+            return ThemeManager.htmlFontTag(content: snippet)
+        }
     }
 }
 
