@@ -55,7 +55,7 @@ private extension BookmarksTableController {
 internal extension BookmarksTableController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return bookmarksManager.getCount()
+        return bookmarksManager.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

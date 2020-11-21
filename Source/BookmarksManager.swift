@@ -7,12 +7,12 @@
 
 import Foundation
 
-class BookmarksManager: NSObject {
+class BookmarksManager {
     private static let DefaultBookmarksPlistName = "DefaultBookmarks"
     private static let BookmarksArchiveFilename = "LocalBookmarks"
     private static let BookmarksKey = "bookmarks"
     
-    private var bookmarks: [LocalBookmark] = []
+    private lazy var bookmarks: [LocalBookmark] = getBookmarks()
     
     static var lastLocationBookmark: LocalBookmark? {
         var lastLocationBookmark: LocalBookmark?
@@ -23,23 +23,18 @@ class BookmarksManager: NSObject {
         }
         return lastLocationBookmark
     }
-    
-    override init() {
-        super.init()
-        load()
-    }
-    
+
     func save() {
         let data = NSMutableData()
         let archiver = NSKeyedArchiver(forWritingWith: data)
         archiver.encode(bookmarks, forKey: BookmarksManager.BookmarksKey)
         archiver.finishEncoding()
-        if let url = archiveFilePath() {
+        if let url = archiveFilePath {
             data.write(to: url, atomically: true)
         }
     }
     
-    func getCount() -> Int {
+    var count: Int {
         return bookmarks.count
     }
     
@@ -78,32 +73,32 @@ class BookmarksManager: NSObject {
 
 private extension BookmarksManager {
     
-    func load() {
+    func getBookmarks() -> [LocalBookmark] {
         // Attempt to load bookmarks from file.
-        
-        if let archiveFilePath = archiveFilePath() {
-            do {
-                let data = try Data(contentsOf: archiveFilePath)
-                let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-                if let archiveBookmarks = unarchiver.decodeObject(forKey: BookmarksManager.BookmarksKey) as? [LocalBookmark] {
-                    self.bookmarks = archiveBookmarks
-                }
-                unarchiver.finishDecoding()
-            }
-            catch {
-                loadDefaultBookmarks()
-            }
+        guard let archiveFilePath = archiveFilePath else {
+            return getDefaultBookmarks()
+        }
+
+        do {
+            let data = try Data(contentsOf: archiveFilePath)
+            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+            let archiveBookmarks = unarchiver.decodeObject(forKey: BookmarksManager.BookmarksKey) as? [LocalBookmark]
+            unarchiver.finishDecoding()
+            return archiveBookmarks ?? getDefaultBookmarks()
+        }
+        catch {
+            return getDefaultBookmarks()
         }
     }
 
-    func loadDefaultBookmarks() {
+    func getDefaultBookmarks() -> [LocalBookmark] {
         guard let plistPath = Bundle.main.path(forResource: BookmarksManager.DefaultBookmarksPlistName, ofType: "plist"),
             let defaultBookmarks = NSArray(contentsOfFile: plistPath)
             else {
-                return
+                return []
         }
-        
-        var newBookmarks:[LocalBookmark] = []
+
+        var newBookmarks: [LocalBookmark] = []
         for obj: Any in defaultBookmarks {
             if let dict = obj as? Dictionary<String,Any> {
                 if let title = dict[LocalBookmark.titleKey] as? String, let location = dict[LocalBookmark.locationKey] as? String,
@@ -116,10 +111,10 @@ private extension BookmarksManager {
                 }
             }
         }
-        bookmarks = newBookmarks
+        return newBookmarks
     }
     
-    func archiveFilePath() -> URL? {
+    var archiveFilePath: URL? {
         var documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         documentsPathURL?.appendPathComponent(BookmarksManager.BookmarksArchiveFilename)
         return documentsPathURL

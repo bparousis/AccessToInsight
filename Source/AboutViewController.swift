@@ -30,7 +30,7 @@ class AboutViewController: UIViewController {
     
     func openURL(_ urlString: String ) {
         if let url = URL(string: urlString) {
-            UIApplication.shared.openURL(url)
+            UIApplication.shared.open(url, options: [:])
         }
     }
 }

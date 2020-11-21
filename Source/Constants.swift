@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Constants {
+enum Constants {
     static let textFontSizeKey = "fontSize"
     static let localWebDataDir = "web_content"
     static let bookmarkKey = "bookmark"

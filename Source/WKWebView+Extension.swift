@@ -9,18 +9,30 @@ import Foundation
 import WebKit
 
 extension WKWebView {
+    
+    // Load local URL with fragment.  WKWebView doesn't seem to be able to handle local URLs with
+    // fragments but if you call with URLRequest it seems to work.
+    func loadLocalFragmentURL(_ url: URL) {
+        let urlRequest = URLRequest(url: url)
+        load(urlRequest)
+    }
 
     func loadLocalWebContent(_ path: String) {
         var path = path
+        var fragment: String?
         
         if let hashRange = path.range(of: "#", options: .backwards) {
+            fragment = String(path[hashRange.lowerBound...])
             path = String(path[..<hashRange.lowerBound])
         }
         
-        if let resourcePath = Bundle.main.resourcePath {
-            let fullPath = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir, path])
-            let url = URL(fileURLWithPath: fullPath)
-            loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+        guard let resourcePath: String = Bundle.main.resourcePath else { return }
+        let fullPath: String = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir, path])
+        let url: URL = URL(fileURLWithPath: fullPath)
+        if let fragment = fragment, let fragmentURL = URL(string: fragment, relativeTo: url) {
+            loadLocalFragmentURL(fragmentURL)
+        } else {
+            loadFileURL(url, allowingReadAccessTo: url)
         }
     }
     

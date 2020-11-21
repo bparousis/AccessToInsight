@@ -13,14 +13,16 @@ typealias ScrollPosition = (x: Int, y: Int)
 class MainViewController: UIViewController
 {
     static let nightModeNotificationName = NSNotification.Name("NightMode")
+    private static let topScrollPosition: ScrollPosition = (0,0)
     
-    var toolbarHidden: Bool = false
-    var startAlpha: CGFloat = 0.0
-    var doneAddBookmark: UIAlertAction? = nil
+    private var toolbarHidden: Bool = false
+    private var startAlpha: CGFloat = 0.0
     
-    var topConstraint: NSLayoutConstraint? = nil
-    var bottomConstraint: NSLayoutConstraint? = nil
-    var rescrollPosition: ScrollPosition? = nil
+    private var doneAddBookmark: UIAlertAction? = nil
+    
+    private var topConstraint: NSLayoutConstraint? = nil
+    private var bottomConstraint: NSLayoutConstraint? = nil
+    private var rescrollPosition: ScrollPosition? = nil
     
     private lazy var bookmarksManager = BookmarksManager()
 
@@ -144,17 +146,13 @@ class MainViewController: UIViewController
     @IBAction func goBack() {
         webView.alpha = startAlpha
         webView.goBack()
-        UIView.animate(withDuration: 1.0) {
-            self.webView.alpha = 1.0
-        }
+        webView.animateFade()
     }
     
     @IBAction func goForward() {
         webView.alpha = startAlpha
         webView.goForward()
-        UIView.animate(withDuration: 1.0) {
-            self.webView.alpha = 1.0
-        }
+        webView.animateFade()
     }
     
     @IBAction func actionButton() {
@@ -186,21 +184,23 @@ class MainViewController: UIViewController
             })
         }))
         actionSheet.addAction(UIAlertAction(title: "Open on Live Site", style: .default, handler: {[unowned self] (alert) in
-            self.webView.getBookmark(completionHandler: { (bookmark) in
+            webView.getBookmark(completionHandler: { (bookmark) in
                 guard let location = bookmark?.location, let url = URL(string:"http://www.accesstoinsight.org\(location)")
                     else {
                         return
                 }
-                UIApplication.shared.openURL(url)
+                UIApplication.shared.open(url, options: [:])
             })
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Random Sutta", style: .default, handler: { [unowned self] (alert) in
-            self.webView.loadLocalWebContent("random-sutta.html")
+            rescrollPosition = MainViewController.topScrollPosition
+            webView.loadLocalWebContent("random-sutta.html")
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Random Article", style: .default, handler: { [unowned self] (alert) in
-            self.webView.loadLocalWebContent("random-article.html")
+            rescrollPosition = MainViewController.topScrollPosition
+            webView.loadLocalWebContent("random-article.html")
         }))
         
         present(actionSheet, animated: true, completion: nil)
@@ -329,7 +329,6 @@ class MainViewController: UIViewController
             archiver.encode(lastLocationBookmark, forKey: Constants.bookmarkKey)
             archiver.finishEncoding()
             UserDefaults.standard.set(data, forKey: Constants.lastLocationBookmarkKey)
-            UserDefaults.standard.synchronize()
         }
     }
     
@@ -348,13 +347,13 @@ extension MainViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        webView.alpha = startAlpha
-        UIView.animate(withDuration: 1.0) {
-            [unowned webView] in
-            webView.alpha = 1.0
-        }
-        
-        if navigationAction.navigationType == .other {
+
+        webView.animateFade(startAlpha: startAlpha)
+
+        // If you don't do this check here you can get into an infinite loop since calls like
+        // loadLocalFragmentURL below will call this delegate method again, but navigationType
+        // will be .other.
+        guard navigationAction.navigationType != .other else {
             decisionHandler(.allow)
             return
         }
@@ -363,33 +362,38 @@ extension MainViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
-        
+
+        if url.fragment != nil {
+            webView.loadLocalFragmentURL(url)
+            decisionHandler(.cancel)
+            return
+        }
+
         if let scheme = url.scheme {
             if scheme == "file" {
                 decisionHandler(.allow)
                 return
             }
         }
-        
-        if !UIApplication.shared.canOpenURL(url) {
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:])
             decisionHandler(.cancel)
             return
         }
-        UIApplication.shared.openURL(url)
-        decisionHandler(.cancel)
+        decisionHandler(.allow)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         webView.applyTheme()
-        UIView.animate(withDuration: 1.0) {
-            [unowned webView] in
-            webView.alpha = 1.0
-        }
-        
+        webView.animateFade()
+
         webView.adjustTextSize()
         if let rescrollPosition = rescrollPosition {
-            scrollTo(x: rescrollPosition.x, y: rescrollPosition.y)
-            self.rescrollPosition = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.scrollTo(x: rescrollPosition.x, y: rescrollPosition.y)
+                self.rescrollPosition = nil
+            }
         }
         saveLastLocation()
     }
@@ -434,5 +438,18 @@ extension MainViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         UserDefaults.standard.set(scrollView.contentOffset.x, forKey: Constants.lastXScrollPosition)
         UserDefaults.standard.set(scrollView.contentOffset.y, forKey: Constants.lastYScrollPosition)
+    }
+}
+
+private extension WKWebView {
+    
+    func animateFade(startAlpha: CGFloat? = nil) {
+        if let startAlpha = startAlpha {
+            alpha = startAlpha
+        }
+
+        UIView.animate(withDuration: 0.25) { [unowned self] in
+            self.alpha = 1.0
+        }
     }
 }
