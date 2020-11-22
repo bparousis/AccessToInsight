@@ -375,13 +375,8 @@ extension MainViewController: WKNavigationDelegate {
             return
         }
 
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:])
-            decisionHandler(.cancel)
-            return
-        }
-        webView.animateFade(startAlpha: startAlpha)
-        decisionHandler(.allow)
+        UIApplication.shared.open(url, options: [:])
+        decisionHandler(.cancel)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
