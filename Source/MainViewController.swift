@@ -380,17 +380,18 @@ extension MainViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.applyTheme()
-        webView.animateFade()
-
-        webView.adjustTextSize()
-        if let rescrollPosition = rescrollPosition {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        // Need to perform this way otherwise, webview might be in a state where it's not fully rendered
+        // and code below, such as saveLastLocation or scrollTo doesn't work.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            webView.applyTheme()
+            webView.animateFade()
+            webView.adjustTextSize()
+            if let rescrollPosition = self.rescrollPosition {
                 self.scrollTo(x: rescrollPosition.x, y: rescrollPosition.y)
                 self.rescrollPosition = nil
             }
+            self.saveLastLocation()
         }
-        saveLastLocation()
     }
 }
 
