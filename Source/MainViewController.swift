@@ -27,7 +27,9 @@ class MainViewController: UIViewController
     private lazy var bookmarksManager = BookmarksManager()
 
     lazy var webView: WKWebView = {
-        let webView = WKWebView(frame: .zero)
+        let config = WKWebViewConfiguration()
+        config.dataDetectorTypes = .link
+        let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
         webView.translatesAutoresizingMaskIntoConstraints = false
@@ -348,32 +350,29 @@ extension MainViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
 
-        webView.animateFade(startAlpha: startAlpha)
-
         // If you don't do this check here you can get into an infinite loop since calls like
         // loadLocalFragmentURL below will call this delegate method again, but navigationType
         // will be .other.
         guard navigationAction.navigationType != .other else {
+            webView.animateFade(startAlpha: startAlpha)
             decisionHandler(.allow)
             return
         }
-        
+
         guard let url = navigationAction.request.url else {
             decisionHandler(.cancel)
             return
         }
 
-        if url.fragment != nil {
-            webView.loadLocalFragmentURL(url)
-            decisionHandler(.cancel)
-            return
-        }
-
-        if let scheme = url.scheme {
-            if scheme == "file" {
-                decisionHandler(.allow)
+        if url.isFileURL {
+            if url.fragment != nil {
+                decisionHandler(.cancel)
+                webView.loadLocalFragmentURL(url)
                 return
             }
+            webView.animateFade(startAlpha: startAlpha)
+            decisionHandler(.allow)
+            return
         }
 
         if UIApplication.shared.canOpenURL(url) {
@@ -381,6 +380,7 @@ extension MainViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             return
         }
+        webView.animateFade(startAlpha: startAlpha)
         decisionHandler(.allow)
     }
     
