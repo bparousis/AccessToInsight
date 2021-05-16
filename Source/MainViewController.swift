@@ -29,6 +29,11 @@ class MainViewController: UIViewController
     lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = .link
+        if #available(iOS 13.0, *) {
+            let references = WKWebpagePreferences()
+            references.preferredContentMode = .mobile
+            config.defaultWebpagePreferences = references
+        }
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.delegate = self

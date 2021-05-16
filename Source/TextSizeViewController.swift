@@ -11,6 +11,11 @@ import WebKit
 class TextSizeViewController: UIViewController  {
     private lazy var textSizeWebView : WKWebView = {
         let webConfig = WKWebViewConfiguration()
+        if #available(iOS 13.0, *) {
+            let preferences = WKWebpagePreferences()
+            preferences.preferredContentMode = .mobile
+            webConfig.defaultWebpagePreferences = preferences
+        }
         let webView = WKWebView(frame: .zero, configuration: webConfig)
         webView.translatesAutoresizingMaskIntoConstraints = false
         webView.navigationDelegate = self
