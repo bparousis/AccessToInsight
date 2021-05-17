@@ -111,9 +111,10 @@ class TextSizeViewController: UIViewController  {
     }
     
     func changeTextFontSize(increase: Bool) {
+        let maxSize = UIDevice.current.userInterfaceIdiom == .pad ? 190 : 160
         var textFontSize = MainViewController.textFontSize()
         if increase {
-            textFontSize = textFontSize < 160 ? textFontSize + 5 : textFontSize
+            textFontSize = textFontSize < maxSize ? textFontSize + 5 : textFontSize
         }
         else {
             textFontSize = textFontSize > 50 ? textFontSize - 5 : textFontSize
