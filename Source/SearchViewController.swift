@@ -45,7 +45,8 @@ class SearchViewController: UITableViewController {
 
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-        searchController.dimsBackgroundDuringPresentation = false
+        
+        searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.sizeToFit()
         searchController.searchBar.scopeButtonTitles = ["Title", "Document"]
         searchController.searchBar.selectedScopeButtonIndex = AppSettings.lastSearchScopeIndex
@@ -53,13 +54,9 @@ class SearchViewController: UITableViewController {
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
         
-        if #available(iOS 11.0, *) {
-           navigationItem.searchController = searchController
-           // Make the search bar always visible.
-           navigationItem.hidesSearchBarWhenScrolling = false
-       } else {
-           tableView.tableHeaderView = searchController.searchBar
-       }
+        navigationItem.searchController = searchController
+        // Make the search bar always visible.
+        navigationItem.hidesSearchBarWhenScrolling = false
     }
     
     @objc func cancel(_ cancelItem: UIBarButtonItem) {

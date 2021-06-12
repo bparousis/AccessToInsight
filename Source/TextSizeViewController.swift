@@ -61,29 +61,16 @@ class TextSizeViewController: UIViewController  {
         view.addSubview(textSizeWebView)
         view.addSubview(toolbar)
         
-        if #available(iOS 11, *) {
-            let guide = view.safeAreaLayoutGuide
-            NSLayoutConstraint.activate([
-                textSizeWebView.topAnchor.constraint(equalTo: guide.topAnchor),
-                textSizeWebView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-                textSizeWebView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-                textSizeWebView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                toolbar.leadingAnchor.constraint(equalTo:guide.leadingAnchor),
-                toolbar.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-                toolbar.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
-                ])
-        } else {
-            let margins = view.layoutMarginsGuide
-            NSLayoutConstraint.activate([
-                textSizeWebView.topAnchor.constraint(equalTo: margins.topAnchor),
-                textSizeWebView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-                textSizeWebView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-                textSizeWebView.bottomAnchor.constraint(equalTo: margins.bottomAnchor),
-                toolbar.leadingAnchor.constraint(equalTo:margins.leadingAnchor),
-                toolbar.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-                toolbar.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
-                ])
-        }
+        let guide = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            textSizeWebView.topAnchor.constraint(equalTo: guide.topAnchor),
+            textSizeWebView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            textSizeWebView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            textSizeWebView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            toolbar.leadingAnchor.constraint(equalTo:guide.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            toolbar.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+            ])
     }
     
     @objc func increaseFontSize(_ sender: UIBarButtonItem) {

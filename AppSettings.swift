@@ -67,19 +67,19 @@ struct AppSettings {
     // MARK: Last Location Bookmark
     static var lastLocationBookmark: LocalBookmark? {
         set {
-            let data = NSMutableData()
-            let archiver = NSKeyedArchiver(forWritingWith: data)
+            let archiver = NSKeyedArchiver(requiringSecureCoding: false)
             archiver.encode(newValue, forKey: bookmarkKey)
             archiver.finishEncoding()
-            UserDefaults.standard.set(data, forKey: lastLocationBookmarkKey)
+            UserDefaults.standard.set(archiver.encodedData, forKey: lastLocationBookmarkKey)
         }
         
         get {
             var lastLocationBookmark: LocalBookmark?
             if let data = UserDefaults.standard.data(forKey: lastLocationBookmarkKey) {
-                let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-                lastLocationBookmark = unarchiver.decodeObject(forKey: bookmarkKey) as? LocalBookmark
-                unarchiver.finishDecoding()
+                if let unarchiver = try? NSKeyedUnarchiver(forReadingFrom: data) {
+                    lastLocationBookmark = unarchiver.decodeObject(forKey: bookmarkKey) as? LocalBookmark
+                    unarchiver.finishDecoding()
+                }
             }
             return lastLocationBookmark
         }

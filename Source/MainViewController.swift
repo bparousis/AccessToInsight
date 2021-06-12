@@ -88,27 +88,15 @@ class MainViewController: UIViewController
         updateColorScheme()
         view.addSubview(webView)
         
-        if #available(iOS 11, *) {
-            let guide = view.safeAreaLayoutGuide
-            topConstraint = webView.topAnchor.constraint(equalTo: guide.topAnchor)
-            bottomConstraint = webView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
-            NSLayoutConstraint.activate([
-                topConstraint!,
-                webView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-                webView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-                bottomConstraint!
-                ])
-        } else {
-            let margins = view.layoutMarginsGuide
-            topConstraint = webView.topAnchor.constraint(equalTo: margins.topAnchor)
-            bottomConstraint = webView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
-            NSLayoutConstraint.activate([
-                topConstraint!,
-                webView.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
-                webView.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
-                bottomConstraint!
-                ])
-        }
+        let guide = view.safeAreaLayoutGuide
+        topConstraint = webView.topAnchor.constraint(equalTo: guide.topAnchor)
+        bottomConstraint = webView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+        NSLayoutConstraint.activate([
+            topConstraint!,
+            webView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            webView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            bottomConstraint!
+            ])
         topConstraint?.isActive = true
         bottomConstraint?.constant = -44.0
         bottomConstraint?.isActive = true

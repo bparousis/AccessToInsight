@@ -19,12 +19,11 @@ class BookmarksManager {
     }
 
     func save() {
-        let data = NSMutableData()
-        let archiver = NSKeyedArchiver(forWritingWith: data)
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
         archiver.encode(bookmarks, forKey: BookmarksManager.BookmarksKey)
         archiver.finishEncoding()
         if let url = archiveFilePath {
-            data.write(to: url, atomically: true)
+            try? archiver.encodedData.write(to: url, options: .atomicWrite)
         }
     }
     
@@ -75,7 +74,7 @@ private extension BookmarksManager {
 
         do {
             let data = try Data(contentsOf: archiveFilePath)
-            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
+            let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
             let archiveBookmarks = unarchiver.decodeObject(forKey: BookmarksManager.BookmarksKey) as? [LocalBookmark]
             unarchiver.finishDecoding()
             return archiveBookmarks ?? getDefaultBookmarks()
