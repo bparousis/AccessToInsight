@@ -9,6 +9,7 @@ import Foundation
 import WebKit
 
 extension WKWebView {
+    private static let localWebDataDir = "web_content"
     
     // Load local URL with fragment.  WKWebView doesn't seem to be able to handle local URLs with
     // fragments but if you call with URLRequest it seems to work.
@@ -27,7 +28,7 @@ extension WKWebView {
         }
         
         guard let resourcePath: String = Bundle.main.resourcePath else { return }
-        let fullPath: String = NSString.path(withComponents:[resourcePath, Constants.localWebDataDir, path])
+        let fullPath: String = NSString.path(withComponents:[resourcePath, WKWebView.localWebDataDir, path])
         let url: URL = URL(fileURLWithPath: fullPath)
         if let fragment = fragment, let fragmentURL = URL(string: fragment, relativeTo: url) {
             loadLocalFragmentURL(fragmentURL)
@@ -37,8 +38,7 @@ extension WKWebView {
     }
     
     func adjustTextSize() {
-        let textFontSize = MainViewController.textFontSize()
-        let jsString = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '\(textFontSize)%'"
+        let jsString = "document.getElementsByTagName('body')[0].style.webkitTextSizeAdjust= '\(AppSettings.textFontSize)%'"
         evaluateJavaScript(jsString)
     }
     
@@ -63,7 +63,7 @@ extension WKWebView {
     }
     
     private func urlStringToLocalContentPath(urlString: String ) -> String? {
-        let urlArray = urlString.components(separatedBy: Constants.localWebDataDir)
+        let urlArray = urlString.components(separatedBy: WKWebView.localWebDataDir)
         guard urlArray.count >= 2 else {
             return nil
         }

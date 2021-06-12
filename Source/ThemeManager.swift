@@ -11,10 +11,10 @@ import UIKit
 struct ThemeManager {
     
     static var preferredStatusBarStyle: UIStatusBarStyle {
-        return isNightMode ? .lightContent : .default
+        AppSettings.nightMode ? .lightContent : .default
     }
     
-    static func getJavascriptCSS(darkMode: Bool = isNightMode) -> String {
+    static func getJavascriptCSS(darkMode: Bool = AppSettings.nightMode) -> String {
         var cssFile: String
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
@@ -36,9 +36,9 @@ struct ThemeManager {
     }
     
     static func decorateNavigationController(_ navigationController: UINavigationController?) {
-        if #available(iOS 13.0, *) {
-        } else {
-            navigationController?.navigationBar.barStyle = isNightMode ? .blackTranslucent : .default
+        if #available(iOS 13.0, *) {}
+        else {
+            navigationController?.navigationBar.barStyle = AppSettings.nightMode ? .blackTranslucent : .default
         }
     }
     
@@ -50,7 +50,7 @@ struct ThemeManager {
         if #available(iOS 13.0, *) {
             return UIActivityIndicatorView(style: .medium)
         } else {
-            return UIActivityIndicatorView(style: isNightMode ? .white : .gray)
+            return UIActivityIndicatorView(style: AppSettings.nightMode ? .white : .gray)
         }
     }
     
@@ -62,7 +62,7 @@ struct ThemeManager {
         if #available(iOS 13.0, *) {
             actionSheet.view.tintColor = theme.labelColor
         } else {
-            if isNightMode {
+            if AppSettings.nightMode {
                 actionSheet.view.tintColor = theme.backgroundColor
             }
         }
@@ -72,7 +72,7 @@ struct ThemeManager {
         view.backgroundColor = theme.backgroundColor
     }
 
-    static func htmlFontTag(content: String, darkMode: Bool = isNightMode) -> String {
+    static func htmlFontTag(content: String, darkMode: Bool = AppSettings.nightMode) -> String {
         let color = darkMode ? "white" : "black"
         return "<font color='\(color)'>\(content)</font>"
     }
@@ -111,12 +111,12 @@ struct ThemeManager {
 
 private extension ThemeManager {
 
-    static func getIpadCSS(darkMode: Bool = isNightMode) -> String {
-        return darkMode ? "ipad_night.css" : "ipad.css"
+    static func getIpadCSS(darkMode: Bool = AppSettings.nightMode) -> String {
+        darkMode ? "ipad_night.css" : "ipad.css"
     }
 
-    static func getIphoneCSS(darkMode: Bool = isNightMode) -> String {
-        return darkMode ? "iphone_night.css" : "iphone.css"
+    static func getIphoneCSS(darkMode: Bool = AppSettings.nightMode) -> String {
+        darkMode ? "iphone_night.css" : "iphone.css"
     }
 
     struct Theme {
@@ -134,16 +134,12 @@ private extension ThemeManager {
         @available(iOS 13.0, *)
         static let ios13 = Theme(backgroundColor: UIColor(named: "backgroundColor"), cellBackgroundColor: UIColor(named: "cellBackgroundColor"), labelColor: .label, barTintColor: UIColor(named: "barTintColor"), tintColor: .label, tableBackgroundColor: UIColor(named: "tableBackgroundColor"))
     }
-    
-    static var isNightMode: Bool {
-        return UserDefaults.standard.bool(forKey: "nightMode")
-    }
-    
+
     static var theme: Theme {
         if #available(iOS 13.0, *) {
             return .ios13
         } else {
-            return isNightMode ? .night : .light
+            return AppSettings.nightMode ? .night : .light
         }
     }
 }

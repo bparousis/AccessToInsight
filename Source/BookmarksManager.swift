@@ -15,13 +15,7 @@ class BookmarksManager {
     private lazy var bookmarks: [LocalBookmark] = getBookmarks()
     
     static var lastLocationBookmark: LocalBookmark? {
-        var lastLocationBookmark: LocalBookmark?
-        if let data = UserDefaults.standard.object(forKey: Constants.lastLocationBookmarkKey) as? Data {
-            let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
-            lastLocationBookmark = unarchiver.decodeObject(forKey: Constants.bookmarkKey) as? LocalBookmark
-            unarchiver.finishDecoding()
-        }
-        return lastLocationBookmark
+        AppSettings.lastLocationBookmark
     }
 
     func save() {

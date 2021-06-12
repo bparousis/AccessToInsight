@@ -8,8 +8,6 @@
 import UIKit
 import WebKit
 
-typealias ScrollPosition = (x: Int, y: Int)
-
 class MainViewController: UIViewController
 {
     static let nightModeNotificationName = NSNotification.Name("NightMode")
@@ -117,9 +115,7 @@ class MainViewController: UIViewController
         view.layoutIfNeeded()
         
         if let lastLocationBookmark = BookmarksManager.lastLocationBookmark {
-            let lastX = UserDefaults.standard.integer(forKey: Constants.lastXScrollPosition)
-            let lastY = UserDefaults.standard.integer(forKey: Constants.lastYScrollPosition)
-            loadLocalBookmark(lastLocationBookmark, scrollPosition: (lastX, lastY))
+            loadLocalBookmark(lastLocationBookmark, scrollPosition: AppSettings.lastScrollPosition)
         } else {
             home()
         }
@@ -128,15 +124,7 @@ class MainViewController: UIViewController
     func scrollTo(x scrollX: Int, y scrollY: Int) {
         webView.evaluateJavaScript("window.scrollTo(\(scrollX), \(scrollY))")
     }
-    
-    class func textFontSize() -> Int {
-        var textFontSize = 100
-        if let textFontSizeNum = UserDefaults.standard.object(forKey: Constants.textFontSizeKey) as? Int {
-            textFontSize = textFontSizeNum
-        }
-        return textFontSize
-    }
-    
+
     func loadLocalBookmark(_ bookmark: LocalBookmark, scrollPosition: ScrollPosition? = nil) {
         if let scrollPosition = scrollPosition {
             rescrollPosition = scrollPosition
@@ -330,12 +318,8 @@ class MainViewController: UIViewController
     }
     
     func saveLastLocation() {
-        webView.getBookmark { (lastLocationBookmark) in
-            let data = NSMutableData()
-            let archiver = NSKeyedArchiver(forWritingWith: data)
-            archiver.encode(lastLocationBookmark, forKey: Constants.bookmarkKey)
-            archiver.finishEncoding()
-            UserDefaults.standard.set(data, forKey: Constants.lastLocationBookmarkKey)
+        webView.getBookmark { lastLocationBookmark in
+            AppSettings.lastLocationBookmark = lastLocationBookmark
         }
     }
     
@@ -437,8 +421,7 @@ extension MainViewController: UIGestureRecognizerDelegate {
 
 extension MainViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        UserDefaults.standard.set(scrollView.contentOffset.x, forKey: Constants.lastXScrollPosition)
-        UserDefaults.standard.set(scrollView.contentOffset.y, forKey: Constants.lastYScrollPosition)
+        AppSettings.lastScrollPosition = (Int(scrollView.contentOffset.x), Int(scrollView.contentOffset.y))
     }
 }
 

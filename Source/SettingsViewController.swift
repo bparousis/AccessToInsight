@@ -7,6 +7,23 @@
 
 import UIKit
 
+enum SettingOption {
+    case about
+    case textSize
+    case nightMode
+    
+    var title: String {
+        switch self {
+        case .about:
+            return "About"
+        case .textSize:
+            return "Text Size"
+        case .nightMode:
+            return "Night Mode"
+        }
+    }
+}
+
 class SettingsViewController: UIViewController {
     private lazy var tableView : UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -18,6 +35,14 @@ class SettingsViewController: UIViewController {
         return tableView
     }()
     
+    private lazy var options: [SettingOption] = {
+        if #available(iOS 13.0, *) {
+            return [.about, .textSize]
+        } else {
+            return [.about, .textSize, .nightMode]
+        }
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,9 +52,7 @@ class SettingsViewController: UIViewController {
     }
     
     @objc func nightModeToggled(_ nightModeSwitch: UISwitch) {
-        let nightMode = nightModeSwitch.isOn
-        UserDefaults.standard.set(nightMode, forKey: "nightMode")
-        UserDefaults.standard.synchronize()
+        AppSettings.nightMode = nightModeSwitch.isOn
         let notificationName = Notification.Name("NightMode")
         NotificationCenter.default.post(name: notificationName, object: self)
 
@@ -62,11 +85,7 @@ extension SettingsViewController: UITableViewDelegate {
 extension SettingsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if #available(iOS 13.0, *) {
-            return 2
-        } else {
-            return 3
-        }
+        options.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -78,20 +97,20 @@ extension SettingsViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         ThemeManager.decorateGroupedTableCell(cell)
         
-        if indexPath.row == 0 {
-            cell.textLabel?.text = "About"
-            cell.accessoryType = .disclosureIndicator
+        guard options.indices.contains(indexPath.row) else {
+            return cell
         }
-        else if indexPath.row == 1 {
-            cell.textLabel?.text = "Text Size"
+
+        let option = options[indexPath.row]
+        cell.textLabel?.text = option.title
+
+        switch option {
+        case .about, .textSize:
             cell.accessoryType = .disclosureIndicator
-        }
-        else if indexPath.row == 2 {
-            cell.textLabel?.text = "Night Mode"
-            let nightMode = UserDefaults.standard.bool(forKey: "nightMode")
+        case .nightMode:
             let nightModeSwitch = UISwitch()
             nightModeSwitch.onTintColor = UIColor(red: 62.0/255.0, green: 164.0/255.0, blue: 242.0/255.0, alpha: 1.0)
-            nightModeSwitch.isOn = nightMode
+            nightModeSwitch.isOn = AppSettings.nightMode
             nightModeSwitch.addTarget(self, action: #selector(nightModeToggled(_:)), for:.valueChanged)
             cell.accessoryView = nightModeSwitch
         }

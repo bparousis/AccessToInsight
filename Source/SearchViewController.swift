@@ -42,14 +42,13 @@ class SearchViewController: UITableViewController {
         if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
             tableData = recentSearches
         }
-        
-        let lastSearchScopeIndex = UserDefaults.standard.integer(forKey: SearchViewController.lastSearchScopeIndexKey)
+
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.sizeToFit()
         searchController.searchBar.scopeButtonTitles = ["Title", "Document"]
-        searchController.searchBar.selectedScopeButtonIndex = lastSearchScopeIndex
+        searchController.searchBar.selectedScopeButtonIndex = AppSettings.lastSearchScopeIndex
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
@@ -184,7 +183,6 @@ class SearchViewController: UITableViewController {
         if editingStyle == .delete {
             tableData.remove(at: indexPath.row)
             UserDefaults.standard.set(tableData, forKey: SearchViewController.recentSearchesKey)
-            UserDefaults.standard.synchronize()
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -233,12 +231,10 @@ private extension SearchViewController {
                 }
                 newSearches.insert(newQuery, at: 0)
                 UserDefaults.standard.set(newSearches, forKey: SearchViewController.recentSearchesKey)
-                UserDefaults.standard.synchronize()
             }
         }
         else {
             UserDefaults.standard.set([newQuery], forKey: SearchViewController.recentSearchesKey)
-            UserDefaults.standard.synchronize()
         }
     }
     
@@ -282,8 +278,7 @@ extension SearchViewController: UISearchBarDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        UserDefaults.standard.set(selectedScope, forKey: SearchViewController.lastSearchScopeIndexKey)
-        UserDefaults.standard.synchronize()
+        AppSettings.lastSearchScopeIndex = selectedScope
         requestSearch()
     }
     
