@@ -77,7 +77,8 @@ struct AppSettings {
             var lastLocationBookmark: LocalBookmark?
             if let data = UserDefaults.standard.data(forKey: lastLocationBookmarkKey) {
                 if let unarchiver = try? NSKeyedUnarchiver(forReadingFrom: data) {
-                    lastLocationBookmark = unarchiver.decodeObject(forKey: bookmarkKey) as? LocalBookmark
+                    unarchiver.requiresSecureCoding = false
+                    lastLocationBookmark = unarchiver.decodeObject(of: LocalBookmark.self, forKey: bookmarkKey)
                     unarchiver.finishDecoding()
                 }
             }

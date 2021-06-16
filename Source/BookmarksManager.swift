@@ -23,7 +23,11 @@ class BookmarksManager {
         archiver.encode(bookmarks, forKey: BookmarksManager.BookmarksKey)
         archiver.finishEncoding()
         if let url = archiveFilePath {
-            try? archiver.encodedData.write(to: url, options: .atomicWrite)
+            do {
+                try archiver.encodedData.write(to: url, options: .atomicWrite)
+            } catch {
+                print(error)
+            }
         }
     }
     
@@ -75,6 +79,7 @@ private extension BookmarksManager {
         do {
             let data = try Data(contentsOf: archiveFilePath)
             let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
+            unarchiver.requiresSecureCoding = false
             let archiveBookmarks = unarchiver.decodeObject(forKey: BookmarksManager.BookmarksKey) as? [LocalBookmark]
             unarchiver.finishDecoding()
             return archiveBookmarks ?? getDefaultBookmarks()
