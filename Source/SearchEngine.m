@@ -74,21 +74,15 @@ static double rankFunc(unsigned int *aMatchinfo){
     return self;
 }
 
-- (NSArray *)query:(NSString *)queryString {
-    return [self query:queryString type:@"Document"];
-}
-
-- (NSArray *)query:(NSString *)queryString type:(NSString *)type {
-    NSString *cacheKey = [NSString stringWithFormat:@"%@%@", queryString, type];
+- (NSArray<NSDictionary<NSString*, id>*> *_Nonnull)query:(NSString *_Nonnull)queryString type:(SearchType)type
+{
+    NSString *cacheKey = [NSString stringWithFormat:@"%@%d", queryString, (int)type];
     NSArray *cacheResults = [self.searchCache objectForKey:cacheKey];
     if (cacheResults != nil) {
         return cacheResults;
     }
     
-    NSString *searchColumn = @"Page";
-    if ([type isEqualToString:@"Title"]) {
-        searchColumn = @"title";
-    }
+    NSString *searchColumn = type == kTitle ? @"title" : @"Page";
     NSString *searchSQL = [NSString stringWithFormat:@"SELECT title, subtitle, snippet(Page), filePath, matchinfo(Page) FROM Page WHERE %@ MATCH ?", searchColumn];
     const char *sql = [searchSQL UTF8String];
     sqlite3_stmt *sqlStmt;
@@ -116,8 +110,9 @@ static double rankFunc(unsigned int *aMatchinfo){
                 unsigned int *aMatchinfo = (unsigned int *)sqlite3_column_blob(sqlStmt, 4);
                 double rank = rankFunc(aMatchinfo);
                 NSNumber *rankNum = [NSNumber numberWithDouble:rank];
-                NSMutableDictionary *result = [NSMutableDictionary dictionaryWithObjects:@[title, snippet, filePath, rankNum]
-                                                                                 forKeys:@[@"title", @"snippet", @"filePath", @"rank"]];
+                
+                NSMutableDictionary *result = [NSMutableDictionary dictionaryWithDictionary:
+                                               @{@"title": title, @"snippet": snippet, @"filePath": filePath, @"rank": rankNum}];
                 if (subtitle != nil) {
                     [result setObject:subtitle forKey:@"subtitle"];
                 }

@@ -8,12 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum SearchType : NSUInteger {
+    kTitle,
+    kDocument
+} SearchType;
+
 @interface SearchEngine : NSObject
 {
     NSString *databasePath;
 }
 
-- (NSArray *)query:(NSString *)queryString;
-- (NSArray *)query:(NSString *)queryString type:(NSString *)type;
+- (NSArray<NSDictionary<NSString*, id>*> *_Nonnull)query:(NSString *_Nonnull)queryString
+                                                    type:(SearchType)type;
 
 @end

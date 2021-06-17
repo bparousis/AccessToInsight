@@ -22,7 +22,11 @@ class MainViewController: UIViewController
     private var bottomConstraint: NSLayoutConstraint? = nil
     private var rescrollPosition: ScrollPosition? = nil
     
-    private lazy var bookmarksManager = BookmarksManager()
+    private lazy var bookmarksManager: BookmarksManager = {
+        var documentsPathURL = FileManager.default.urls(for: .documentDirectory,
+                                                        in: .userDomainMask)[0]
+        return BookmarksManager(storePath: documentsPathURL)
+    }()
 
     lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()

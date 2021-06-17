@@ -187,31 +187,26 @@ class SearchViewController: UITableViewController {
 
 private extension SearchViewController {
     @objc func performSearch() {
-        guard let queryString = searchController.searchBar.text, queryString.count > 1 else {
+        guard let queryString = searchController.searchBar.text,
+              !queryString.isEmpty else
+        {
             return
         }
         
-        updateRecentSearches(queryString)
         let scopeIndex = searchController.searchBar.selectedScopeButtonIndex
-        let scopeType = searchController.searchBar.scopeButtonTitles?[scopeIndex]
+        let searchType = SearchType(rawValue: UInt(scopeIndex))
+        updateRecentSearches(queryString)
         isSearching = true
         tableData = []
         tableView.reloadData()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            let queryResults = self.searchEngine.query(queryString, type: scopeType)
-            DispatchQueue.main.async {
-                [weak self] in
-                guard let self = self else { return }
-                self.isSearching = false
-                self.searchingIndicator?.stopAnimating()
-                self.searchingIndicator?.removeFromSuperview()
-                self.showRecentSearches = false
-                if let data = queryResults as? [Dictionary<String,Any>] {
-                    self.tableData = data
-                }
-                self.tableView.reloadData()
-            }
+
+        searchEngine.asyncQuery(queryString, type: searchType) { result in
+            self.isSearching = false
+            self.searchingIndicator?.stopAnimating()
+            self.searchingIndicator?.removeFromSuperview()
+            self.showRecentSearches = false
+            self.tableData = result
+            self.tableView.reloadData()
         }
     }
     

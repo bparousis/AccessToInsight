@@ -37,6 +37,16 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "765BC4292679B614000B1DF4"
+               BuildableName = "AccessToInsightTests.xctest"
+               BlueprintName = "AccessToInsightTests"
+               ReferencedContainer = "container:AccessToInsight.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

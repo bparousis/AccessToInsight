@@ -35,6 +35,8 @@
 		764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F2218E47E900F4DE22 /* MainViewController.swift */; };
 		764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F6218EADAC00F4DE22 /* SearchViewController.swift */; };
 		765676B822DD69C00079ADD0 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 765676B722DD69710079ADD0 /* MessageUI.framework */; };
+		765BC42D2679B615000B1DF4 /* BookmarksManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC42C2679B615000B1DF4 /* BookmarksManagerTests.swift */; };
+		766D3A72267AEAD60020E047 /* SearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7629E2C4267AABF400E75CDD /* SearchEngine.swift */; };
 		766F078B216EF036003340F9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 766F078A216EF036003340F9 /* Main.storyboard */; };
 		7675BE95218D1B8500B53D26 /* LocalBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE94218D1B8500B53D26 /* LocalBookmark.swift */; };
 		7675BE97218D291000B53D26 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7675BE96218D291000B53D26 /* AppDelegate.swift */; };
@@ -64,6 +66,13 @@
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = "AccessToInsight-Universal";
 		};
+		765BC42F2679B615000B1DF4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
+			remoteInfo = AccessToInsight;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -77,12 +86,16 @@
 		76012887238B337500C5D419 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		76012889238B3EA300C5D419 /* UIViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Layout.swift"; sourceTree = "<group>"; };
 		7622974622E174210051B184 /* UIColor+AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+AppColors.swift"; sourceTree = "<group>"; };
+		7629E2C4267AABF400E75CDD /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		763F93D62173C371005E6A58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksTableController.swift; path = Source/BookmarksTableController.swift; sourceTree = "<group>"; };
 		764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksControllerDelegate.swift; path = Source/BookmarksControllerDelegate.swift; sourceTree = "<group>"; };
 		764A07F2218E47E900F4DE22 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Source/MainViewController.swift; sourceTree = "<group>"; };
 		764A07F6218EADAC00F4DE22 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/SearchViewController.swift; sourceTree = "<group>"; };
 		765676B722DD69710079ADD0 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		765BC42A2679B614000B1DF4 /* AccessToInsightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccessToInsightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		765BC42C2679B615000B1DF4 /* BookmarksManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksManagerTests.swift; sourceTree = "<group>"; };
+		765BC42E2679B615000B1DF4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		766F078A216EF036003340F9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7675BE94218D1B8500B53D26 /* LocalBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalBookmark.swift; path = Source/LocalBookmark.swift; sourceTree = "<group>"; };
 		7675BE96218D291000B53D26 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Source/AppDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +134,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		765BC4272679B614000B1DF4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -128,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* AccessToInsight.app */,
+				765BC42A2679B614000B1DF4 /* AccessToInsightTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -164,6 +185,7 @@
 				8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */,
 				0AE3F9B21257D1AE000C2097 /* iTunesArtwork */,
 				D7DD89AB1B49CC0800DF13C4 /* iTunesArtwork@2x */,
+				765BC42B2679B615000B1DF4 /* AccessToInsightTests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -203,6 +225,15 @@
 			name = Bookmark;
 			sourceTree = "<group>";
 		};
+		765BC42B2679B615000B1DF4 /* AccessToInsightTests */ = {
+			isa = PBXGroup;
+			children = (
+				765BC42C2679B615000B1DF4 /* BookmarksManagerTests.swift */,
+				765BC42E2679B615000B1DF4 /* Info.plist */,
+			);
+			path = AccessToInsightTests;
+			sourceTree = "<group>";
+		};
 		7688F60B218BF81800DAA890 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,6 +260,7 @@
 				76CE7E3B218FD7F200D2C18C /* SearchEngine.h */,
 				76CE7E3A218FD7F200D2C18C /* SearchEngine.m */,
 				764A07F6218EADAC00F4DE22 /* SearchViewController.swift */,
+				7629E2C4267AABF400E75CDD /* SearchEngine.swift */,
 			);
 			name = SearchEngine;
 			sourceTree = "<group>";
@@ -253,17 +285,42 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* AccessToInsight.app */;
 			productType = "com.apple.product-type.application";
 		};
+		765BC4292679B614000B1DF4 /* AccessToInsightTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 765BC4342679B615000B1DF4 /* Build configuration list for PBXNativeTarget "AccessToInsightTests" */;
+			buildPhases = (
+				765BC4262679B614000B1DF4 /* Sources */,
+				765BC4272679B614000B1DF4 /* Frameworks */,
+				765BC4282679B614000B1DF4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				765BC4302679B615000B1DF4 /* PBXTargetDependency */,
+			);
+			name = AccessToInsightTests;
+			productName = AccessToInsightTests;
+			productReference = 765BC42A2679B614000B1DF4 /* AccessToInsightTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1240;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = QF6M4CC7RV;
 						LastSwiftMigration = 1000;
+					};
+					765BC4292679B614000B1DF4 = {
+						CreatedOnToolsVersion = 12.4;
+						DevelopmentTeam = QF6M4CC7RV;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 				};
 			};
@@ -283,6 +340,7 @@
 			targets = (
 				1D6058900D05DD3D006BFB54 /* AccessToInsight */,
 				0AE3F99F1257D153000C2097 /* IPA */,
+				765BC4292679B614000B1DF4 /* AccessToInsightTests */,
 			);
 		};
 /* End PBXProject section */
@@ -301,6 +359,13 @@
 				D736521F1F0606CB000212C7 /* pages.db in Resources */,
 				0A184CFE1265113200972013 /* web_content in Resources */,
 				D77E8D52177D4436006C8C0D /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765BC4282679B614000B1DF4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,8 +407,17 @@
 				7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */,
 				7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */,
 				76A4C9D8267457580043C7BC /* AppSettings.swift in Sources */,
+				766D3A72267AEAD60020E047 /* SearchEngine.swift in Sources */,
 				76012888238B337500C5D419 /* InfoViewController.swift in Sources */,
 				7601288A238B3EA300C5D419 /* UIViewController+Layout.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		765BC4262679B614000B1DF4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				765BC42D2679B615000B1DF4 /* BookmarksManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +428,11 @@
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* AccessToInsight */;
 			targetProxy = 0AE3F9C21257D4AF000C2097 /* PBXContainerItemProxy */;
+		};
+		765BC4302679B615000B1DF4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D6058900D05DD3D006BFB54 /* AccessToInsight */;
+			targetProxy = 765BC42F2679B615000B1DF4 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -513,6 +592,126 @@
 			};
 			name = Release;
 		};
+		765BC4312679B615000B1DF4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = QF6M4CC7RV;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AccessToInsightTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bparousis.AccessToInsightTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessToInsight.app/AccessToInsight";
+			};
+			name = Debug;
+		};
+		765BC4322679B615000B1DF4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QF6M4CC7RV;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AccessToInsightTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bparousis.AccessToInsightTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessToInsight.app/AccessToInsight";
+			};
+			name = Release;
+		};
+		765BC4332679B615000B1DF4 /* App Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = QF6M4CC7RV;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = AccessToInsightTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bparousis.AccessToInsightTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AccessToInsight.app/AccessToInsight";
+			};
+			name = "App Store";
+		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -616,6 +815,16 @@
 				1D6058940D05DD3E006BFB54 /* Debug */,
 				1D6058950D05DD3E006BFB54 /* Release */,
 				0AE303901257D619000C2097 /* App Store */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		765BC4342679B615000B1DF4 /* Build configuration list for PBXNativeTarget "AccessToInsightTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				765BC4312679B615000B1DF4 /* Debug */,
+				765BC4322679B615000B1DF4 /* Release */,
+				765BC4332679B615000B1DF4 /* App Store */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

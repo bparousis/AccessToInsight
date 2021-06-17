@@ -11,28 +11,27 @@ class BookmarksManager {
     private static let DefaultBookmarksPlistName = "DefaultBookmarks"
     private static let BookmarksArchiveFilename = "LocalBookmarks"
     private static let BookmarksKey = "bookmarks"
+    private let storePath: URL
     
     private lazy var bookmarks: [LocalBookmark] = getBookmarks()
     
     static var lastLocationBookmark: LocalBookmark? {
         AppSettings.lastLocationBookmark
     }
+    
+    init(storePath: URL) {
+        self.storePath = storePath
+    }
 
     func save() {
         let archiver = NSKeyedArchiver(requiringSecureCoding: false)
         archiver.encode(bookmarks, forKey: BookmarksManager.BookmarksKey)
         archiver.finishEncoding()
-        if let url = archiveFilePath {
-            do {
-                try archiver.encodedData.write(to: url, options: .atomicWrite)
-            } catch {
-                print(error)
-            }
-        }
+        try? archiver.encodedData.write(to: archiveFilePath, options: .atomicWrite)
     }
     
     var count: Int {
-        return bookmarks.count
+        bookmarks.count
     }
     
     func bookmarkAtIndex(_ index: Int) -> LocalBookmark? {
@@ -55,10 +54,7 @@ class BookmarksManager {
         guard bookmarks.indices.contains(fromIndex) && bookmarks.indices.contains(toIndex) else {
             return
         }
-        
-        let bookmarkToMove = bookmarks[fromIndex]
-        bookmarks.remove(at: fromIndex)
-        bookmarks.insert(bookmarkToMove, at: toIndex)
+        bookmarks.swapAt(fromIndex, toIndex)
         save()
     }
     
@@ -72,7 +68,7 @@ private extension BookmarksManager {
     
     func getBookmarks() -> [LocalBookmark] {
         // Attempt to load bookmarks from file.
-        guard let archiveFilePath = archiveFilePath else {
+        guard FileManager.default.fileExists(atPath: archiveFilePath.path) else {
             return getDefaultBookmarks()
         }
 
@@ -97,24 +93,24 @@ private extension BookmarksManager {
         }
 
         var newBookmarks: [LocalBookmark] = []
-        for obj: Any in defaultBookmarks {
-            if let dict = obj as? Dictionary<String,Any> {
-                if let title = dict[LocalBookmark.titleKey] as? String, let location = dict[LocalBookmark.locationKey] as? String,
-                    let scrollX = dict[LocalBookmark.scrollXKey] as? Int, let scrollY = dict[LocalBookmark.scrollYKey] as? Int {
-                    let bm: LocalBookmark = LocalBookmark(title: title, location: location, scrollX: scrollX, scrollY: scrollY)
-                    if let note = dict[LocalBookmark.noteKey] as? String {
-                        bm.note = note
-                    }
-                    newBookmarks.append(bm)
+        for obj in defaultBookmarks {
+            if let dict = obj as? Dictionary<String,Any>,
+               let title = dict[LocalBookmark.titleKey] as? String,
+               let location = dict[LocalBookmark.locationKey] as? String,
+               let scrollX = dict[LocalBookmark.scrollXKey] as? Int,
+               let scrollY = dict[LocalBookmark.scrollYKey] as? Int
+            {
+                let bm: LocalBookmark = LocalBookmark(title: title, location: location, scrollX: scrollX, scrollY: scrollY)
+                if let note = dict[LocalBookmark.noteKey] as? String {
+                    bm.note = note
                 }
+                newBookmarks.append(bm)
             }
         }
         return newBookmarks
     }
     
-    var archiveFilePath: URL? {
-        var documentsPathURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        documentsPathURL?.appendPathComponent(BookmarksManager.BookmarksArchiveFilename)
-        return documentsPathURL
+    var archiveFilePath: URL {
+        storePath.appendingPathComponent(BookmarksManager.BookmarksArchiveFilename)
     }
 }
