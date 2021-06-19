@@ -108,46 +108,34 @@ class SearchViewController: UITableViewController {
         
         ThemeManager.decorateTableCell(cell)
         if isSearching {
-            cell.textLabel?.text = nil
-            cell.detailTextLabel?.text = nil
-            
-            searchingIndicator = ThemeManager.makeDecoratedActivityIndicator()
-            cell.contentView.addSubview(searchingIndicator!)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                self.searchingIndicator?.startAnimating()
-            }
-            searchingIndicator?.center = cell.contentView.center
+            showSearchIndicatorInCell(cell)
         }
         else if showRecentSearches {
             if let aSearch = tableData[indexPath.row] as? String {
                 cell.textLabel?.text = aSearch
-            }
-            else {
+            } else {
                 cell.textLabel?.text = nil
             }
             cell.detailTextLabel?.text = nil
             cell.detailTextLabel?.attributedText = nil
         }
-        else {
-            
-            if tableData.indices.contains(indexPath.row) {
-                if let resultData = tableData[indexPath.row] as? Dictionary<String,Any> {
-                    let subtitle = resultData["subtitle"] as? String
-                    let snippet = resultData["snippet"] as! String
-                    let formattedSnippet = formatSnippet(snippet)
+        else if tableData.indices.contains(indexPath.row) {
+            if let resultData = tableData[indexPath.row] as? Dictionary<String,Any> {
+                let subtitle = resultData["subtitle"] as? String
+                let snippet = resultData["snippet"] as! String
+                let formattedSnippet = formatSnippet(snippet)
 
-                    if let data = formattedSnippet.data(using: .unicode) {
-                        do {
-                            let attrStr = try NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-                            cell.textLabel?.text = resultData["title"] as? String
-                            if isTitleSearch && subtitle != nil && subtitle!.count > 0 {
-                                cell.detailTextLabel?.text = subtitle
-                            }
-                            else {
-                                cell.detailTextLabel?.attributedText = isTitleSearch ? nil : attrStr
-                            }
-                        } catch {}
-                    }
+                if let data = formattedSnippet.data(using: .unicode) {
+                    do {
+                        let attrStr = try NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+                        cell.textLabel?.text = resultData["title"] as? String
+                        if isTitleSearch && subtitle != nil && subtitle!.count > 0 {
+                            cell.detailTextLabel?.text = subtitle
+                        }
+                        else {
+                            cell.detailTextLabel?.attributedText = isTitleSearch ? nil : attrStr
+                        }
+                    } catch {}
                 }
             }
         }
@@ -251,6 +239,18 @@ private extension SearchViewController {
         } else {
             return ThemeManager.htmlFontTag(content: snippet)
         }
+    }
+    
+    func showSearchIndicatorInCell(_ cell: UITableViewCell) {
+        cell.textLabel?.text = nil
+        cell.detailTextLabel?.text = nil
+        
+        searchingIndicator = ThemeManager.makeDecoratedActivityIndicator()
+        cell.contentView.addSubview(searchingIndicator!)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.searchingIndicator?.startAnimating()
+        }
+        searchingIndicator?.center = cell.contentView.center
     }
 }
 
