@@ -15,10 +15,6 @@ class BookmarksManager {
     
     private lazy var bookmarks: [LocalBookmark] = getBookmarks()
     
-    static var lastLocationBookmark: LocalBookmark? {
-        AppSettings.lastLocationBookmark
-    }
-    
     init(storePath: URL) {
         self.storePath = storePath
     }
@@ -35,8 +31,7 @@ class BookmarksManager {
     }
     
     func bookmarkAtIndex(_ index: Int) -> LocalBookmark? {
-        guard bookmarks.indices.contains(index) else { return nil }
-        return bookmarks[index]
+        bookmarks.indices.contains(index) ? bookmarks[index] : nil
     }
     
     func addBookmark(_ bookmark: LocalBookmark) {
@@ -86,7 +81,8 @@ private extension BookmarksManager {
     }
 
     func getDefaultBookmarks() -> [LocalBookmark] {
-        guard let plistPath = Bundle.main.path(forResource: BookmarksManager.DefaultBookmarksPlistName, ofType: "plist"),
+        guard let plistPath = Bundle.main.path(forResource: BookmarksManager.DefaultBookmarksPlistName,
+                                               ofType: "plist"),
             let defaultBookmarks = NSArray(contentsOfFile: plistPath)
             else {
                 return []
@@ -98,7 +94,7 @@ private extension BookmarksManager {
                let title = dict[LocalBookmark.titleKey] as? String,
                let location = dict[LocalBookmark.locationKey] as? String,
                let scrollX = dict[LocalBookmark.scrollXKey] as? Int,
-               let scrollY = dict[LocalBookmark.scrollYKey] as? Int
+               let scrollY = dict [LocalBookmark.scrollYKey] as? Int
             {
                 let bm: LocalBookmark = LocalBookmark(title: title, location: location, scrollX: scrollX, scrollY: scrollY)
                 if let note = dict[LocalBookmark.noteKey] as? String {

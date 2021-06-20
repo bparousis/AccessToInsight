@@ -13,9 +13,7 @@ protocol SearchViewDelegate : class {
 }
 
 class SearchViewController: UITableViewController {
-    
-    static let recentSearchesKey = "recentSearches"
-    static let lastSearchScopeIndexKey = "lastSearchScopeIndex"
+
     private lazy var searchEngine = SearchEngine()
     
     var tableData: [Any] = []
@@ -39,7 +37,7 @@ class SearchViewController: UITableViewController {
         let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
         navigationItem.leftBarButtonItem = cancelButtonItem
         
-        if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
+        if let recentSearches = AppSettings.recentSearches {
             tableData = recentSearches
         }
 
@@ -68,7 +66,7 @@ class SearchViewController: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         var numOfSections = 0
         
-        if tableData.count > 0 || showRecentSearches || isSearching
+        if !tableData.isEmpty || showRecentSearches || isSearching
         {
             tableView.separatorStyle = .singleLine
             numOfSections = 1
@@ -81,7 +79,7 @@ class SearchViewController: UITableViewController {
                 noDataLabel.text  = searchTextLength > 0 ? "No Result" : ""
             }
             ThemeManager.decorateLabel(noDataLabel)
-            noDataLabel.textAlignment    = .center
+            noDataLabel.textAlignment = .center
             tableView.backgroundView = noDataLabel
             tableView.separatorStyle = .none
         }
@@ -143,7 +141,7 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return showRecentSearches ? .delete : .none
+        showRecentSearches ? .delete : .none
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -153,12 +151,10 @@ class SearchViewController: UITableViewController {
                 performSearch()
             }
         }
-        else {
-            if let resultData = tableData[indexPath.row] as? Dictionary<String,Any>,
-                let filePath = resultData["filePath"] as? String {
-                searchDelegate?.loadPage(filePath)
-            }
-            
+        else if let resultData = tableData[indexPath.row] as? [String: Any],
+                let filePath = resultData["filePath"] as? String
+        {
+            searchDelegate?.loadPage(filePath)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -167,7 +163,7 @@ class SearchViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             tableData.remove(at: indexPath.row)
-            UserDefaults.standard.set(tableData, forKey: SearchViewController.recentSearchesKey)
+            AppSettings.recentSearches = tableData as? [String]
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
@@ -199,22 +195,18 @@ private extension SearchViewController {
     }
     
     func updateRecentSearches(_ newQuery: String) {
-        if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
-            let containsQuery = recentSearches.contains(where: { (elem) -> Bool in
-                return elem == newQuery
-            })
-            
-            if (!containsQuery) {
+        if let recentSearches = AppSettings.recentSearches {
+            if !recentSearches.contains(newQuery) {
                 var newSearches = recentSearches
-                if (newSearches.count >= 9) {
+                if newSearches.count >= 9 {
                     newSearches.removeLast()
                 }
                 newSearches.insert(newQuery, at: 0)
-                UserDefaults.standard.set(newSearches, forKey: SearchViewController.recentSearchesKey)
+                AppSettings.recentSearches = newSearches
             }
         }
         else {
-            UserDefaults.standard.set([newQuery], forKey: SearchViewController.recentSearchesKey)
+            AppSettings.recentSearches = [newQuery]
         }
     }
     
@@ -228,7 +220,7 @@ private extension SearchViewController {
     }
     
     var isTitleSearch: Bool {
-        return searchController.searchBar.selectedScopeButtonIndex == 0
+        searchController.searchBar.selectedScopeButtonIndex == 0
     }
     
     func formatSnippet(_ snippet: String) -> String {
@@ -262,7 +254,7 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
         showRecentSearches = true
-        if let recentSearches = UserDefaults.standard.stringArray(forKey: SearchViewController.recentSearchesKey) {
+        if let recentSearches = AppSettings.recentSearches {
             tableData = recentSearches
         }
         tableView.reloadData()

@@ -21,6 +21,8 @@ struct AppSettings {
     private static let lastSearchScopeIndexKey = "lastSearchScopeIndex"
     private static let recentSearchesKey = "recentSearches"
     
+    static let topScrollPosition: ScrollPosition = (0,0)
+    
     // MARK: Night Mode
     static var nightMode: Bool {
         set {
@@ -94,6 +96,16 @@ struct AppSettings {
         
         get {
             UserDefaults.standard.integer(forKey: lastSearchScopeIndexKey)
+        }
+    }
+    
+    static var recentSearches: [String]? {
+        set {
+            UserDefaults.standard.set(newValue, forKey: recentSearchesKey)
+        }
+        
+        get {
+            UserDefaults.standard.stringArray(forKey: recentSearchesKey)
         }
     }
 }

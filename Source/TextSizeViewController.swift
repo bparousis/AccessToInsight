@@ -88,16 +88,12 @@ class TextSizeViewController: UIViewController  {
     
     func changeTextFontSize(increase: Bool) {
         let maxSize = UIDevice.current.userInterfaceIdiom == .pad ? 190 : 160
-        var textFontSize = AppSettings.textFontSize
-        if increase {
-            textFontSize = textFontSize < maxSize ? textFontSize + 5 : textFontSize
+        let textSizeRange = 50...maxSize
+        let newTextFontSize = increase ? AppSettings.textFontSize + 5 : AppSettings.textFontSize - 5
+        if textSizeRange.contains(newTextFontSize) {
+            AppSettings.textFontSize = newTextFontSize
+            textSizeWebView.adjustTextSize()
         }
-        else {
-            textFontSize = textFontSize > 50 ? textFontSize - 5 : textFontSize
-        }
-        
-        AppSettings.textFontSize = textFontSize
-        textSizeWebView.adjustTextSize()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

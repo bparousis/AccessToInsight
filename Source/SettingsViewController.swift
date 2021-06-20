@@ -109,7 +109,7 @@ extension SettingsViewController: UITableViewDataSource {
             cell.accessoryType = .disclosureIndicator
         case .nightMode:
             let nightModeSwitch = UISwitch()
-            nightModeSwitch.onTintColor = UIColor(red: 62.0/255.0, green: 164.0/255.0, blue: 242.0/255.0, alpha: 1.0)
+            nightModeSwitch.onTintColor = UIColor.blueSky
             nightModeSwitch.isOn = AppSettings.nightMode
             nightModeSwitch.addTarget(self, action: #selector(nightModeToggled(_:)), for:.valueChanged)
             cell.accessoryView = nightModeSwitch

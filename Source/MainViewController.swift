@@ -11,14 +11,12 @@ import WebKit
 class MainViewController: UIViewController
 {
     static let nightModeNotificationName = NSNotification.Name("NightMode")
-    private static let topScrollPosition: ScrollPosition = (0,0)
     
     private var toolbarHidden: Bool = false
     private var startAlpha: CGFloat = 0.0
     
     private var doneAddBookmark: UIAlertAction? = nil
     
-    private var topConstraint: NSLayoutConstraint? = nil
     private var bottomConstraint: NSLayoutConstraint? = nil
     private var rescrollPosition: ScrollPosition? = nil
     
@@ -93,20 +91,21 @@ class MainViewController: UIViewController
         view.addSubview(webView)
         
         let guide = view.safeAreaLayoutGuide
-        topConstraint = webView.topAnchor.constraint(equalTo: guide.topAnchor)
-        bottomConstraint = webView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+        let topConstraint = webView.topAnchor.constraint(equalTo: guide.topAnchor)
+        let bottomConstraint = webView.bottomAnchor.constraint(equalTo: guide.bottomAnchor)
+        self.bottomConstraint = bottomConstraint
         NSLayoutConstraint.activate([
-            topConstraint!,
+            topConstraint,
             webView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
             webView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            bottomConstraint!
+            bottomConstraint
             ])
-        topConstraint?.isActive = true
-        bottomConstraint?.constant = -44.0
-        bottomConstraint?.isActive = true
+        topConstraint.isActive = true
+        bottomConstraint.constant = -44.0
+        bottomConstraint.isActive = true
         view.layoutIfNeeded()
         
-        if let lastLocationBookmark = BookmarksManager.lastLocationBookmark {
+        if let lastLocationBookmark = AppSettings.lastLocationBookmark {
             loadLocalBookmark(lastLocationBookmark, scrollPosition: AppSettings.lastScrollPosition)
         } else {
             home()
@@ -181,12 +180,12 @@ class MainViewController: UIViewController
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Random Sutta", style: .default, handler: { [unowned self] (alert) in
-            rescrollPosition = MainViewController.topScrollPosition
+            rescrollPosition = AppSettings.topScrollPosition
             webView.loadLocalWebContent("random-sutta.html")
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Random Article", style: .default, handler: { [unowned self] (alert) in
-            rescrollPosition = MainViewController.topScrollPosition
+            rescrollPosition = AppSettings.topScrollPosition
             webView.loadLocalWebContent("random-article.html")
         }))
         
@@ -241,14 +240,8 @@ class MainViewController: UIViewController
     func toggleScreenDecorations() {
         toolbarHidden.toggle()
         UIView.beginAnimations("toolbar", context: nil)
-        
-        if toolbarHidden {
-            bottomConstraint?.constant = 0.0
-            toolbar?.isHidden = true
-        } else {
-            bottomConstraint?.constant = -44.0
-            toolbar?.isHidden = false
-        }
+        toolbar?.isHidden = toolbarHidden
+        bottomConstraint?.constant = toolbarHidden ? 0.0 : -44.0
         view.layoutIfNeeded()
         UIView.commitAnimations()
         UIView.animate(withDuration: 0.25) {
@@ -288,11 +281,11 @@ class MainViewController: UIViewController
     }
     
     override var prefersStatusBarHidden: Bool {
-        return toolbarHidden
+        toolbarHidden
     }
     
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
-        return .slide
+        .slide
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
