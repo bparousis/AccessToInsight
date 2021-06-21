@@ -16,6 +16,7 @@ class SearchEngineIntegrationTests: XCTestCase {
     var sut: SearchEngine!
 
     override func setUp() {
+        Current = .mock
         sut = SearchEngine()
     }
 

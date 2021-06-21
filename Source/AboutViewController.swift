@@ -12,9 +12,8 @@ import MessageUI
 class AboutViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView.makeDecorated()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        ThemeManager.decorateTableView(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
@@ -54,7 +53,7 @@ extension AboutViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableCellId", for: indexPath)
         cell.selectionStyle = .none
-        ThemeManager.decorateGroupedTableCell(cell)
+        cell.decorateGrouped()
         
         if indexPath.section == 0 {
             if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {

@@ -23,26 +23,29 @@ class TextSizeViewController: UIViewController  {
     }()
 
     private lazy var toolbar: UIToolbar = {
-        let toolbar = UIToolbar()
+        let toolbar = UIToolbar.makeDecorated()
         toolbar.translatesAutoresizingMaskIntoConstraints = false
-        ThemeManager.decorateToolbar(toolbar)
         return toolbar
     }()
 
+    private let viewModel: TextSizeViewModel
     private var allowPageLoad = true
+
+    init(viewModel: TextSizeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         allowPageLoad = true
-        title = "Text Size"
-
-        if let bookmarkLocation = AppSettings.lastLocationBookmark?.location {
-            textSizeWebView.loadLocalWebContent(bookmarkLocation)
-        }
-        else {
-            textSizeWebView.loadLocalWebContent("index.html")
-        }
+        title = viewModel.title
+        textSizeWebView.loadLocalWebContent(viewModel.page)
 
         let increaseImage = UIImage(named: "increase_font")
         let leftFlex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -82,16 +85,12 @@ class TextSizeViewController: UIViewController  {
     }
     
     @objc func resetTextFontSize(_ sender: UIBarButtonItem) {
-        AppSettings.resetTextFontSize()
+        viewModel.resetTextFontSize()
         textSizeWebView.adjustTextSize()
     }
     
     func changeTextFontSize(increase: Bool) {
-        let maxSize = UIDevice.current.userInterfaceIdiom == .pad ? 190 : 160
-        let textSizeRange = 50...maxSize
-        let newTextFontSize = increase ? AppSettings.textFontSize + 5 : AppSettings.textFontSize - 5
-        if textSizeRange.contains(newTextFontSize) {
-            AppSettings.textFontSize = newTextFontSize
+        if viewModel.changeTextFontSize(increase: increase) {
             textSizeWebView.adjustTextSize()
         }
     }

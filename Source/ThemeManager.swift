@@ -23,7 +23,7 @@ struct ThemeManager {
             cssFile = getIphoneCSS(darkMode: darkMode)
         }
         
-        let javascript = """
+        return """
         var links = document.getElementsByTagName('link');
         for(var i = 0; i < links.length; i++) {
         if (links[i].rel === 'stylesheet') {
@@ -32,21 +32,20 @@ struct ThemeManager {
         break;
         }}
         """
-        return javascript
     }
     
-    static func decorateNavigationController(_ navigationController: UINavigationController?) {
+    fileprivate static func decorateNavigationController(_ navigationController: UINavigationController) {
         if #available(iOS 13.0, *) {}
         else {
-            navigationController?.navigationBar.barStyle = AppSettings.nightMode ? .blackTranslucent : .default
+            navigationController.navigationBar.barStyle = AppSettings.nightMode ? .blackTranslucent : .default
         }
     }
     
-    static func decorateLabel(_ label: UILabel) {
+    fileprivate static func decorateLabel(_ label: UILabel) {
         label.textColor = theme.labelColor
     }
     
-    static func makeDecoratedActivityIndicator() -> UIActivityIndicatorView {
+    fileprivate static func makeDecoratedActivityIndicator() -> UIActivityIndicatorView {
         if #available(iOS 13.0, *) {
             return UIActivityIndicatorView(style: .medium)
         } else {
@@ -54,7 +53,7 @@ struct ThemeManager {
         }
     }
     
-    static func decorateActionSheet(_ actionSheet: UIAlertController) {
+    fileprivate static func decorateActionSheet(_ actionSheet: UIAlertController) {
         guard actionSheet.preferredStyle == .actionSheet else {
             return
         }
@@ -68,7 +67,7 @@ struct ThemeManager {
         }
     }
     
-    static func decorateView(_ view: UIView) {
+    fileprivate static func decorateBackground(_ view: UIView) {
         view.backgroundColor = theme.backgroundColor
     }
 
@@ -77,25 +76,25 @@ struct ThemeManager {
         return "<font color='\(color)'>\(content)</font>"
     }
     
-    static func decorateGroupedTableCell(_ cell: UITableViewCell) {
+    fileprivate static func decorateGroupedTableCell(_ cell: UITableViewCell) {
         cell.textLabel?.textColor = theme.labelColor
         cell.detailTextLabel?.textColor = theme.labelColor
         cell.backgroundColor = theme.cellBackgroundColor
     }
     
-    static func decorateTableCell(_ cell: UITableViewCell) {
+    fileprivate static func decorateTableCell(_ cell: UITableViewCell) {
         cell.backgroundColor = theme.backgroundColor
         cell.textLabel?.textColor = theme.labelColor
         cell.detailTextLabel?.textColor = theme.labelColor
     }
     
-    static func decorateToolbar(_ toolbar : UIToolbar) {
+    fileprivate static func decorateToolbar(_ toolbar : UIToolbar) {
         toolbar.isTranslucent = true
         toolbar.barTintColor = theme.barTintColor
         toolbar.tintColor = theme.tintColor
     }
     
-    static func decorateTableView(_ tableView: UITableView) {
+    fileprivate static func decorateTableView(_ tableView: UITableView) {
         switch tableView.style {
         case .plain:
             tableView.backgroundColor = theme.backgroundColor
@@ -141,5 +140,89 @@ private extension ThemeManager {
         } else {
             return AppSettings.nightMode ? .night : .light
         }
+    }
+}
+
+// MARK: Decorate extensions
+
+extension UITableView {
+    static func makeDecorated(frame: CGRect = .zero, style: Style = .grouped) -> UITableView {
+        let tableView = UITableView(frame: frame, style: style)
+        tableView.decorate()
+        return tableView
+    }
+    
+    func decorate() {
+        ThemeManager.decorateTableView(self)
+    }
+}
+
+extension UIToolbar {
+    static func makeDecorated() -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.decorate()
+        return toolbar
+    }
+    
+    func decorate() {
+        ThemeManager.decorateToolbar(self)
+    }
+}
+
+extension UITableViewCell {
+    func decorateGrouped() {
+        ThemeManager.decorateGroupedTableCell(self)
+    }
+    
+    func decorate() {
+        ThemeManager.decorateTableCell(self)
+    }
+}
+
+extension UIAlertController {
+    static func makeDecoratedActionSheet(title: String, message: String? = nil) -> UIAlertController {
+        let actionSheet = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        ThemeManager.decorateActionSheet(actionSheet)
+        return actionSheet
+    }
+}
+
+extension UILabel {
+    static func makeDecorated(frame: CGRect = .zero) -> UILabel {
+        let label = UILabel(frame: frame)
+        label.decorate()
+        return label
+    }
+    
+    func decorate() {
+        ThemeManager.decorateLabel(self)
+    }
+}
+
+extension UIView {
+    func decorateBackground() {
+        ThemeManager.decorateBackground(self)
+    }
+}
+
+extension UIActivityIndicatorView {
+    static func makeDecorated() -> UIActivityIndicatorView {
+        if #available(iOS 13.0, *) {
+            return UIActivityIndicatorView(style: .medium)
+        } else {
+            return UIActivityIndicatorView(style: AppSettings.nightMode ? .white : .gray)
+        }
+    }
+}
+
+extension UINavigationController {
+    static func makeDecorated(rootViewController: UIViewController) -> UINavigationController {
+        let nav = UINavigationController(rootViewController: rootViewController)
+        nav.decorate()
+        return nav
+    }
+    
+    func decorate() {
+        ThemeManager.decorateNavigationController(self)
     }
 }

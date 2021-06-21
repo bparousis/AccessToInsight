@@ -126,7 +126,7 @@ class MainViewController: UIViewController
     }
     
     @IBAction func home() {
-        webView.loadLocalWebContent("index.html")
+        webView.loadLocalWebContent(.home)
     }
     
     @IBAction func goBack() {
@@ -142,8 +142,7 @@ class MainViewController: UIViewController
     }
     
     @IBAction func actionButton() {
-        let actionSheet = UIAlertController(title: "Select Action", message: nil, preferredStyle: .actionSheet)
-        ThemeManager.decorateActionSheet(actionSheet)
+        let actionSheet = UIAlertController.makeDecoratedActionSheet(title: "Select Action")
         actionSheet.popoverPresentationController?.barButtonItem = actionBarButtonItem
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [unowned self] (action) in
             self.dismiss(animated: true, completion: nil)
@@ -181,12 +180,12 @@ class MainViewController: UIViewController
         
         actionSheet.addAction(UIAlertAction(title: "Random Sutta", style: .default, handler: { [unowned self] (alert) in
             rescrollPosition = AppSettings.topScrollPosition
-            webView.loadLocalWebContent("random-sutta.html")
+            webView.loadLocalWebContent(.randomSutta)
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Random Article", style: .default, handler: { [unowned self] (alert) in
             rescrollPosition = AppSettings.topScrollPosition
-            webView.loadLocalWebContent("random-article.html")
+            webView.loadLocalWebContent(.randomArticle)
         }))
         
         present(actionSheet, animated: true, completion: nil)
@@ -202,8 +201,7 @@ class MainViewController: UIViewController
         let btc = BookmarksTableController(bookmarksManager: bookmarksManager)
         btc.delegate = self
     
-        let nav = UINavigationController(rootViewController: btc)
-        ThemeManager.decorateNavigationController(nav)
+        let nav = UINavigationController.makeDecorated(rootViewController: btc)
         nav.modalPresentationStyle = .popover
         present(nav, animated: true, completion: nil)
     
@@ -222,8 +220,7 @@ class MainViewController: UIViewController
         let searchViewController = SearchViewController()
         searchViewController.searchDelegate = self
 
-        let nav = UINavigationController(rootViewController: searchViewController)
-        ThemeManager.decorateNavigationController(nav)
+        let nav = UINavigationController.makeDecorated(rootViewController: searchViewController)
         present(nav, animated: true, completion: nil)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -263,10 +260,10 @@ class MainViewController: UIViewController
     }
     
     func updateColorScheme() {
-        ThemeManager.decorateToolbar(toolbar)
-        ThemeManager.decorateView(view)
-        ThemeManager.decorateView(webView)
-        ThemeManager.decorateNavigationController(navigationController)
+        toolbar.decorate()
+        view.decorateBackground()
+        webView.decorateBackground()
+        navigationController?.decorate()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -14,6 +14,7 @@ class BookmarksManagerTests: XCTestCase {
     var sut: BookmarksManager!
 
     override func setUp() {
+        Current = .mock
         sut = BookmarksManager(storePath: FileManager.default.temporaryDirectory)
     }
 

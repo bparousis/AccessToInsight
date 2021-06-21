@@ -31,7 +31,7 @@ class SearchViewController: UITableViewController {
         isSearching = false
         searchTimer = nil
         showRecentSearches = true
-        ThemeManager.decorateTableView(tableView)
+        tableView.decorate()
         tableView.tableFooterView = UIView()
         
         let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
@@ -74,11 +74,10 @@ class SearchViewController: UITableViewController {
         }
         else
         {
-            let noDataLabel = UILabel(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
+            let noDataLabel = UILabel.makeDecorated(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
             if let searchTextLength = searchController.searchBar.text?.count {
                 noDataLabel.text  = searchTextLength > 0 ? "No Result" : ""
             }
-            ThemeManager.decorateLabel(noDataLabel)
             noDataLabel.textAlignment = .center
             tableView.backgroundView = noDataLabel
             tableView.separatorStyle = .none
@@ -104,7 +103,7 @@ class SearchViewController: UITableViewController {
             return cell
         }()
         
-        ThemeManager.decorateTableCell(cell)
+        cell.decorate()
         if isSearching {
             showSearchIndicatorInCell(cell)
         }
@@ -237,7 +236,7 @@ private extension SearchViewController {
         cell.textLabel?.text = nil
         cell.detailTextLabel?.text = nil
         
-        searchingIndicator = ThemeManager.makeDecoratedActivityIndicator()
+        searchingIndicator = UIActivityIndicatorView.makeDecorated()
         cell.contentView.addSubview(searchingIndicator!)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             self.searchingIndicator?.startAnimating()

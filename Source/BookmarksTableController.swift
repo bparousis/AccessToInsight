@@ -28,7 +28,7 @@ class BookmarksTableController: UITableViewController {
         super.viewDidLoad()
 
         title = "Bookmarks"
-        ThemeManager.decorateTableView(tableView)
+        tableView.decorate()
         tableView.tableFooterView = UIView()
         tableView.allowsSelectionDuringEditing = true
         navigationItem.rightBarButtonItem = editButtonItem
@@ -67,7 +67,7 @@ internal extension BookmarksTableController {
             return cell
         }()
         
-        ThemeManager.decorateTableCell(cell)
+        cell.decorate()
         let bookmark = bookmarksManager.bookmarkAtIndex(indexPath.row)
         cell.textLabel?.text = bookmark?.title
         cell.detailTextLabel?.text = bookmark?.note

@@ -10,6 +10,13 @@ import UIKit
 
 typealias ScrollPosition = (x: Int, y: Int)
 
+enum Page: String {
+    case home = "index.html"
+    case about = "about.html"
+    case randomSutta = "random-sutta.html"
+    case randomArticle = "random-article.html"
+}
+
 struct AppSettings {
     
     private static let defaultTextFontSize = 100
@@ -26,24 +33,24 @@ struct AppSettings {
     // MARK: Night Mode
     static var nightMode: Bool {
         set {
-            UserDefaults.standard.set(newValue, forKey: "nightMode")
+            Current.defaults.set(newValue, forKey: "nightMode")
         }
         
         get {
-            UserDefaults.standard.bool(forKey: "nightMode")
+            Current.defaults.bool(forKey: "nightMode")
         }
     }
     
     // MARK: Last Scroll Position
     static var lastScrollPosition: ScrollPosition {
         set {
-            UserDefaults.standard.set(newValue.x, forKey: lastXScrollPosition)
-            UserDefaults.standard.set(newValue.y, forKey: lastYScrollPosition)
+            Current.defaults.set(newValue.x, forKey: lastXScrollPosition)
+            Current.defaults.set(newValue.y, forKey: lastYScrollPosition)
         }
         
         get {
-            let x = UserDefaults.standard.integer(forKey: lastXScrollPosition)
-            let y = UserDefaults.standard.integer(forKey: lastYScrollPosition)
+            let x = Current.defaults.integer(forKey: lastXScrollPosition)
+            let y = Current.defaults.integer(forKey: lastYScrollPosition)
             return (x, y)
         }
     }
@@ -51,11 +58,11 @@ struct AppSettings {
     // MARK:  Text Font SIze
     static var textFontSize: Int {
         set {
-            UserDefaults.standard.set(newValue, forKey: textFontSizeKey)
+            Current.defaults.set(newValue, forKey: textFontSizeKey)
         }
         
         get {
-            guard let textFontSize = UserDefaults.standard.object(forKey: textFontSizeKey) as? Int else {
+            guard let textFontSize = Current.defaults.object(forKey: textFontSizeKey) as? Int else {
                 return defaultTextFontSize
             }
             return textFontSize
@@ -72,12 +79,12 @@ struct AppSettings {
             let archiver = NSKeyedArchiver(requiringSecureCoding: false)
             archiver.encode(newValue, forKey: bookmarkKey)
             archiver.finishEncoding()
-            UserDefaults.standard.set(archiver.encodedData, forKey: lastLocationBookmarkKey)
+            Current.defaults.set(archiver.encodedData, forKey: lastLocationBookmarkKey)
         }
         
         get {
             var lastLocationBookmark: LocalBookmark?
-            if let data = UserDefaults.standard.data(forKey: lastLocationBookmarkKey) {
+            if let data = Current.defaults.data(forKey: lastLocationBookmarkKey) {
                 if let unarchiver = try? NSKeyedUnarchiver(forReadingFrom: data) {
                     unarchiver.requiresSecureCoding = false
                     lastLocationBookmark = unarchiver.decodeObject(of: LocalBookmark.self, forKey: bookmarkKey)
@@ -91,21 +98,21 @@ struct AppSettings {
     // MARK: Last Search Scope Index
     static var lastSearchScopeIndex: Int {
         set {
-            UserDefaults.standard.set(newValue, forKey: lastSearchScopeIndexKey)
+            Current.defaults.set(newValue, forKey: lastSearchScopeIndexKey)
         }
         
         get {
-            UserDefaults.standard.integer(forKey: lastSearchScopeIndexKey)
+            Current.defaults.integer(forKey: lastSearchScopeIndexKey)
         }
     }
     
     static var recentSearches: [String]? {
         set {
-            UserDefaults.standard.set(newValue, forKey: recentSearchesKey)
+            Current.defaults.set(newValue, forKey: recentSearchesKey)
         }
         
         get {
-            UserDefaults.standard.stringArray(forKey: recentSearchesKey)
+            Current.defaults.stringArray(forKey: recentSearchesKey)
         }
     }
 }

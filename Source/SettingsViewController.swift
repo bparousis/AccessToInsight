@@ -26,10 +26,9 @@ enum SettingOption {
 
 class SettingsViewController: UIViewController {
     private lazy var tableView : UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView.makeDecorated()
         tableView.delegate = self
         tableView.dataSource = self
-        ThemeManager.decorateTableView(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "SettingsTableCellId")
         return tableView
@@ -56,10 +55,10 @@ class SettingsViewController: UIViewController {
         let notificationName = Notification.Name("NightMode")
         NotificationCenter.default.post(name: notificationName, object: self)
 
-        ThemeManager.decorateTableView(tableView)
+        tableView.decorate()
         let cells = tableView.visibleCells
         for cell in cells {
-            ThemeManager.decorateGroupedTableCell(cell)
+            cell.decorateGrouped()
         }
     }
     
@@ -77,7 +76,10 @@ extension SettingsViewController: UITableViewDelegate {
             navigationController?.pushViewController(AboutViewController(), animated: true)
         }
         else if indexPath.row == 1 {
-            navigationController?.pushViewController(TextSizeViewController(), animated: true)
+            let maxSize = UIDevice.current.userInterfaceIdiom == .pad ? 190 : 160
+            let viewModel = TextSizeViewModel(textSizeRange: 50...maxSize)
+            navigationController?.pushViewController(TextSizeViewController(viewModel: viewModel),
+                                                     animated: true)
         }
     }
 }
@@ -95,7 +97,7 @@ extension SettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsTableCellId", for: indexPath)
         cell.selectionStyle = .none
-        ThemeManager.decorateGroupedTableCell(cell)
+        cell.decorateGrouped()
         
         guard options.indices.contains(indexPath.row) else {
             return cell
