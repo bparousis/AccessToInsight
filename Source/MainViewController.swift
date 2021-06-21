@@ -289,7 +289,7 @@ class MainViewController: UIViewController
         if #available(iOS 13.0, *) {
             return super.preferredStatusBarStyle
         } else {
-            return ThemeManager.preferredStatusBarStyle
+            return AppSettings.nightMode ? .lightContent : .default
         }
     }
     
@@ -354,7 +354,7 @@ extension MainViewController: WKNavigationDelegate {
         // Need to perform this way otherwise, webview might be in a state where it's not fully rendered
         // and code below, such as saveLastLocation or scrollTo doesn't work.
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            webView.applyTheme()
+            webView.decorate()
             webView.animateFade()
             webView.adjustTextSize()
             if let rescrollPosition = self.rescrollPosition {
@@ -376,22 +376,23 @@ extension MainViewController: SearchViewDelegate {
     
     func loadPage(_ filePath: String) {
         webView.loadLocalWebContent(filePath)
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     func searchViewControllerCancel(_ controller: SearchViewController) {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
 }
 
-extension MainViewController: BookmarksControllerDelegate {
-    func bookmarksController(_ controller: BookmarksTableController!, selectedBookmark bookmark: LocalBookmark!) {
-        dismiss(animated: true, completion: nil)
-        loadLocalBookmark(bookmark)
+extension MainViewController: BookmarksTableControllerDelegate {
+    func bookmarksController(_ controller: BookmarksTableController, selectedBookmark bookmark: LocalBookmark) {
+        dismiss(animated: true) {
+            self.loadLocalBookmark(bookmark)
+        }
     }
     
-    func bookmarksControllerCancel(_ controller: BookmarksTableController!) {
-        dismiss(animated: true, completion: nil)
+    func bookmarksControllerCancel(_ controller: BookmarksTableController) {
+        dismiss(animated: true)
     }
 }
 

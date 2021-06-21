@@ -32,7 +32,6 @@
 		7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7622974622E174210051B184 /* UIColor+AppColors.swift */; };
 		763F93D72173C371005E6A58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 763F93D62173C371005E6A58 /* Images.xcassets */; };
 		764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */; };
-		764A07F1218E2BD500F4DE22 /* BookmarksControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */; };
 		764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F2218E47E900F4DE22 /* MainViewController.swift */; };
 		764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F6218EADAC00F4DE22 /* SearchViewController.swift */; };
 		765676B822DD69C00079ADD0 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 765676B722DD69710079ADD0 /* MessageUI.framework */; };
@@ -95,7 +94,6 @@
 		7629E2C4267AABF400E75CDD /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
 		763F93D62173C371005E6A58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksTableController.swift; path = Source/BookmarksTableController.swift; sourceTree = "<group>"; };
-		764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksControllerDelegate.swift; path = Source/BookmarksControllerDelegate.swift; sourceTree = "<group>"; };
 		764A07F2218E47E900F4DE22 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Source/MainViewController.swift; sourceTree = "<group>"; };
 		764A07F6218EADAC00F4DE22 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = Source/SearchViewController.swift; sourceTree = "<group>"; };
 		765676B722DD69710079ADD0 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -229,7 +227,6 @@
 			isa = PBXGroup;
 			children = (
 				7675BE9E218D48BF00B53D26 /* BookmarksManager.swift */,
-				764A07F0218E2BD500F4DE22 /* BookmarksControllerDelegate.swift */,
 				764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */,
 				7675BE94218D1B8500B53D26 /* LocalBookmark.swift */,
 			);
@@ -411,7 +408,6 @@
 				7675BE99218D2F6E00B53D26 /* WKWebView+Extension.swift in Sources */,
 				764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */,
 				76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */,
-				764A07F1218E2BD500F4DE22 /* BookmarksControllerDelegate.swift in Sources */,
 				7675BE9D218D3D7500B53D26 /* SettingsViewController.swift in Sources */,
 				76C49034267EFCC400F8DFCB /* DependencyContainer.swift in Sources */,
 				764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */,

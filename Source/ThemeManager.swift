@@ -7,12 +7,9 @@
 
 import Foundation
 import UIKit
+import WebKit
 
-struct ThemeManager {
-    
-    static var preferredStatusBarStyle: UIStatusBarStyle {
-        AppSettings.nightMode ? .lightContent : .default
-    }
+fileprivate struct ThemeManager {
     
     static func getJavascriptCSS(darkMode: Bool = AppSettings.nightMode) -> String {
         var cssFile: String
@@ -34,18 +31,18 @@ struct ThemeManager {
         """
     }
     
-    fileprivate static func decorateNavigationController(_ navigationController: UINavigationController) {
+    static func decorateNavigationController(_ navigationController: UINavigationController) {
         if #available(iOS 13.0, *) {}
         else {
             navigationController.navigationBar.barStyle = AppSettings.nightMode ? .blackTranslucent : .default
         }
     }
     
-    fileprivate static func decorateLabel(_ label: UILabel) {
+    static func decorateLabel(_ label: UILabel) {
         label.textColor = theme.labelColor
     }
     
-    fileprivate static func makeDecoratedActivityIndicator() -> UIActivityIndicatorView {
+    static func makeDecoratedActivityIndicator() -> UIActivityIndicatorView {
         if #available(iOS 13.0, *) {
             return UIActivityIndicatorView(style: .medium)
         } else {
@@ -53,7 +50,7 @@ struct ThemeManager {
         }
     }
     
-    fileprivate static func decorateActionSheet(_ actionSheet: UIAlertController) {
+    static func decorateActionSheet(_ actionSheet: UIAlertController) {
         guard actionSheet.preferredStyle == .actionSheet else {
             return
         }
@@ -67,34 +64,29 @@ struct ThemeManager {
         }
     }
     
-    fileprivate static func decorateBackground(_ view: UIView) {
+    static func decorateBackground(_ view: UIView) {
         view.backgroundColor = theme.backgroundColor
     }
 
-    static func htmlFontTag(content: String, darkMode: Bool = AppSettings.nightMode) -> String {
-        let color = darkMode ? "white" : "black"
-        return "<font color='\(color)'>\(content)</font>"
-    }
-    
-    fileprivate static func decorateGroupedTableCell(_ cell: UITableViewCell) {
+    static func decorateGroupedTableCell(_ cell: UITableViewCell) {
         cell.textLabel?.textColor = theme.labelColor
         cell.detailTextLabel?.textColor = theme.labelColor
         cell.backgroundColor = theme.cellBackgroundColor
     }
     
-    fileprivate static func decorateTableCell(_ cell: UITableViewCell) {
+    static func decorateTableCell(_ cell: UITableViewCell) {
         cell.backgroundColor = theme.backgroundColor
         cell.textLabel?.textColor = theme.labelColor
         cell.detailTextLabel?.textColor = theme.labelColor
     }
     
-    fileprivate static func decorateToolbar(_ toolbar : UIToolbar) {
+    static func decorateToolbar(_ toolbar : UIToolbar) {
         toolbar.isTranslucent = true
         toolbar.barTintColor = theme.barTintColor
         toolbar.tintColor = theme.tintColor
     }
     
-    fileprivate static func decorateTableView(_ tableView: UITableView) {
+    static func decorateTableView(_ tableView: UITableView) {
         switch tableView.style {
         case .plain:
             tableView.backgroundColor = theme.backgroundColor
@@ -224,5 +216,16 @@ extension UINavigationController {
     
     func decorate() {
         ThemeManager.decorateNavigationController(self)
+    }
+}
+
+extension WKWebView {
+    func decorate() {
+        if #available(iOS 13.0, *) {
+            let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
+            evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: isDarkMode))
+        } else {
+            evaluateJavaScript(ThemeManager.getJavascriptCSS())
+        }
     }
 }

@@ -7,13 +7,19 @@
 
 import UIKit
 
+protocol BookmarksTableControllerDelegate : class {
+    func bookmarksController(_ controller: BookmarksTableController, selectedBookmark: LocalBookmark)
+
+    func bookmarksControllerCancel(_ controller: BookmarksTableController)
+}
+
 class BookmarksTableController: UITableViewController {
 
     private var editBookmarkIndex = 0
     private var doneEditAction: UIAlertAction? = nil
     private var bookmarksManager: BookmarksManager
 
-    weak var delegate: BookmarksControllerDelegate?
+    weak var delegate: BookmarksTableControllerDelegate?
     
     init(bookmarksManager: BookmarksManager) {
         self.bookmarksManager = bookmarksManager

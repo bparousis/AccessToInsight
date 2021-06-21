@@ -52,20 +52,7 @@ extension WKWebView {
                 """
         evaluateJavaScript(javascript)
     }
-    
-    func applyTheme() {
-        if #available(iOS 13.0, *) {
-            let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
-            evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: isDarkMode))
-        } else {
-            evaluateJavaScript(ThemeManager.getJavascriptCSS())
-        }
-    }
-    
-    func applyTheme(darkMode: Bool) {
-        evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: darkMode))
-    }
-    
+
     private func urlStringToLocalContentPath(urlString: String ) -> String? {
         let urlArray = urlString.components(separatedBy: WKWebView.localWebDataDir)
         guard urlArray.count >= 2 else {

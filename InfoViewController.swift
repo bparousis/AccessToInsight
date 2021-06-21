@@ -35,7 +35,7 @@ class InfoViewController: UIViewController {
 
 extension InfoViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.applyTheme()
+        webView.decorate()
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {

@@ -114,7 +114,7 @@ extension TextSizeViewController: WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.applyTheme()
+        webView.decorate()
         webView.adjustTextSize()
         allowPageLoad = false
     }

@@ -225,10 +225,9 @@ private extension SearchViewController {
     func formatSnippet(_ snippet: String) -> String {
         if #available(iOS 13.0, *) {
             let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
-            let formattedSnippet = ThemeManager.htmlFontTag(content: snippet, darkMode: isDarkMode)
-            return formattedSnippet
+            return snippet.decoratedUsingHTMLFontTag(darkMode: isDarkMode)
         } else {
-            return ThemeManager.htmlFontTag(content: snippet)
+            return snippet.decoratedUsingHTMLFontTag()
         }
     }
     
@@ -267,5 +266,12 @@ extension SearchViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         requestSearch()
+    }
+}
+
+private extension String {
+    func decoratedUsingHTMLFontTag(darkMode: Bool = AppSettings.nightMode) -> String {
+        let color = darkMode ? "white" : "black"
+        return "<font color='\(color)'>\(self)</font>"
     }
 }
