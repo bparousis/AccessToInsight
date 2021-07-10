@@ -55,7 +55,6 @@
 		76C49034267EFCC400F8DFCB /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C49033267EFCC400F8DFCB /* DependencyContainer.swift */; };
 		76C49039267EFE5B00F8DFCB /* MockDependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */; };
 		76C4903E267EFF3C00F8DFCB /* TextSizeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */; };
-		76CE7E3C218FD7F200D2C18C /* LegacySearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E3A218FD7F200D2C18C /* LegacySearchEngine.m */; };
 		76D28722267C0F7600418566 /* SearchEngineIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */; };
 		76D86D6D2694F09400FF4B8E /* MockSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */; };
 		76F5A727238A453B0022D809 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76F5A726238A453B0022D809 /* Colors.xcassets */; };
@@ -124,8 +123,6 @@
 		76C49033267EFCC400F8DFCB /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
 		76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDependencyContainer.swift; sourceTree = "<group>"; };
 		76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSizeViewModelTests.swift; sourceTree = "<group>"; };
-		76CE7E3A218FD7F200D2C18C /* LegacySearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LegacySearchEngine.m; path = Source/LegacySearchEngine.m; sourceTree = "<group>"; };
-		76CE7E3B218FD7F200D2C18C /* LegacySearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LegacySearchEngine.h; path = Source/LegacySearchEngine.h; sourceTree = "<group>"; };
 		76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineIntegrationTests.swift; sourceTree = "<group>"; };
 		76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchEngine.swift; sourceTree = "<group>"; };
 		76F5A726238A453B0022D809 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
@@ -288,8 +285,6 @@
 		D7A4C5AB1F00B32B00A53C9D /* SearchEngine */ = {
 			isa = PBXGroup;
 			children = (
-				76CE7E3B218FD7F200D2C18C /* LegacySearchEngine.h */,
-				76CE7E3A218FD7F200D2C18C /* LegacySearchEngine.m */,
 				7629E2C4267AABF400E75CDD /* SearchEngine.swift */,
 				764A07F6218EADAC00F4DE22 /* SearchViewController.swift */,
 				763AE0192687FEE500969958 /* SearchViewModel.swift */,
@@ -429,7 +424,6 @@
 				764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */,
 				7675BE99218D2F6E00B53D26 /* WKWebView+Extension.swift in Sources */,
 				764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */,
-				76CE7E3C218FD7F200D2C18C /* LegacySearchEngine.m in Sources */,
 				7675BE9D218D3D7500B53D26 /* SettingsViewController.swift in Sources */,
 				76C49034267EFCC400F8DFCB /* DependencyContainer.swift in Sources */,
 				764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */,

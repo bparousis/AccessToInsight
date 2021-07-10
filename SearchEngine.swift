@@ -95,15 +95,3 @@ class SearchEngine {
         }
     }
 }
-
-extension LegacySearchEngine {
-    func asyncQuery(_ query: String, type: LegacySearchType,
-                    completionHandler: @escaping ([[String:Any]])->Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let queryResults = self.query(query, type: type)
-            DispatchQueue.main.async {
-                completionHandler(queryResults)
-            }
-        }
-    }
-}
