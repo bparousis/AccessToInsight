@@ -1,5 +1,2 @@
 *.db filter=lfs diff=lfs merge=lfs -text
-web_content/* linguist-vendored
-*.html linguist-detectable=false
-*.css linguist-detectable=false
-*.js linguist-detectable=false
+web_content/* linguist-vendored=true
