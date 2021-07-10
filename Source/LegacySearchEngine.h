@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum SearchType : NSUInteger {
+typedef enum LegacySearchType : NSUInteger {
     kTitle,
     kDocument
 } SearchType;
 
-@interface SearchEngine : NSObject
+@interface LegacySearchEngine : NSObject
 {
     NSString *databasePath;
 }

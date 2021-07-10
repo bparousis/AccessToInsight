@@ -28,8 +28,10 @@
 		288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765FC0DF74451002DB57D /* CoreGraphics.framework */; };
 		76012888238B337500C5D419 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76012887238B337500C5D419 /* InfoViewController.swift */; };
 		7601288A238B3EA300C5D419 /* UIViewController+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76012889238B3EA300C5D419 /* UIViewController+Layout.swift */; };
+		7606B2812682EB8A00FFBE6E /* rank.c in Sources */ = {isa = PBXBuildFile; fileRef = 7606B2802682EB8A00FFBE6E /* rank.c */; };
 		760E0E27267EF621003C2D52 /* TextSizeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 760E0E26267EF621003C2D52 /* TextSizeViewModel.swift */; };
 		7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7622974622E174210051B184 /* UIColor+AppColors.swift */; };
+		763AE01A2687FEE500969958 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 763AE0192687FEE500969958 /* SearchViewModel.swift */; };
 		763F93D72173C371005E6A58 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 763F93D62173C371005E6A58 /* Images.xcassets */; };
 		764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */; };
 		764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764A07F2218E47E900F4DE22 /* MainViewController.swift */; };
@@ -49,11 +51,13 @@
 		7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7688F64F218C067100DAA890 /* TextSizeViewController.swift */; };
 		7691B8CA216C5E31008B97A1 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */; };
 		76A4C9D8267457580043C7BC /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A4C9D7267457580043C7BC /* AppSettings.swift */; };
+		76C3707D26940764005224CB /* SearchViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C3707C26940764005224CB /* SearchViewModelTests.swift */; };
 		76C49034267EFCC400F8DFCB /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C49033267EFCC400F8DFCB /* DependencyContainer.swift */; };
 		76C49039267EFE5B00F8DFCB /* MockDependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */; };
 		76C4903E267EFF3C00F8DFCB /* TextSizeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */; };
-		76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E3A218FD7F200D2C18C /* SearchEngine.m */; };
+		76CE7E3C218FD7F200D2C18C /* LegacySearchEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CE7E3A218FD7F200D2C18C /* LegacySearchEngine.m */; };
 		76D28722267C0F7600418566 /* SearchEngineIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */; };
+		76D86D6D2694F09400FF4B8E /* MockSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */; };
 		76F5A727238A453B0022D809 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76F5A726238A453B0022D809 /* Colors.xcassets */; };
 		D736521F1F0606CB000212C7 /* pages.db in Resources */ = {isa = PBXBuildFile; fileRef = D736521E1F0606CB000212C7 /* pages.db */; };
 		D73E9C461EE7B198008079E9 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73E9C451EE7B198008079E9 /* WebKit.framework */; };
@@ -89,9 +93,12 @@
 		32CA4F630368D1EE00C91783 /* AccessToInsight_Universal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessToInsight_Universal_Prefix.pch; sourceTree = "<group>"; };
 		76012887238B337500C5D419 /* InfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
 		76012889238B3EA300C5D419 /* UIViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Layout.swift"; sourceTree = "<group>"; };
+		7606B27F2682EB8A00FFBE6E /* rank.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rank.h; sourceTree = "<group>"; };
+		7606B2802682EB8A00FFBE6E /* rank.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rank.c; sourceTree = "<group>"; };
 		760E0E26267EF621003C2D52 /* TextSizeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSizeViewModel.swift; sourceTree = "<group>"; };
 		7622974622E174210051B184 /* UIColor+AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+AppColors.swift"; sourceTree = "<group>"; };
 		7629E2C4267AABF400E75CDD /* SearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngine.swift; sourceTree = "<group>"; };
+		763AE0192687FEE500969958 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		763F93D62173C371005E6A58 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		764A07EE218E18B200F4DE22 /* BookmarksTableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BookmarksTableController.swift; path = Source/BookmarksTableController.swift; sourceTree = "<group>"; };
 		764A07F2218E47E900F4DE22 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = Source/MainViewController.swift; sourceTree = "<group>"; };
@@ -113,12 +120,14 @@
 		7688F64F218C067100DAA890 /* TextSizeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextSizeViewController.swift; path = Source/TextSizeViewController.swift; sourceTree = "<group>"; };
 		7691B8C9216C5E31008B97A1 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		76A4C9D7267457580043C7BC /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		76C3707C26940764005224CB /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
 		76C49033267EFCC400F8DFCB /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
 		76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDependencyContainer.swift; sourceTree = "<group>"; };
 		76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSizeViewModelTests.swift; sourceTree = "<group>"; };
-		76CE7E3A218FD7F200D2C18C /* SearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchEngine.m; path = Source/SearchEngine.m; sourceTree = "<group>"; };
-		76CE7E3B218FD7F200D2C18C /* SearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchEngine.h; path = Source/SearchEngine.h; sourceTree = "<group>"; };
+		76CE7E3A218FD7F200D2C18C /* LegacySearchEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LegacySearchEngine.m; path = Source/LegacySearchEngine.m; sourceTree = "<group>"; };
+		76CE7E3B218FD7F200D2C18C /* LegacySearchEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LegacySearchEngine.h; path = Source/LegacySearchEngine.h; sourceTree = "<group>"; };
 		76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineIntegrationTests.swift; sourceTree = "<group>"; };
+		76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchEngine.swift; sourceTree = "<group>"; };
 		76F5A726238A453B0022D809 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D736521E1F0606CB000212C7 /* pages.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = pages.db; sourceTree = "<group>"; };
@@ -236,10 +245,11 @@
 		765BC42B2679B615000B1DF4 /* AccessToInsightTests */ = {
 			isa = PBXGroup;
 			children = (
+				76D86D6B2694F04A00FF4B8E /* Mocks */,
 				765BC42C2679B615000B1DF4 /* BookmarksManagerTests.swift */,
 				76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */,
+				76C3707C26940764005224CB /* SearchViewModelTests.swift */,
 				76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */,
-				76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */,
 				765BC42E2679B615000B1DF4 /* Info.plist */,
 			);
 			path = AccessToInsightTests;
@@ -251,6 +261,15 @@
 				7688F60F218BF83E00DAA890 /* DefaultBookmarks.plist */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		76D86D6B2694F04A00FF4B8E /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */,
+				76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		D74BA3831ECC057100CAAB3D /* Settings */ = {
@@ -269,10 +288,13 @@
 		D7A4C5AB1F00B32B00A53C9D /* SearchEngine */ = {
 			isa = PBXGroup;
 			children = (
-				76CE7E3B218FD7F200D2C18C /* SearchEngine.h */,
-				76CE7E3A218FD7F200D2C18C /* SearchEngine.m */,
-				764A07F6218EADAC00F4DE22 /* SearchViewController.swift */,
+				76CE7E3B218FD7F200D2C18C /* LegacySearchEngine.h */,
+				76CE7E3A218FD7F200D2C18C /* LegacySearchEngine.m */,
 				7629E2C4267AABF400E75CDD /* SearchEngine.swift */,
+				764A07F6218EADAC00F4DE22 /* SearchViewController.swift */,
+				763AE0192687FEE500969958 /* SearchViewModel.swift */,
+				7606B27F2682EB8A00FFBE6E /* rank.h */,
+				7606B2802682EB8A00FFBE6E /* rank.c */,
 			);
 			name = SearchEngine;
 			sourceTree = "<group>";
@@ -407,7 +429,7 @@
 				764A07F7218EADAC00F4DE22 /* SearchViewController.swift in Sources */,
 				7675BE99218D2F6E00B53D26 /* WKWebView+Extension.swift in Sources */,
 				764A07EF218E18B200F4DE22 /* BookmarksTableController.swift in Sources */,
-				76CE7E3C218FD7F200D2C18C /* SearchEngine.m in Sources */,
+				76CE7E3C218FD7F200D2C18C /* LegacySearchEngine.m in Sources */,
 				7675BE9D218D3D7500B53D26 /* SettingsViewController.swift in Sources */,
 				76C49034267EFCC400F8DFCB /* DependencyContainer.swift in Sources */,
 				764A07F3218E47E900F4DE22 /* MainViewController.swift in Sources */,
@@ -419,6 +441,8 @@
 				7688F650218C067100DAA890 /* TextSizeViewController.swift in Sources */,
 				7622974722E174210051B184 /* UIColor+AppColors.swift in Sources */,
 				76A4C9D8267457580043C7BC /* AppSettings.swift in Sources */,
+				763AE01A2687FEE500969958 /* SearchViewModel.swift in Sources */,
+				7606B2812682EB8A00FFBE6E /* rank.c in Sources */,
 				760E0E27267EF621003C2D52 /* TextSizeViewModel.swift in Sources */,
 				766D3A72267AEAD60020E047 /* SearchEngine.swift in Sources */,
 				76012888238B337500C5D419 /* InfoViewController.swift in Sources */,
@@ -431,9 +455,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				76C49039267EFE5B00F8DFCB /* MockDependencyContainer.swift in Sources */,
+				76D86D6D2694F09400FF4B8E /* MockSearchEngine.swift in Sources */,
 				765BC42D2679B615000B1DF4 /* BookmarksManagerTests.swift in Sources */,
 				76C4903E267EFF3C00F8DFCB /* TextSizeViewModelTests.swift in Sources */,
 				76D28722267C0F7600418566 /* SearchEngineIntegrationTests.swift in Sources */,
+				76C3707D26940764005224CB /* SearchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,13 +531,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 4.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
@@ -564,7 +590,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -572,7 +598,7 @@
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 4.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";
@@ -592,13 +618,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 12;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = AccessToInsight_Universal_Prefix.pch;
 				INFOPLIST_FILE = "AccessToInsight_Universal-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 4.1.1;
+				MARKETING_VERSION = 4.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.appmagination.iphone.accesstoinsight;
 				PRODUCT_NAME = AccessToInsight;
 				PROVISIONING_PROFILE = "";

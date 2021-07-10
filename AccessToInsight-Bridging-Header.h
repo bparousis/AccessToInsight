@@ -11,4 +11,5 @@
 
 #endif /* AccessToInsight_Bridging_Header_h */
 
-#import "SearchEngine.h"
+#import "LegacySearchEngine.h"
+#import "rank.h"

@@ -14,41 +14,44 @@ protocol SearchViewDelegate : class {
 
 class SearchViewController: UITableViewController {
 
-    private lazy var searchEngine = SearchEngine()
-    
-    var tableData: [Any] = []
-    var showRecentSearches = true
-    var searchTimer: Timer? = nil
-    var isSearching = false
+    private let viewModel: SearchViewModel
+
     var searchingIndicator: UIActivityIndicatorView?
-    var searchController: UISearchController!
+    var searchController: UISearchController
     weak var searchDelegate : SearchViewDelegate?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = "Search"
-        isSearching = false
-        searchTimer = nil
-        showRecentSearches = true
-        tableView.decorate()
-        tableView.tableFooterView = UIView()
-        
-        let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
-        navigationItem.leftBarButtonItem = cancelButtonItem
-        
-        if let recentSearches = AppSettings.recentSearches {
-            tableData = recentSearches
-        }
-
+    init(viewModel: SearchViewModel = SearchViewModel()) {
+        self.viewModel = viewModel
         searchController = UISearchController(searchResultsController: nil)
-        searchController.searchResultsUpdater = self
         
+        super.init(nibName: nil, bundle: nil)
+
+        searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.sizeToFit()
         searchController.searchBar.scopeButtonTitles = ["Title", "Document"]
         searchController.searchBar.selectedScopeButtonIndex = AppSettings.lastSearchScopeIndex
         searchController.searchBar.delegate = self
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        title = viewModel.title
+        viewModel.searchCompleted = {
+            self.searchingIndicator?.stopAnimating()
+            self.searchingIndicator?.removeFromSuperview()
+            self.tableView.reloadData()
+        }
+        tableView.decorate()
+        tableView.tableFooterView = UIView()
+
+        let cancelButtonItem = UIBarButtonItem(title: "Close", style: .done, target: self, action: #selector(cancel(_:)))
+        navigationItem.leftBarButtonItem = cancelButtonItem
         definesPresentationContext = true
         extendedLayoutIncludesOpaqueBars = true
         
@@ -62,18 +65,14 @@ class SearchViewController: UITableViewController {
     }
     
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
         var numOfSections = 0
         
-        if !tableData.isEmpty || showRecentSearches || isSearching
-        {
+        if viewModel.rowCount > 0 {
             tableView.separatorStyle = .singleLine
             numOfSections = 1
             tableView.backgroundView = nil
-        }
-        else
-        {
+        } else {
             let noDataLabel = UILabel.makeDecorated(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height))
             if let searchTextLength = searchController.searchBar.text?.count {
                 noDataLabel.text  = searchTextLength > 0 ? "No Result" : ""
@@ -87,7 +86,7 @@ class SearchViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isSearching ? 1 : tableData.count
+        viewModel.rowCount
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -103,36 +102,30 @@ class SearchViewController: UITableViewController {
             return cell
         }()
         
+        cell.clear()
         cell.decorate()
-        if isSearching {
-            showSearchIndicatorInCell(cell)
-        }
-        else if showRecentSearches {
-            if let aSearch = tableData[indexPath.row] as? String {
-                cell.textLabel?.text = aSearch
+        
+        switch viewModel.searchDisplayMode {
+        case .recentSearches:
+            cell.textLabel?.text = viewModel.recentSearch(at: indexPath.row)
+        case .searchResults:
+            if viewModel.isSearching {
+                showSearchIndicatorInCell(cell)
             } else {
-                cell.textLabel?.text = nil
-            }
-            cell.detailTextLabel?.text = nil
-            cell.detailTextLabel?.attributedText = nil
-        }
-        else if tableData.indices.contains(indexPath.row) {
-            if let resultData = tableData[indexPath.row] as? Dictionary<String,Any> {
-                let subtitle = resultData["subtitle"] as? String
-                let snippet = resultData["snippet"] as! String
-                let formattedSnippet = formatSnippet(snippet)
-
-                if let data = formattedSnippet.data(using: .unicode) {
-                    do {
-                        let attrStr = try NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-                        cell.textLabel?.text = resultData["title"] as? String
-                        if isTitleSearch && subtitle != nil && subtitle!.count > 0 {
+                if let searchResult = viewModel.searchResult(at: indexPath.row) {
+                    cell.textLabel?.text = searchResult.title
+                    
+                    if isTitleSearch {
+                        if let subtitle = searchResult.subtitle, !subtitle.isEmpty {
                             cell.detailTextLabel?.text = subtitle
                         }
-                        else {
-                            cell.detailTextLabel?.attributedText = isTitleSearch ? nil : attrStr
+                    } else { // document search
+                        let formattedSnippet = formatSnippet(searchResult.snippet)
+                        if let data = formattedSnippet.data(using: .unicode) {
+                            let attrStr = try? NSAttributedString(data: data, options: [NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+                            cell.detailTextLabel?.attributedText = attrStr
                         }
-                    } catch {}
+                    }
                 }
             }
         }
@@ -140,20 +133,25 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        showRecentSearches ? .delete : .none
+        switch viewModel.searchDisplayMode {
+        case .recentSearches:
+            return .delete
+        case .searchResults:
+            return .none
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if showRecentSearches {
-            if let aSearch = tableData[indexPath.row] as? String {
+        switch viewModel.searchDisplayMode {
+        case .recentSearches:
+            if let aSearch = viewModel.recentSearch(at: indexPath.row) {
                 searchController.searchBar.text = aSearch
-                performSearch()
+                viewModel.requestSearch(aSearch)
             }
-        }
-        else if let resultData = tableData[indexPath.row] as? [String: Any],
-                let filePath = resultData["filePath"] as? String
-        {
-            searchDelegate?.loadPage(filePath)
+        case .searchResults:
+            if let searchResult = viewModel.searchResult(at: indexPath.row) {
+                searchDelegate?.loadPage(searchResult.filePath)
+            }
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -161,63 +159,15 @@ class SearchViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tableData.remove(at: indexPath.row)
-            AppSettings.recentSearches = tableData as? [String]
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            if viewModel.deleteRecentSearch(at: indexPath.row) {
+                tableView.deleteRows(at: [indexPath], with: .fade)
+            }
         }
     }
 }
 
 private extension SearchViewController {
-    @objc func performSearch() {
-        guard let queryString = searchController.searchBar.text,
-              !queryString.isEmpty else
-        {
-            return
-        }
-        
-        let scopeIndex = searchController.searchBar.selectedScopeButtonIndex
-        let searchType = SearchType(rawValue: UInt(scopeIndex))
-        updateRecentSearches(queryString)
-        isSearching = true
-        tableData = []
-        tableView.reloadData()
 
-        searchEngine.asyncQuery(queryString, type: searchType) { result in
-            self.isSearching = false
-            self.searchingIndicator?.stopAnimating()
-            self.searchingIndicator?.removeFromSuperview()
-            self.showRecentSearches = false
-            self.tableData = result
-            self.tableView.reloadData()
-        }
-    }
-    
-    func updateRecentSearches(_ newQuery: String) {
-        if let recentSearches = AppSettings.recentSearches {
-            if !recentSearches.contains(newQuery) {
-                var newSearches = recentSearches
-                if newSearches.count >= 9 {
-                    newSearches.removeLast()
-                }
-                newSearches.insert(newQuery, at: 0)
-                AppSettings.recentSearches = newSearches
-            }
-        }
-        else {
-            AppSettings.recentSearches = [newQuery]
-        }
-    }
-    
-    func requestSearch() {
-        if searchTimer != nil {
-            searchTimer?.invalidate()
-            searchTimer = nil
-        }
-        searchTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(performSearch),
-                                           userInfo: nil, repeats: false)
-    }
-    
     var isTitleSearch: Bool {
         searchController.searchBar.selectedScopeButtonIndex == 0
     }
@@ -251,21 +201,24 @@ extension SearchViewController : UISearchResultsUpdating {
 extension SearchViewController: UISearchBarDelegate {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
-        showRecentSearches = true
-        if let recentSearches = AppSettings.recentSearches {
-            tableData = recentSearches
-        }
+        viewModel.searchDisplayMode = .recentSearches
         tableView.reloadData()
         return true
     }
     
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         AppSettings.lastSearchScopeIndex = selectedScope
-        requestSearch()
+        guard let queryString = searchController.searchBar.text, !queryString.isEmpty else {
+            return
+        }
+        viewModel.requestSearch(queryString)
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        requestSearch()
+        guard let queryString = searchController.searchBar.text, !queryString.isEmpty else {
+            return
+        }
+        viewModel.requestSearch(queryString)
     }
 }
 
@@ -273,5 +226,13 @@ private extension String {
     func decoratedUsingHTMLFontTag(darkMode: Bool = AppSettings.nightMode) -> String {
         let color = darkMode ? "white" : "black"
         return "<font color='\(color)'>\(self)</font>"
+    }
+}
+
+private extension UITableViewCell {
+    func clear() {
+        textLabel?.text = nil
+        detailTextLabel?.text = nil
+        detailTextLabel?.attributedText = nil
     }
 }

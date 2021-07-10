@@ -24,7 +24,7 @@ class SearchEngineIntegrationTests: XCTestCase {
 
     func testSearchTitle() {
         let expectation = XCTestExpectation(description: "Search with three results")
-        sut.asyncQuery("karma", type: SearchType(rawValue: 0)) { result in
+        sut.asyncQuery("karma", type: .title) { result in
             XCTAssertEqual(result.count, 3)
             expectation.fulfill()
         }
@@ -34,7 +34,7 @@ class SearchEngineIntegrationTests: XCTestCase {
     
     func testNoResults() {
         let expectation = XCTestExpectation(description: "No results")
-        sut.asyncQuery("test", type: SearchType(rawValue: 0)) { result in
+        sut.asyncQuery("test", type: .title) { result in
             XCTAssertEqual(result.count, 0)
             expectation.fulfill()
         }
@@ -44,7 +44,7 @@ class SearchEngineIntegrationTests: XCTestCase {
     
     func testNonAlphaNumericSearchResults() {
         let expectation = XCTestExpectation(description: "No results")
-        sut.asyncQuery("@#^!^@%*@", type: SearchType(rawValue: 0)) { result in
+        sut.asyncQuery("@#^!^@%*@", type: .title) { result in
             XCTAssertEqual(result.count, 0)
             expectation.fulfill()
         }
@@ -54,7 +54,7 @@ class SearchEngineIntegrationTests: XCTestCase {
     
     func testMultipleWords() {
         let expectation = XCTestExpectation(description: "Multiple results")
-        sut.asyncQuery("Monastic Code", type: SearchType(rawValue: 0)) { result in
+        sut.asyncQuery("Monastic Code", type: .title) { result in
             XCTAssertEqual(result.count, 61)
             expectation.fulfill()
         }
@@ -65,7 +65,7 @@ class SearchEngineIntegrationTests: XCTestCase {
     func testSearchDocument() {
         
         let expectation = XCTestExpectation(description: "Multiple results")
-        sut.asyncQuery("Sotaapanna", type: SearchType(rawValue: 1)) { result in
+        sut.asyncQuery("Sotaapanna", type: .document) { result in
             XCTAssertEqual(result.count, 14)
             expectation.fulfill()
         }

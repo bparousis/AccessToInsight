@@ -106,6 +106,10 @@ struct AppSettings {
         }
     }
     
+    static var searchType: SearchType {
+        lastSearchScopeIndex == 0 ? .title : .document
+    }
+    
     static var recentSearches: [String]? {
         set {
             Current.defaults.set(newValue, forKey: recentSearchesKey)
