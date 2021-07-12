@@ -27,7 +27,8 @@ class SearchViewModel {
         }
     }
 
-    var searchCompleted: (()->())?
+    var searchCompleted: (()->Void)?
+    var willPerformSearch: (()->Void)?
     
     private let maxCountRecentSearches = 9
     
@@ -101,6 +102,7 @@ private extension SearchViewModel {
         searchDisplayMode = .searchResults
         searchResults.removeAll()
         isSearching = true
+        willPerformSearch?()
 
         searchEngine.asyncQuery(query, type: searchType) { result in
             self.searchResults = result

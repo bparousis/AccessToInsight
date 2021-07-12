@@ -42,6 +42,10 @@ class SearchViewController: UITableViewController {
         super.viewDidLoad()
 
         title = viewModel.title
+        viewModel.willPerformSearch = {
+            self.tableView.reloadData()
+        }
+
         viewModel.searchCompleted = {
             self.searchingIndicator?.stopAnimating()
             self.searchingIndicator?.removeFromSuperview()
