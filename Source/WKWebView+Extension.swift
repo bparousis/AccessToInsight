@@ -17,10 +17,6 @@ extension WKWebView {
         let urlRequest = URLRequest(url: url)
         load(urlRequest)
     }
-    
-    func loadLocalWebContent(_ page: Page) {
-        loadLocalWebContent(page.rawValue)
-    }
 
     func loadLocalWebContent(_ path: String) {
         var path = path

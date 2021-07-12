@@ -23,7 +23,7 @@ class InfoViewController: UIViewController {
         title = "Info"
         view.addSubview(webView)
         anchor(to: webView)
-        webView.loadLocalWebContent(.about)
+        webView.loadLocalWebContent(Page.about)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

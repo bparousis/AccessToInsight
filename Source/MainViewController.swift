@@ -126,7 +126,7 @@ class MainViewController: UIViewController
     }
     
     @IBAction func home() {
-        webView.loadLocalWebContent(.home)
+        webView.loadLocalWebContent(Page.home)
     }
     
     @IBAction func goBack() {
@@ -180,12 +180,12 @@ class MainViewController: UIViewController
         
         actionSheet.addAction(UIAlertAction(title: "Random Sutta", style: .default, handler: { [unowned self] (alert) in
             rescrollPosition = AppSettings.topScrollPosition
-            webView.loadLocalWebContent(.randomSutta)
+            webView.loadLocalWebContent(Page.randomSutta)
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Random Article", style: .default, handler: { [unowned self] (alert) in
             rescrollPosition = AppSettings.topScrollPosition
-            webView.loadLocalWebContent(.randomArticle)
+            webView.loadLocalWebContent(Page.randomArticle)
         }))
         
         present(actionSheet, animated: true, completion: nil)

@@ -10,11 +10,11 @@ import UIKit
 
 typealias ScrollPosition = (x: Int, y: Int)
 
-enum Page: String {
-    case home = "index.html"
-    case about = "about.html"
-    case randomSutta = "random-sutta.html"
-    case randomArticle = "random-article.html"
+enum Page {
+    static let home = "index.html"
+    static let about = "about.html"
+    static let randomSutta = "random-sutta.html"
+    static let randomArticle = "random-article.html"
 }
 
 struct AppSettings {

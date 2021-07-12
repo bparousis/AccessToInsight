@@ -15,7 +15,7 @@ struct TextSizeViewModel {
 
     var page: String {
         guard let bookmarkLocation = AppSettings.lastLocationBookmark?.location else {
-            return Page.home.rawValue
+            return Page.home
         }
         return bookmarkLocation
     }
