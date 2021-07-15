@@ -11,7 +11,7 @@ import WebKit
 
 fileprivate struct ThemeManager {
     
-    static func getJavascriptCSS(darkMode: Bool = AppSettings.nightMode) -> String {
+    static func getJavascriptCSS(darkMode: Bool) -> String {
         var cssFile: String
         switch UIDevice.current.userInterfaceIdiom {
         case .pad:
@@ -31,37 +31,15 @@ fileprivate struct ThemeManager {
         """
     }
     
-    static func decorateNavigationController(_ navigationController: UINavigationController) {
-        if #available(iOS 13.0, *) {}
-        else {
-            navigationController.navigationBar.barStyle = AppSettings.nightMode ? .blackTranslucent : .default
-        }
-    }
-    
     static func decorateLabel(_ label: UILabel) {
         label.textColor = theme.labelColor
-    }
-    
-    static func makeDecoratedActivityIndicator() -> UIActivityIndicatorView {
-        if #available(iOS 13.0, *) {
-            return UIActivityIndicatorView(style: .medium)
-        } else {
-            return UIActivityIndicatorView(style: AppSettings.nightMode ? .white : .gray)
-        }
     }
     
     static func decorateActionSheet(_ actionSheet: UIAlertController) {
         guard actionSheet.preferredStyle == .actionSheet else {
             return
         }
-        
-        if #available(iOS 13.0, *) {
-            actionSheet.view.tintColor = theme.labelColor
-        } else {
-            if AppSettings.nightMode {
-                actionSheet.view.tintColor = theme.backgroundColor
-            }
-        }
+        actionSheet.view.tintColor = theme.labelColor
     }
     
     static func decorateBackground(_ view: UIView) {
@@ -94,19 +72,17 @@ fileprivate struct ThemeManager {
             tableView.backgroundColor = theme.tableBackgroundColor
         }
         
-        if #available(iOS 13.0, *) {
-            tableView.separatorColor = UIColor(named: "tableSeparatorColor")
-        }
+        tableView.separatorColor = UIColor(named: "tableSeparatorColor")
     }
 }
 
 private extension ThemeManager {
 
-    static func getIpadCSS(darkMode: Bool = AppSettings.nightMode) -> String {
+    static func getIpadCSS(darkMode: Bool) -> String {
         darkMode ? "ipad_night.css" : "ipad.css"
     }
 
-    static func getIphoneCSS(darkMode: Bool = AppSettings.nightMode) -> String {
+    static func getIphoneCSS(darkMode: Bool) -> String {
         darkMode ? "iphone_night.css" : "iphone.css"
     }
 
@@ -117,22 +93,9 @@ private extension ThemeManager {
         var barTintColor: UIColor?
         var tintColor: UIColor?
         var tableBackgroundColor: UIColor?
-        
-        static let light = Theme(backgroundColor: .white, cellBackgroundColor: .white, labelColor: .black, barTintColor: nil, tintColor: nil, tableBackgroundColor: .groupTableViewBackground)
-        
-        static let night = Theme(backgroundColor: .midnight, cellBackgroundColor: .charcoal, labelColor: .white, barTintColor: .midnight, tintColor: .babyBlue, tableBackgroundColor: .midnight)
-        
-        @available(iOS 13.0, *)
-        static let ios13 = Theme(backgroundColor: UIColor(named: "backgroundColor"), cellBackgroundColor: UIColor(named: "cellBackgroundColor"), labelColor: .label, barTintColor: UIColor(named: "barTintColor"), tintColor: .label, tableBackgroundColor: UIColor(named: "tableBackgroundColor"))
     }
 
-    static var theme: Theme {
-        if #available(iOS 13.0, *) {
-            return .ios13
-        } else {
-            return AppSettings.nightMode ? .night : .light
-        }
-    }
+    static let theme = Theme(backgroundColor: UIColor(named: "backgroundColor"), cellBackgroundColor: UIColor(named: "cellBackgroundColor"), labelColor: .label, barTintColor: UIColor(named: "barTintColor"), tintColor: .label, tableBackgroundColor: UIColor(named: "tableBackgroundColor"))
 }
 
 // MARK: Decorate extensions
@@ -197,35 +160,9 @@ extension UIView {
     }
 }
 
-extension UIActivityIndicatorView {
-    static func makeDecorated() -> UIActivityIndicatorView {
-        if #available(iOS 13.0, *) {
-            return UIActivityIndicatorView(style: .medium)
-        } else {
-            return UIActivityIndicatorView(style: AppSettings.nightMode ? .white : .gray)
-        }
-    }
-}
-
-extension UINavigationController {
-    static func makeDecorated(rootViewController: UIViewController) -> UINavigationController {
-        let nav = UINavigationController(rootViewController: rootViewController)
-        nav.decorate()
-        return nav
-    }
-    
-    func decorate() {
-        ThemeManager.decorateNavigationController(self)
-    }
-}
-
 extension WKWebView {
     func decorate() {
-        if #available(iOS 13.0, *) {
-            let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
-            evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: isDarkMode))
-        } else {
-            evaluateJavaScript(ThemeManager.getJavascriptCSS())
-        }
+        let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
+        evaluateJavaScript(ThemeManager.getJavascriptCSS(darkMode: isDarkMode))
     }
 }

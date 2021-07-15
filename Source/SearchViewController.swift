@@ -177,19 +177,15 @@ private extension SearchViewController {
     }
     
     func formatSnippet(_ snippet: String) -> String {
-        if #available(iOS 13.0, *) {
-            let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
-            return snippet.decoratedUsingHTMLFontTag(darkMode: isDarkMode)
-        } else {
-            return snippet.decoratedUsingHTMLFontTag()
-        }
+        let isDarkMode = self.traitCollection.userInterfaceStyle == .dark
+        return snippet.decoratedUsingHTMLFontTag(darkMode: isDarkMode)
     }
     
     func showSearchIndicatorInCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = nil
         cell.detailTextLabel?.text = nil
         
-        searchingIndicator = UIActivityIndicatorView.makeDecorated()
+        searchingIndicator = UIActivityIndicatorView(style: .medium)
         cell.contentView.addSubview(searchingIndicator!)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             self.searchingIndicator?.startAnimating()
@@ -227,7 +223,7 @@ extension SearchViewController: UISearchBarDelegate {
 }
 
 private extension String {
-    func decoratedUsingHTMLFontTag(darkMode: Bool = AppSettings.nightMode) -> String {
+    func decoratedUsingHTMLFontTag(darkMode: Bool) -> String {
         let color = darkMode ? "white" : "black"
         return "<font color='\(color)'>\(self)</font>"
     }
