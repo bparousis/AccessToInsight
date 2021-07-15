@@ -250,10 +250,6 @@ class MainViewController: UIViewController
             AppSettings.lastLocationBookmark = lastLocationBookmark
         }
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
 }
 
 extension MainViewController: WKNavigationDelegate {
