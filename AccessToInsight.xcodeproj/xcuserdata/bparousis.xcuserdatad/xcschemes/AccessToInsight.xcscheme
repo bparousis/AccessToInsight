@@ -46,11 +46,6 @@
                BlueprintName = "AccessToInsightTests"
                ReferencedContainer = "container:AccessToInsight.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "SearchEngineIntegrationTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>
