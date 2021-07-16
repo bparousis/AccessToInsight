@@ -27,9 +27,7 @@ class InfoViewController: UIViewController {
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if #available(iOS 13, *) {
-            webView.reload()
-        }
+        webView.reload()
     }
 }
 

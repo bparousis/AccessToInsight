@@ -30,17 +30,6 @@ struct AppSettings {
     
     static let topScrollPosition: ScrollPosition = (0,0)
     
-    // MARK: Night Mode
-    static var nightMode: Bool {
-        set {
-            Current.defaults.set(newValue, forKey: "nightMode")
-        }
-        
-        get {
-            Current.defaults.bool(forKey: "nightMode")
-        }
-    }
-    
     // MARK: Last Scroll Position
     static var lastScrollPosition: ScrollPosition {
         set {

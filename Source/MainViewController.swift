@@ -10,8 +10,6 @@ import WebKit
 
 class MainViewController: UIViewController
 {
-    static let nightModeNotificationName = NSNotification.Name("NightMode")
-    
     private var toolbarHidden: Bool = false
     private var startAlpha: CGFloat = 0.0
     
@@ -29,11 +27,9 @@ class MainViewController: UIViewController
     lazy var webView: WKWebView = {
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = .link
-        if #available(iOS 13.0, *) {
-            let references = WKWebpagePreferences()
-            references.preferredContentMode = .mobile
-            config.defaultWebpagePreferences = references
-        }
+        let references = WKWebpagePreferences()
+        references.preferredContentMode = .mobile
+        config.defaultWebpagePreferences = references
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = self
         webView.scrollView.delegate = self
@@ -56,34 +52,10 @@ class MainViewController: UIViewController
     @IBOutlet var bmBarButtonItem: UIBarButtonItem!
     @IBOutlet var searchButtonItem: UIBarButtonItem!
     @IBOutlet var settingsButtonItem: UIBarButtonItem!
-    
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        addNightModeNotification()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        addNightModeNotification()
-    }
-    
-    func setupToolbarIcons() {
-        if #available(iOS 13, *) {
-        } else {
-            backButtonItem.image = UIImage(named: "back")
-            forwardButtonItem.image = UIImage(named: "forward")
-            homeButtonItem.image = UIImage(named: "home")
-            actionBarButtonItem.image = UIImage(named: "action")
-            bmBarButtonItem.image = UIImage(named: "bookmark")
-            searchButtonItem.image = UIImage(named: "search")
-            settingsButtonItem.image = UIImage(named: "settings")
-        }
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupToolbarIcons()
         BookmarksManager.setLocalBookmarkKeyedUnarchived()
         
         toolbarHidden = false
@@ -201,7 +173,7 @@ class MainViewController: UIViewController
         let btc = BookmarksTableController(bookmarksManager: bookmarksManager)
         btc.delegate = self
     
-        let nav = UINavigationController.makeDecorated(rootViewController: btc)
+        let nav = UINavigationController(rootViewController: btc)
         nav.modalPresentationStyle = .popover
         present(nav, animated: true, completion: nil)
     
@@ -220,7 +192,7 @@ class MainViewController: UIViewController
         let searchViewController = SearchViewController()
         searchViewController.searchDelegate = self
 
-        let nav = UINavigationController.makeDecorated(rootViewController: searchViewController)
+        let nav = UINavigationController(rootViewController: searchViewController)
         present(nav, animated: true, completion: nil)
         navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -236,34 +208,18 @@ class MainViewController: UIViewController
     
     func toggleScreenDecorations() {
         toolbarHidden.toggle()
-        UIView.beginAnimations("toolbar", context: nil)
-        toolbar?.isHidden = toolbarHidden
-        bottomConstraint?.constant = toolbarHidden ? 0.0 : -44.0
-        view.layoutIfNeeded()
-        UIView.commitAnimations()
         UIView.animate(withDuration: 0.25) {
+            self.toolbar?.isHidden = self.toolbarHidden
+            self.bottomConstraint?.constant = self.toolbarHidden ? 0.0 : -44.0
+            self.view.layoutIfNeeded()
             self.setNeedsStatusBarAppearanceUpdate()
         }
     }
-    
-    func addNightModeNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(nightModeNotification(_:)),
-                                               name: MainViewController.nightModeNotificationName, object: nil)
-    }
-    
-    @objc func nightModeNotification(_ notification:NSNotification)
-    {
-        guard notification.name == MainViewController.nightModeNotificationName else { return }
-        startAlpha = 0.0
-        updateColorScheme()
-        webView.reload()
-    }
-    
+
     func updateColorScheme() {
         toolbar.decorate()
         view.decorateBackground()
         webView.decorateBackground()
-        navigationController?.decorate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -284,29 +240,15 @@ class MainViewController: UIViewController
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         .slide
     }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13.0, *) {
-            return super.preferredStatusBarStyle
-        } else {
-            return AppSettings.nightMode ? .lightContent : .default
-        }
-    }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if #available(iOS 13, *) {
-            webView.reload()
-        }
+        webView.reload()
     }
     
     func saveLastLocation() {
         webView.getBookmark { lastLocationBookmark in
             AppSettings.lastLocationBookmark = lastLocationBookmark
         }
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }
 

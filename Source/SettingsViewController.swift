@@ -10,7 +10,6 @@ import UIKit
 enum SettingOption {
     case about
     case textSize
-    case nightMode
     
     var title: String {
         switch self {
@@ -18,8 +17,6 @@ enum SettingOption {
             return "About"
         case .textSize:
             return "Text Size"
-        case .nightMode:
-            return "Night Mode"
         }
     }
 }
@@ -34,13 +31,7 @@ class SettingsViewController: UIViewController {
         return tableView
     }()
     
-    private lazy var options: [SettingOption] = {
-        if #available(iOS 13.0, *) {
-            return [.about, .textSize]
-        } else {
-            return [.about, .textSize, .nightMode]
-        }
-    }()
+    private let options: [SettingOption] = [.about, .textSize]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,18 +39,6 @@ class SettingsViewController: UIViewController {
         title = "Settings"
         view.addSubview(tableView)
         anchor(to: tableView)
-    }
-    
-    @objc func nightModeToggled(_ nightModeSwitch: UISwitch) {
-        AppSettings.nightMode = nightModeSwitch.isOn
-        let notificationName = Notification.Name("NightMode")
-        NotificationCenter.default.post(name: notificationName, object: self)
-
-        tableView.decorate()
-        let cells = tableView.visibleCells
-        for cell in cells {
-            cell.decorateGrouped()
-        }
     }
     
     func openURL(_ urlString:String) {
@@ -72,10 +51,15 @@ class SettingsViewController: UIViewController {
 extension SettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            navigationController?.pushViewController(AboutViewController(), animated: true)
+        
+        guard options.indices.contains(indexPath.row) else {
+            return
         }
-        else if indexPath.row == 1 {
+
+        switch options[indexPath.row] {
+        case .about:
+            navigationController?.pushViewController(AboutViewController(), animated: true)
+        case .textSize:
             let maxSize = UIDevice.current.userInterfaceIdiom == .pad ? 190 : 160
             let viewModel = TextSizeViewModel(textSizeRange: 50...maxSize)
             navigationController?.pushViewController(TextSizeViewController(viewModel: viewModel),
@@ -105,17 +89,7 @@ extension SettingsViewController: UITableViewDataSource {
 
         let option = options[indexPath.row]
         cell.textLabel?.text = option.title
-
-        switch option {
-        case .about, .textSize:
-            cell.accessoryType = .disclosureIndicator
-        case .nightMode:
-            let nightModeSwitch = UISwitch()
-            nightModeSwitch.onTintColor = UIColor.blueSky
-            nightModeSwitch.isOn = AppSettings.nightMode
-            nightModeSwitch.addTarget(self, action: #selector(nightModeToggled(_:)), for:.valueChanged)
-            cell.accessoryView = nightModeSwitch
-        }
+        cell.accessoryType = .disclosureIndicator
         
         return cell
     }
