@@ -55,7 +55,6 @@
 		76C49034267EFCC400F8DFCB /* DependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C49033267EFCC400F8DFCB /* DependencyContainer.swift */; };
 		76C49039267EFE5B00F8DFCB /* MockDependencyContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */; };
 		76C4903E267EFF3C00F8DFCB /* TextSizeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */; };
-		76D28722267C0F7600418566 /* SearchEngineIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */; };
 		76D86D6D2694F09400FF4B8E /* MockSearchEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */; };
 		76F5A727238A453B0022D809 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76F5A726238A453B0022D809 /* Colors.xcassets */; };
 		D736521F1F0606CB000212C7 /* pages.db in Resources */ = {isa = PBXBuildFile; fileRef = D736521E1F0606CB000212C7 /* pages.db */; };
@@ -123,7 +122,6 @@
 		76C49033267EFCC400F8DFCB /* DependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyContainer.swift; sourceTree = "<group>"; };
 		76C49038267EFE5B00F8DFCB /* MockDependencyContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDependencyContainer.swift; sourceTree = "<group>"; };
 		76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextSizeViewModelTests.swift; sourceTree = "<group>"; };
-		76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchEngineIntegrationTests.swift; sourceTree = "<group>"; };
 		76D86D6C2694F09400FF4B8E /* MockSearchEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSearchEngine.swift; sourceTree = "<group>"; };
 		76F5A726238A453B0022D809 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* AccessToInsight_Universal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "AccessToInsight_Universal-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
@@ -244,7 +242,6 @@
 			children = (
 				76D86D6B2694F04A00FF4B8E /* Mocks */,
 				765BC42C2679B615000B1DF4 /* BookmarksManagerTests.swift */,
-				76D28721267C0F7600418566 /* SearchEngineIntegrationTests.swift */,
 				76C3707C26940764005224CB /* SearchViewModelTests.swift */,
 				76C4903D267EFF3C00F8DFCB /* TextSizeViewModelTests.swift */,
 				765BC42E2679B615000B1DF4 /* Info.plist */,
@@ -452,7 +449,6 @@
 				76D86D6D2694F09400FF4B8E /* MockSearchEngine.swift in Sources */,
 				765BC42D2679B615000B1DF4 /* BookmarksManagerTests.swift in Sources */,
 				76C4903E267EFF3C00F8DFCB /* TextSizeViewModelTests.swift in Sources */,
-				76D28722267C0F7600418566 /* SearchEngineIntegrationTests.swift in Sources */,
 				76C3707D26940764005224CB /* SearchViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
